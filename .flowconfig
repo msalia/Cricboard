@@ -1,0 +1,11 @@
+[ignore]
+.*/dist/.*
+.*/node_modules/.*
+package.json
+webpack.config.js
+
+[libs]
+./node_modules
+
+[options]
+suppress_comment= \\(.\\|\n\\)*\\$FlowFixMe
