@@ -10,6 +10,10 @@ var AppDispatcher = require('AppDispatcher');
 var ExampleStore = require('ExampleStore');
 var React = require('react');
 var ReactDOM = require('react-dom');
+var ReactRouter = require('react-router');
+var Roster = require('Roster');
+var Router = ReactRouter.Router;
+var Route = ReactRouter.Route;
 
 var {ActionTypes} = AppConstants;
 
@@ -32,6 +36,17 @@ class Initializer {
 
                 // Render the application
                 ReactDOM.render(this.application, appRoot);
+
+                ReactDOM.render(
+                    (
+                        <Router>
+                            <Route path="/" component={App}>
+                                <Route path="roster" component={Roster}/>
+                            </Route>
+                        </Router>
+                    ), 
+                    appRoot
+                );
                 AppDispatcher.unregister(dispatchToken);
             }
             return;

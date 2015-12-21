@@ -4,6 +4,7 @@
  */
 
 var React = require('react');
+var Navbar = require('Navbar');
 
 var cn = require('classnames');
 
@@ -16,20 +17,27 @@ class App extends React.Component {
 
     render() {
         return (
-            <div className={cn('welcome-banner')}>
-                Welcome, {this.props.name}
+            <div className={cn('container-fluid')}>
+                <Navbar tabIndex={this.getTabIndex()} />
+                {this.props.children}
             </div>
         );
     }
 
+    getTabIndex() {
+        var pathname = this.props.location ? this.props.location.pathname : '';
+        switch(pathname) {
+            case "/roster":
+                return 0;
+            case "/match":
+                return 1;
+            case "/settings":
+                return 2;
+            default:
+                return -1;
+        }
+    }
+
 }
-
-App.propTypes = {
-    name: React.PropTypes.string,
-};
-
-App.defaultProps = {
-    name: 'User',
-};
 
 module.exports = App;
