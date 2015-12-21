@@ -56,13 +56,95 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+a,
+a:link,
+a:hover,
+a:active,
+a:visited {
+    color: inherit;
+    text-decoration: none;
+}
 
+.btn-selected {
+    background-color: #DDDDDD;
+}
 
+.full-width {
+    padding: 0 15px;
+}
 
+.navbar {
+    background-color: #222222;
+    border-radius: 0;
+    color: #898989;
+    font-size: 14px;
+    height: 50px;
+    line-height: 50px;
+}
 
+.navbar-logo {
+    float: left;
+    font-size: 18px;
+    padding-left: 15px;
+    width: 120px;
+}
 
+.navbar-tab {
+    cursor: pointer;
+    float: left;
+    height: 100%;
+    text-align: center;
+    width: 100px;
+}
 
+.navbar-tab:hover,
+.navbar-tab-selected {
+    background-color: #000000;
+}
 
+.subnav {
+    background-color: #F8F8F8;
+    border-top: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    color: #898989;
+    height: 35px;
+    line-height: 35px;
+    position: relative;
+}
+
+.subnav-title {
+    position: absolute;
+    left: 15px;
+}
+
+.roster-team-selection {
+    width: 100%;
+}
+
+.roster-settings-section {
+    display: inline-block;
+    padding: 15px;
+}
+
+.roster-settings-section-title {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.roster-team-selection-team {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 50%;
+    padding: 15px;
+    border-right: 1px solid #DDDDDD;
+}
+
+.roster-team-selection-team:last-child {
+    border: 0;
+}
 
 
 
