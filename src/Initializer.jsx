@@ -35,8 +35,6 @@ class Initializer {
                 );
 
                 // Render the application
-                ReactDOM.render(this.application, appRoot);
-
                 ReactDOM.render(
                     (
                         <Router>
