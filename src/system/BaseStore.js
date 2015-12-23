@@ -40,12 +40,8 @@ class BaseStore extends EventEmitter {
         super.emit('change');
     }
 
-    addChangeListener(callback: Function): void {
-        super.addListener('change', callback);
-    }
-
-    removeChangeListener(callback: Function): void {
-        super.removeListener('change', callback);
+    addChangeListener(callback: Function): Object {
+        return super.addListener('change', callback);
     }
 
 }

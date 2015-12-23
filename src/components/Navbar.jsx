@@ -30,15 +30,19 @@ class Navbar extends React.Component {
 
     renderTabs() {
         var tabs = [];
-        var tabData = ['Rosters', 'Match', 'Settings'];
-        tabData.forEach((tabTitle, index) => {
+        var tabData = [ 
+            [ 'Rosters', '/roster' ], 
+            [ 'Match', '/match' ], 
+            [ 'Settings', '/settings' ],
+        ];
+        tabData.forEach((tab, index) => {
             tabs.push(
-                <Link to="/roster" key={`navtab_${index}`}
+                <Link to={tab[1]} key={`navtab_${index}`}
                     className={cn({
                         'navbar-tab': true,
                         'navbar-tab-selected': this.props.tabIndex === index,
                     })}>
-                    {tabTitle}
+                    {tab[0]}
                 </Link>
             );
         });

@@ -3,9 +3,14 @@
  * @flow
  */
 
+var AppActions = require('AppActions');
+var AppConstants = require('AppConstants');
+var Link = require('react-router').Link;
 var React = require('react');
+var RosterStore = require('RosterStore');
 var Subnav = require('Subnav');
 
+var {TeamTypes} = AppConstants;
 var cn = require('classnames');
 
 class Roster extends React.Component {
@@ -13,17 +18,22 @@ class Roster extends React.Component {
     constructor(props) {
         super(props);
         this.props = props;
-        this.state = {
-            selectedHomeTeam: '',
-            selectedAwayTeam: '',
-            tossWonBy: '',
-            choseToBat: false,
-        };
+        this.state = RosterStore.getRosters();
 
-        this.BAT = 1;
-        this.BOWL = 2;
         this.homeTeam = 'Home Team';
         this.awayTeam = 'Away Team';
+    }
+
+    _onChange() {
+        this.setState(RosterStore.getRosters());
+    }
+
+    componentDidMount() {
+        this.listener = RosterStore.addChangeListener(this._onChange.bind(this));
+    }
+
+    componentWillUnmount() {
+        this.listener && this.listener.remove();
     }
 
     render() {
@@ -40,13 +50,46 @@ class Roster extends React.Component {
         );
     }
 
-    renderTeam(label, onClick) {
-        var teamList = [{id: 0, label: 'Team 0'}];
+    renderTeamDetails(roster) {
+        var rows = [];
+        var players = roster.players || [];
+        players.forEach((player, index) => {
+            rows.push(
+                <tr key={index}>
+                    <td>{player.id}</td>
+                    <td>{player.first}</td>
+                    <td>{player.last}</td>
+                </tr>
+            );
+        });
+        return (
+            <div className={cn('teamDetails')}>
+                <span className={cn('teamDetailsName')}>
+                    {roster.teamName}
+                </span>
+                <table className={cn('table')}>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>First</th>
+                            <th>Last</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {rows}
+                    </tbody>
+                </table>
+            </div>
+        );
+    }
+
+    renderTeam(label, roster, onClick) {
+        var teamList = RosterStore.getTeamsList();
         var teamDropdown = [];
         teamList.forEach(team => {
             teamDropdown.push(
                 <li key={team.id}>
-                    <a onClick={e => onClick(e, team)}>
+                    <a onClick={e => onClick(e, team.id)}>
                         {team.label}
                     </a>
                 </li>
@@ -68,6 +111,7 @@ class Roster extends React.Component {
                         {teamDropdown}
                     </ul>
                 </div>
+                {roster.teamName ? this.renderTeamDetails(roster) : null}
             </div>
         );
     }
@@ -75,8 +119,16 @@ class Roster extends React.Component {
     renderTeamSelections() {
         return (
             <div className={cn('roster-team-selection')}>
-                {this.renderTeam(this.homeTeam, (e, team) => this.teamSelected(e, this.homeTeam, team))}
-                {this.renderTeam(this.awayTeam, (e, team) => this.teamSelected(e, this.awayTeam, team))}
+                {this.renderTeam(
+                    this.homeTeam, 
+                    this.state.homeTeamRoster || {}, 
+                    (e, team) => this.teamSelected(e, TeamTypes.HOME, team)
+                )}
+                {this.renderTeam(
+                    this.awayTeam,
+                    this.state.awayTeamRoster || {},
+                    (e, team) => this.teamSelected(e, TeamTypes.AWAY, team)
+                )}
             </div>
         );
     }
@@ -93,7 +145,7 @@ class Roster extends React.Component {
                         'btn-default': true,
                         'btn-selected': btn.selected,
                     })}
-                    onClick={e => onClick(e, btn.value ? btn.value : btn.title)}>
+                    onClick={e => onClick(e, btn.value)}>
                     {btn.title}
                 </button>
             );
@@ -112,6 +164,14 @@ class Roster extends React.Component {
     }
 
     renderSettingsSections() {
+        var continueBtn = this.isRosterValid()
+            ?   <Link 
+                    to="/match" 
+                    className={cn('btn', 'btn-primary')}
+                    onClick={this.onContinue.bind(this)}>
+                    Continue
+                </Link>
+            : null;
         return (
             <div>
                 {
@@ -120,11 +180,13 @@ class Roster extends React.Component {
                         [   
                             {
                                 title: this.homeTeam,
-                                selected: this.state.tossWonBy === this.homeTeam,
+                                value: TeamTypes.HOME,
+                                selected: this.state.tossWonBy === TeamTypes.HOME,
                             },
                             { 
                                 title: this.awayTeam,
-                                selected: this.state.tossWonBy === this.awayTeam,
+                                value: TeamTypes.AWAY,
+                                selected: this.state.tossWonBy === TeamTypes.AWAY,
                             }
                         ],
                         this.onTossWon.bind(this)
@@ -136,38 +198,52 @@ class Roster extends React.Component {
                         [   
                             {
                                 title: 'Bat',
-                                value: this.BAT,
+                                value: 'Bat',
                                 selected: this.state.choseToBat,
                             },
                             { 
                                 title: 'Bowl',
-                                value: this.BOWL,
+                                value: 'Bowl',
                                 selected: !this.state.choseToBat,
                             }
                         ],
                         this.onPlayChosen.bind(this)
                     )
                 }
+                <div className={cn('roster-settings-section')}>
+                    <a className={cn('btn', 'btn-default')} 
+                        style={{ marginRight: "10px" }}
+                        onClick={this.onClear.bind(this)}>
+                        Clear
+                    </a>
+                    {continueBtn}
+                </div>
             </div>
         );
     }
 
     teamSelected(e, teamType, team) {
-        var state = {};
-        if (teamType === this.homeTeam) {
-            state.selectedHomeTeam = team.label;
-        } else {
-            state.selectedAwayTeam = team.label;
-        }
-        this.setState(state);
+        AppActions.choseTeam(teamType, team);
     }
 
-    onTossWon(e, title) {
-        this.setState({ tossWonBy: title });
+    isRosterValid() {
+        return !!this.state.homeTeamId && !!this.state.awayTeamId;
+    }
+
+    onTossWon(e, teamType) {
+        AppActions.tossWonBy(teamType);
     }
 
     onPlayChosen(e, decision) {
-        this.setState({ choseToBat: decision === this.BAT });
+        AppActions.choseToBat(decision);
+    }
+
+    onClear(e) {
+        AppActions.clearRoster();
+    }
+
+    onContinue() {
+        AppActions.loadScoreboard();
     }
 
 }
