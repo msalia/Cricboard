@@ -30,12 +30,43 @@ class AppActions {
         this.dispatch(ActionTypes.CLEAR_ROSTER, {});
     }
 
+    chooseBowler(id) {
+        this.dispatch(ActionTypes.CHOOSE_BOWLER, { id });
+    }
+
+    chooseBatsman(position, id) {
+        this.dispatch(ActionTypes.CHOOSE_BATSMAN, { position, id });
+    }
+
+    scoreExtra(scoreType) {
+        this.dispatch(ActionTypes.SCORE_EXTRA, { scoreType });
+    }
+
+    scoreRuns(runs, ballIncre) {
+        if (ballIncre == null) {
+            ballIncre = true;
+        }
+        this.dispatch(ActionTypes.SCORE_RUNS, { runs, ballIncre });
+    }
+
     loadScoreboard() {
         this.dispatch(ActionTypes.LOAD_SCORE_BOARD, {});
     }
 
     tossWonBy(teamType) {
 		this.dispatch(ActionTypes.TOSS_WON_BY, { teamType });
+    }
+
+    playChange() {
+        this.dispatch(ActionTypes.PLAY_CHANGE, {});
+    }
+
+    swapBatsman() {
+        this.dispatch(ActionTypes.SWAP_BATSMAN, {});
+    }
+
+    reset() {
+        this.dispatch(ActionTypes.RESET, {});
     }
 
 };

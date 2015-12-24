@@ -227,7 +227,7 @@ class Roster extends React.Component {
     }
 
     isRosterValid() {
-        return !!this.state.homeTeamId && !!this.state.awayTeamId;
+        return this.state.homeTeamId != null && this.state.awayTeamId != null;
     }
 
     onTossWon(e, teamType) {

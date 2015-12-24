@@ -1,0 +1,91 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Scoreboard</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="css/normalize.min.css">
+        <link rel="stylesheet" href="css/board_main.css">
+    </head>
+    <body>
+        <div id="app-root">
+            <div class="teamNames">
+                <div id="batting">NO DATA AVAILABLE</div>
+                <div id="bowling"></div>
+            </div>
+            <div class="bowlingTeamScore">
+                <div id="bowlingScore"></div>
+            </div>
+            <div class="battingTeamScore">
+                <div id="battingScore"></div>
+            </div>
+            <div class="divider"></div>
+            <div class="playerInfo">
+                <div class="playerName">
+                    <div id="strikeBatsman"></div>
+                    <div id="strikeBatsmanScore"></div>
+                </div>
+                <div class="playerName">
+                    <div id="runningBatsman"></div>
+                    <div id="runningBatsmanScore"></div>
+                </div>
+                <div class="playerName" style="border-right: none">
+                    <div id="bowler"></div>
+                    <div id="bowlerScore"></div>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="divider"></div>
+        </div>
+
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script>
+            window.addEventListener("message", receiveMessage, false);
+
+            function receiveMessage(event) {
+                if (event.origin !== "http://localhost") return;
+
+                var HOME = 'HOME';
+                var AWAY = 'AWAY';
+
+                var rosters = event.data.rosters;
+                var batting = event.data.batting;
+                var bowling = event.data.bowling;
+                var score = event.data.score;
+
+                var homeTeam = rosters.homeTeamRoster;
+                var awayTeam = rosters.awayTeamRoster;
+                var battingTeam = (batting.battingTeam === HOME) ? homeTeam : awayTeam;
+                var bowlingTeam = (batting.battingTeam === HOME) ? awayTeam : homeTeam;
+
+                // set team names
+                document.getElementById('batting').innerHTML = battingTeam.teamName || 'Team 1';
+                document.getElementById('bowling').innerHTML = bowlingTeam.teamName || 'Team 2';
+
+                // set bowling team score if any
+                var battingTeamScore = (batting.battingTeam === HOME) ? score.teams.HOME : score.teams.AWAY;
+                var bowlingTeamScore = (bowling.bowlingTeam === HOME) ? score.teams.HOME : score.teams.AWAY;
+
+                document.getElementById('battingScore').innerHTML = battingTeamScore.runs + '/' + battingTeamScore.wickets;
+                document.getElementById('bowlingScore').innerHTML = bowlingTeamScore.runs + '/' + bowlingTeamScore.wickets;
+            
+                // player info
+                var batsman1 = batting.batsman1;
+                var batsman2 = batting.batsman2;
+                var bowler = bowling.currentBowler;
+                
+                document.getElementById('strikeBatsman').innerHTML = (batsman1.first || 'None') + ' ' + (batsman1.last || '') + '*';
+                document.getElementById('runningBatsman').innerHTML = (batsman2.first || 'None') + ' ' + (batsman2.last || '');
+                document.getElementById('bowler').innerHTML = (bowler.first || 'None') + ' ' + (bowler.last || '');
+
+                document.getElementById('strikeBatsmanScore').innerHTML = (batsman1.runs || 0) + ' (' + (batsman1.balls || 0) + ')';
+                document.getElementById('runningBatsmanScore').innerHTML = (batsman2.runs || 0) + ' (' + (batsman2.balls || 0) + ')';
+                document.getElementById('bowlerScore').innerHTML = (bowler.runs || 0) + '-' + (bowler.overs || 0);
+            }
+        </script>
+    </body>
+</html>

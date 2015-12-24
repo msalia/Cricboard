@@ -88,9 +88,9 @@ class RosterStore extends BaseStore {
             teamName: 'Toronto Tigers',
             players: [
                 { id: 1001, first: 'Mukund', last: 'Salia' },
-                { id: 1002, first: 'Mukund', last: 'Salia' },
-                { id: 1003, first: 'Mukund', last: 'Salia' },
-                { id: 1004, first: 'Mukund', last: 'Salia' },
+                { id: 1002, first: 'Ankur', last: 'Patel' },
+                { id: 1003, first: 'Hemal', last: 'Patel' },
+                { id: 1004, first: 'Piyush', last: 'Patel' },
             ],
         };
     }

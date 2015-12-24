@@ -56,218 +56,76 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-a,
-a:link,
-a:hover,
-a:active,
-a:visited {    text-decoration: none;
-}
-
-.btn-selected {
-    background-color: #DDDDDD;
-}
-
-.full-width {
-    padding: 0 15px;
-}
-
-.navbar {
-    background-color: #222222;
-    border-radius: 0;
-    color: #898989;
-    font-size: 14px;
-    height: 50px;
-    line-height: 50px;
-}
-
-.navbar a {
-    color: #898989;
-}
-
-.navbar-logo {
-    float: left;
-    font-size: 18px;
-    padding-left: 15px;
-    width: 120px;
-}
-
-.navbar-tab {
-    cursor: pointer;
-    float: left;
-    height: 100%;
-    text-align: center;
-    width: 100px;
-}
-
-.navbar-tab:hover,
-.navbar-tab-selected {
-    background-color: #000000;
-}
-
-.boardScoreButtons {
-    padding: 15px;
-}
-
-.boardScoreButtons button {
-    margin-left: 10px;
-    margin-bottom: 10px;
-}
-
-.subnav {
-    background-color: #F8F8F8;
-    border-top: 1px solid #DDDDDD;
-    border-bottom: 1px solid #DDDDDD;
-    font-size: 12px;
-    font-weight: bold;
-    text-align: left;
-    color: #898989;
-    height: 35px;
-    line-height: 35px;
-    position: relative;
-}
-
-.subnav-title {
+#app-root {
+    color: #FFFFFF;
+    padding: 20px;
     position: absolute;
-    left: 15px;
+    background-color: #000000;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
 }
 
-.roster-team-selection {
+.teamNames {
+    font-size: 30px;
+    font-weight: bold;
     width: 100%;
-}
-
-.roster-settings-section {
-    display: inline-block;
-    padding: 15px;
-}
-
-.roster-settings-section-title {
-    display: block;
+    height: 45px;
     margin-bottom: 5px;
 }
 
-.roster-team-selection-team {
-    display: inline-block;
-    box-sizing: border-box;
-    width: 100%;
-    padding: 15px;
-    border-bottom: 1px solid #DDDDDD;
-}
-
-.roster-team-selection-team:last-child {
-    border: 0;
-}
-
-.teamDetails {
-    margin-top: 20px;
-}
-
-.teamDetailsName {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.boardStatistics {
-    padding: 0 15px;
-}
-
-.boardScoreDisplay,
-.bowlingControls {
-    padding: 15px 0;
-}
-
-.boardScoreDisplay{
-    padding-right: 15px;
-    border-right: 1px solid #DDDDDD;
-}
-
-.boardScoreDisplayHomeTeam,
-.boardScoreDisplayAwayTeam {
-    color: #FFFFFF;
-    height: 40px;
-    margin-bottom: 10px;
-    width: 100%;
-}
-
-.boardScoreDisplayHomeTeam {
-    background-color: #5AB45A;
-    border: 1px solid #5AB45A;
-}
-
-.boardScoreDisplayAwayTeam {
-    background-color: #5ABDDB;
-    border: 1px solid #5ABDDB;
-    margin-bottom: 0;
-}
-
-.boardScoreDisplayOvers {
+#batting {
     float: left;
-    line-height: 40px;
-    text-align: center;
 }
 
-.boardScoreDisplayName,
-.boardScoreDisplayRuns {
-    float: left;
-    line-height: 40px;
-    border-left: 1px solid #FFFFFF;
-    text-align: center;
-    height: 100%;
+#bowling {
+    float: right;
 }
 
-.boardScoreDisplayName {
-    background-color: #FFFFFF;
-}
-
-.boardScoreDisplayHomeTeam .boardScoreDisplayName {
-    color: #5AB45A;
-}
-
-.boardScoreDisplayAwayTeam .boardScoreDisplayName {
-    color: #5ABDDB;
-}
-
-.battingOverview,
-.bowlingOverview {
-    border-right: 1px solid #DDDDDD;
-    height: 162px;
-}
-
-.bowlingStatBox {
-    border: 1px solid #DDDDDD;
-    margin: 15px 0;
-}
-
-.bowlingStatBoxTitle {
-    display: inline-block;
-    background-color: #F8F8F8;
-    border-right: 1px solid #DDDDDD;
-    padding: 5px;
-    height: 30px;
-    width: 50%;
+.bowlingTeamScore {
+    font-size: 30px;
+    width: 100%;
     text-align: right;
-    margin-right: 10px;
 }
 
-.middot {
-    display: inline-block;
-    height: 10px;
-    width: 10px;
-    margin-right: 5px;
-    border-radius: 5px;
-    background-color: #5ABDDB;
+.battingTeamScore {
+    font-size: 340px;
+    font-weight: bold;
+    line-height: 350px;
+    width: 100%;
+    text-align: left;
 }
 
-.bowlingControls {
-    height: 162px;
+.divider {
+    height: 5px;
+    background-color: #FFFFFF;
+    margin: 10px 0;
+    width: 100%;
 }
 
-.bowlingList {
-    border-top: 1px solid #DDDDDD;
+.playerInfo {
+    width: 100%;
+    font-size: 20px;
 }
 
-.battingOverview,
-.batsmanControls {
-    height: 128px;
+.playerName {
+    float: left;
+    box-sizing: border-box;
+    height: 100px;
+    padding: 10px;
+    width: 32%;
+    border-right: 1px solid #FFFFFF;
+}
+
+.playerName:last-child {
+    border: none;
+}
+
+#strikeBatsmanScore,
+#runningBatsmanScore,
+#bowlerScore {
+    font-size: 40px;
 }
 
 /* ==========================================================================

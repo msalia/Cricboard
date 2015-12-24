@@ -7,6 +7,8 @@ var App = require('App');
 var AppActions = require('AppActions');
 var AppConstants = require('AppConstants');
 var AppDispatcher = require('AppDispatcher');
+var BattingStore = require('BattingStore');
+var BowlingStore = require('BowlingStore');
 var Match = require('Match');
 var RosterStore = require('RosterStore');
 var React = require('react');
@@ -26,6 +28,8 @@ class Initializer {
         this.application = <App />;
         this.stores = [
             RosterStore,
+            BattingStore,
+            BowlingStore,
             ScoreStore,
         ];
     }
