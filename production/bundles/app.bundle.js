@@ -13,8 +13,8 @@ webpackJsonp([0],[
 	var AppDispatcher = __webpack_require__(213);
 	var BattingStore = __webpack_require__(216);
 	var BowlingStore = __webpack_require__(226);
-	var SettingsStore = __webpack_require__(227);
-	var Match = __webpack_require__(228);
+	var SettingsStore = __webpack_require__(236);
+	var Match = __webpack_require__(237);
 	var RosterStore = __webpack_require__(217);
 	var React = __webpack_require__(2);
 	var ReactDOM = __webpack_require__(244);
@@ -301,10 +301,10 @@ webpackJsonp([0],[
 	
 	var cn = __webpack_require__(209);
 	
-	var ____Class3=React.Component;for(var ____Class3____Key in ____Class3){if(____Class3.hasOwnProperty(____Class3____Key)){Navbar[____Class3____Key]=____Class3[____Class3____Key];}}var ____SuperProtoOf____Class3=____Class3===null?null:____Class3.prototype;Navbar.prototype=Object.create(____SuperProtoOf____Class3);Navbar.prototype.constructor=Navbar;Navbar.__superConstructor__=____Class3;
+	var ____Class4=React.Component;for(var ____Class4____Key in ____Class4){if(____Class4.hasOwnProperty(____Class4____Key)){Navbar[____Class4____Key]=____Class4[____Class4____Key];}}var ____SuperProtoOf____Class4=____Class4===null?null:____Class4.prototype;Navbar.prototype=Object.create(____SuperProtoOf____Class4);Navbar.prototype.constructor=Navbar;Navbar.__superConstructor__=____Class4;
 	
 	    function Navbar(props) {"use strict";
-	        ____Class3.call(this,props);
+	        ____Class4.call(this,props);
 	        this.props = props;
 	    }
 	
@@ -5305,8 +5305,8 @@ webpackJsonp([0],[
 	var RosterStore = __webpack_require__(217);
 	var BaseStore = __webpack_require__(218);
 	var BowlingStore = __webpack_require__(226);
-	var SettingsStore = __webpack_require__(227);
-	var SweetAlert = __webpack_require__(232);
+	var SettingsStore = __webpack_require__(236);
+	var SweetAlert = __webpack_require__(227);
 	
 	var $__0=
 	    
@@ -15725,8 +15725,8 @@ webpackJsonp([0],[
 	var AppConstants = __webpack_require__(211);
 	var RosterStore = __webpack_require__(217);
 	var BaseStore = __webpack_require__(218);
-	var SweetAlert = __webpack_require__(232);
-	var SettingsStore = __webpack_require__(227);
+	var SweetAlert = __webpack_require__(227);
+	var SettingsStore = __webpack_require__(236);
 	
 	var $__0=
 	    
@@ -15962,592 +15962,6 @@ webpackJsonp([0],[
 /* 227 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/*
-	 * Settings Store
-	 * @flow
-	 */
-	
-	var AppConstants = __webpack_require__(211);
-	var BaseStore = __webpack_require__(218);
-	
-	var $__0=
-	    
-	    
-	    
-	  AppConstants,ActionTypes=$__0.ActionTypes,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
-	
-	for(var BaseStore____Key in BaseStore){if(BaseStore.hasOwnProperty(BaseStore____Key)){SettingsStore[BaseStore____Key]=BaseStore[BaseStore____Key];}}var ____SuperProtoOfBaseStore=BaseStore===null?null:BaseStore.prototype;SettingsStore.prototype=Object.create(____SuperProtoOfBaseStore);SettingsStore.prototype.constructor=SettingsStore;SettingsStore.__superConstructor__=BaseStore;
-	
-	    function SettingsStore() {"use strict";
-	        BaseStore.call(this);
-	        this.reset();
-	
-	        this.setupActions();
-	    }
-	
-	    Object.defineProperty(SettingsStore.prototype,"reset",{writable:true,configurable:true,value:function() {"use strict";
-	        this.initialized = false;
-	        this.overs = 10;
-	        this.isPlayoffs = false;
-	        this.playoffWicketRuns = 5;
-	        this.seasonWicketRuns = 3;
-	        this.maxWickets = 6;
-	        this.maxOversPerBowler = 3;
-	        this.emitChange();
-	    }});
-	
-	    Object.defineProperty(SettingsStore.prototype,"setupActions",{writable:true,configurable:true,value:function() {"use strict";
-	        this.addAction(ActionTypes.LOAD_SCORE_BOARD, this.reset);
-	        this.addAction(ActionTypes.PLAYOFFS_ON_OFF, this.playOffs);
-	        this.addAction(ActionTypes.SET_OVERS, this.setOvers);
-	        this.addAction(ActionTypes.SET_PLAYOFF_WICKET_DEDUCTION, this.setPlayoffWicketDeduction);
-	        this.addAction(ActionTypes.SET_SEASON_WICKET_DEDUCTION, this.setSeasonWicketDeduction);
-	        this.addAction(ActionTypes.SET_MAX_WICKETS, this.setMaxWickets);
-	        this.addAction(ActionTypes.SET_MAX_OVERS_PER_BOWLER, this.setMaxOversPerBowler);
-	    }});
-	
-	    Object.defineProperty(SettingsStore.prototype,"setOvers",{writable:true,configurable:true,value:function(action) {"use strict";
-	        this.overs = action.count;
-	        this.emitChange();
-	    }});
-	
-	    Object.defineProperty(SettingsStore.prototype,"setPlayoffWicketDeduction",{writable:true,configurable:true,value:function(action) {"use strict";
-	        this.playoffWicketRuns = action.count;
-	        this.emitChange();
-	    }});
-	
-	    Object.defineProperty(SettingsStore.prototype,"setSeasonWicketDeduction",{writable:true,configurable:true,value:function(action) {"use strict";
-	        this.seasonWicketRuns = action.count;
-	        this.emitChange();
-	    }});
-	
-	    Object.defineProperty(SettingsStore.prototype,"setMaxWickets",{writable:true,configurable:true,value:function(action) {"use strict";
-	        this.maxWickets = action.count;
-	        this.emitChange();
-	    }});
-	
-	    Object.defineProperty(SettingsStore.prototype,"setMaxOversPerBowler",{writable:true,configurable:true,value:function(action) {"use strict";
-	        this.maxOversPerBowler = action.count;
-	        this.emitChange();
-	    }});
-	
-	    Object.defineProperty(SettingsStore.prototype,"playOffs",{writable:true,configurable:true,value:function(action) {"use strict";
-	        this.isPlayoffs = action.value;
-	        this.emitChange();
-	    }});
-	
-	    Object.defineProperty(SettingsStore.prototype,"getData",{writable:true,configurable:true,value:function() {"use strict";
-	        return {
-	            overs: this.overs,
-	            isPlayoffs: this.isPlayoffs,
-	            playoffWicketRuns: this.playoffWicketRuns,
-	            seasonWicketRuns: this.seasonWicketRuns,
-	            maxWickets: this.maxWickets,
-	            maxOversPerBowler: this.maxOversPerBowler,
-	        };
-	    }});
-	
-	    Object.defineProperty(SettingsStore.prototype,"getIsPlayoffs",{writable:true,configurable:true,value:function() {"use strict";
-	        return this.isPlayoffs;
-	    }});
-	
-	
-	
-	module.exports = new SettingsStore();
-
-
-/***/ },
-/* 228 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-	 * Match Component
-	 * @flow
-	 */
-	
-	var AppActions = __webpack_require__(210);
-	var AppConstants = __webpack_require__(211);
-	var BattingControls = __webpack_require__(229);
-	var BowlingControls = __webpack_require__(241);
-	var React = __webpack_require__(2);
-	var RosterStore = __webpack_require__(217);
-	var BowlingStore = __webpack_require__(226);
-	var BattingStore = __webpack_require__(216);
-	var GameOver = __webpack_require__(242);
-	var SettingsStore = __webpack_require__(227);
-	var ScoreStore = __webpack_require__(243);
-	var Subnav = __webpack_require__(230);
-	
-	var $__0=
-	    
-	    
-	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
-	var cn = __webpack_require__(209);
-	
-	var ____Class1=React.Component;for(var ____Class1____Key in ____Class1){if(____Class1.hasOwnProperty(____Class1____Key)){Match[____Class1____Key]=____Class1[____Class1____Key];}}var ____SuperProtoOf____Class1=____Class1===null?null:____Class1.prototype;Match.prototype=Object.create(____SuperProtoOf____Class1);Match.prototype.constructor=Match;Match.__superConstructor__=____Class1;
-	
-	    function Match(props) {"use strict";
-	        ____Class1.call(this,props);
-	        this.state = this.$Match_getInitialState();
-	        this.props = props;
-	    }
-	
-	    Object.defineProperty(Match.prototype,"$Match_getInitialState",{writable:true,configurable:true,value:function() {"use strict";
-	        return {
-	            rosters: RosterStore.getRosters(),
-	            score: ScoreStore.getData(),
-	            bowling: BowlingStore.getData(),
-	            batting: BattingStore.getData(),
-	            settings: SettingsStore.getData(),
-	        };
-	    }});
-	
-	    Object.defineProperty(Match.prototype,"$Match_onChange",{writable:true,configurable:true,value:function() {"use strict";
-	        this.setState(this.$Match_getInitialState(), function()  {
-	            if (this.scoreBoard) {
-	                this.scoreBoard.postMessage(this.state, 'http://localhost');
-	            }
-	        }.bind(this));
-	    }});
-	
-	    Object.defineProperty(Match.prototype,"componentDidMount",{writable:true,configurable:true,value:function() {"use strict";
-	        this.bowlingListener = BowlingStore.addChangeListener(this.$Match_onChange.bind(this));
-	        this.battingListener = BattingStore.addChangeListener(this.$Match_onChange.bind(this));
-	        this.scoreListener = ScoreStore.addChangeListener(this.$Match_onChange.bind(this));
-	        this.settingsListener = SettingsStore.addChangeListener(this.$Match_onChange.bind(this));
-	    }});
-	
-	    Object.defineProperty(Match.prototype,"componentWillUnmount",{writable:true,configurable:true,value:function() {"use strict";
-	        this.bowlingListener && this.bowlingListener.remove();
-	        this.battingListener && this.battingListener.remove();
-	        this.scoreListener && this.scoreListener.remove();
-	        this.settingsListener && this.settingsListener.remove();
-	    }});
-	
-	    Object.defineProperty(Match.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
-	        if (ScoreStore.getIsGameOver()) {
-	            return React.createElement(GameOver, null);
-	        }
-	
-	        var goGreen = this.state.bowling.currentBowler != null &&
-	            this.state.batting.batsman1 != null &&
-	            this.state.batting.batsman2 != null;
-	
-	        return (
-	            React.createElement("div", null, 
-	                React.createElement("div", {className: cn('row'), style: { marginBottom: "0px"}}, 
-	                    React.createElement(Subnav, {title: "Overall Statistics"}), 
-	                    this.renderStatistics()
-	                ), 
-	                React.createElement(BowlingControls, {
-	                    bowlingData: this.state.bowling, 
-	                    goGreen: goGreen}
-	                ), 
-	                React.createElement(BattingControls, {
-	                    bowlingData: this.state.bowling, 
-	                    battingData: this.state.batting, 
-	                    goGreen: goGreen}
-	                )
-	            )
-	        );
-	    }});
-	
-	    Object.defineProperty(Match.prototype,"renderStatistics",{writable:true,configurable:true,value:function() {"use strict";
-	        var rosters = RosterStore.getRosters();
-	        var teams = this.state.score.teams;
-	        var nextInningButton = !ScoreStore.getIsPlayChanged() ?
-	            React.createElement("button", {type: "button", 
-	                className: cn('btn', 'btn-primary'), 
-	                onClick: this.nextInning.bind(this)}, 
-	                "Next Inning"
-	            ) : null;
-	        return (
-	            React.createElement("div", {className: cn('boardStatistics')}, 
-	                React.createElement("div", {className: cn('col-sm-8', 'boardScoreDisplay')}, 
-	                    React.createElement("div", {className: cn('boardScoreDisplayHomeTeam')}, 
-	                        React.createElement("div", {className: cn('col-sm-4', 'boardScoreDisplayOvers')}, 
-	                            "Overs: ", this.getOvers(teams[TeamTypes.HOME].balls)
-	                        ), 
-	                        React.createElement("div", {className: cn('col-sm-4', 'boardScoreDisplayName')}, 
-	                            this.state.batting.battingTeam === TeamTypes.HOME ? React.createElement("span", {className: cn('overviewMiddot')}) : null, 
-	                            rosters.homeTeamRoster.teamName || 'No Team Selected'
-	                        ), 
-	                        React.createElement("div", {className: cn('col-sm-4', 'boardScoreDisplayRuns')}, 
-	                            "Runs: ", teams[TeamTypes.HOME].runs, " / ", teams[TeamTypes.HOME].wickets
-	                        )
-	                    ), 
-	                    React.createElement("div", {className: cn('boardScoreDisplayAwayTeam')}, 
-	                        React.createElement("div", {className: cn('col-sm-4', 'boardScoreDisplayOvers')}, 
-	                            "Overs: ", this.getOvers(teams[TeamTypes.AWAY].balls)
-	                        ), 
-	                        React.createElement("div", {className: cn('col-sm-4', 'boardScoreDisplayName')}, 
-	                            this.state.batting.battingTeam === TeamTypes.AWAY ? React.createElement("span", {className: cn('overviewMiddot')}) : null, 
-	                            rosters.awayTeamRoster.teamName || 'No Team Selected'
-	                        ), 
-	                        React.createElement("div", {className: cn('col-sm-4', 'boardScoreDisplayRuns')}, 
-	                            "Runs: ", teams[TeamTypes.AWAY].runs, " / ", teams[TeamTypes.AWAY].wickets
-	                        )
-	                    )
-	                ), 
-	                React.createElement("div", {className: cn('col-sm-4', 'boardScoreButtons')}, 
-	                    nextInningButton, 
-	                    React.createElement("button", {type: "button", 
-	                        className: cn('btn', 'btn-default'), 
-	                        onClick: this.openScoreBoard.bind(this)}, 
-	                        "Open Scoreboard"
-	                    ), 
-	                    React.createElement("button", {type: "button", 
-	                        className: cn('btn', 'btn-warning'), 
-	                        onClick: function()  {return AppActions.reset();}}, 
-	                        "Reset"
-	                    ), 
-	                    React.createElement("div", {className: cn('btn-group'), role: "group"}, 
-	                        React.createElement("button", {
-	                            type: "button", 
-	                            className: cn({ 
-	                                'btn': true, 
-	                                'btn-default': true, 
-	                                'btn-primary': SettingsStore.getIsPlayoffs(),
-	                            }), 
-	                            style: { marginRight: "0"}, 
-	                            onClick: function()  {return AppActions.setPlayoffs(true);}}, 
-	                            "Playoffs ON"
-	                        ), 
-	                        React.createElement("button", {
-	                            type: "button", 
-	                            className: cn({ 
-	                                'btn': true, 
-	                                'btn-default': true, 
-	                                'btn-primary': !SettingsStore.getIsPlayoffs(),
-	                            }), 
-	                            onClick: function()  {return AppActions.setPlayoffs(false);}}, 
-	                            "Playoffs OFF"
-	                        )
-	                    )
-	                )
-	            )
-	        );
-	    }});
-	
-	    Object.defineProperty(Match.prototype,"nextInning",{writable:true,configurable:true,value:function() {"use strict";
-	        AppActions.playChange();
-	        if (this.scoreBoard) {
-	            this.scoreBoard.postMessage(this.state, 'http://localhost');
-	        }
-	    }});
-	
-	    Object.defineProperty(Match.prototype,"openScoreBoard",{writable:true,configurable:true,value:function() {"use strict";
-	        if (this.scoreBoard) { 
-	            this.scoreBoard.close();
-	            this.scoreBoard = null;
-	        }
-	        this.scoreBoard = window.open('scoreboard.html', 'Scoreboard');
-	        setTimeout(function()  {return this.scoreBoard.postMessage(this.state, 'http://localhost');}.bind(this), 100);
-	    }});
-	
-	    Object.defineProperty(Match.prototype,"getOvers",{writable:true,configurable:true,value:function(balls) {"use strict";
-	        return ("" + parseInt(balls/6) + "." + (balls%6));
-	    }});
-	
-	
-	
-	module.exports = Match;
-
-
-/***/ },
-/* 229 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-	 * Batting Component
-	 * @flow
-	 */
-	
-	var AppActions = __webpack_require__(210);
-	var AppConstants = __webpack_require__(211);
-	var React = __webpack_require__(2);
-	var RosterStore = __webpack_require__(217);
-	var BattingStore = __webpack_require__(216);
-	var Subnav = __webpack_require__(230);
-	var StatBox = __webpack_require__(231);
-	var SweetAlert = __webpack_require__(232);
-	
-	var $__0=
-	    
-	    
-	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
-	var cn = __webpack_require__(209);
-	
-	var ____ClassL=React.Component;for(var ____ClassL____Key in ____ClassL){if(____ClassL.hasOwnProperty(____ClassL____Key)){BattingControls[____ClassL____Key]=____ClassL[____ClassL____Key];}}var ____SuperProtoOf____ClassL=____ClassL===null?null:____ClassL.prototype;BattingControls.prototype=Object.create(____SuperProtoOf____ClassL);BattingControls.prototype.constructor=BattingControls;BattingControls.__superConstructor__=____ClassL;
-	
-	    function BattingControls(props) {"use strict";
-	        ____ClassL.call(this,props);
-	        this.props = props;
-	    }
-	
-	    Object.defineProperty(BattingControls.prototype,"shouldComponentUpdate",{writable:true,configurable:true,value:function() {"use strict";
-	        return true;
-	    }});
-	
-	    Object.defineProperty(BattingControls.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
-	        this.alertUserForInput();
-	
-	        return (
-	            React.createElement("div", {className: cn('row')}, 
-	                React.createElement(Subnav, {title: "Batting"}), 
-	                this.renderBattingControls()
-	            )
-	        );
-	    }});
-	
-	    Object.defineProperty(BattingControls.prototype,"alertUserForInput",{writable:true,configurable:true,value:function() {"use strict";
-	        var rosters = RosterStore.getRosters();
-	
-	        if (rosters.homeTeamId == null || rosters.awayTeamId == null) {
-	            SweetAlert({   
-	                title: "Choose Teams",  
-	                text: "You will not be able to proceed without choosing teams!",   
-	                type: "warning",
-	                confirmButtonColor: "#DD6B55",
-	                confirmButtonText: "Let's go choose",
-	                closeOnConfirm: true,
-	            },
-	            function(isConfirm)  {   
-	                if (isConfirm) {
-	                    window.location = 'http://localhost/#/roster';
-	                }
-	            });
-	        } else if (this.props.bowlingData.currentBowler == null) {
-	            SweetAlert({   
-	                title: "Choose a Bowler",  
-	                text: "You will not be able to proceed without choosing a bowler!",   
-	                type: "warning",
-	                confirmButtonText: "OK",   
-	                closeOnConfirm: true, 
-	            });
-	        } else if (this.props.battingData.batsman1 == null ||
-	            this.props.battingData.batsman2 == null) {
-	            SweetAlert({   
-	                title: "Choose Batsman",  
-	                text: "You will not be able to proceed without choosing batsmen!",   
-	                type: "warning",
-	                confirmButtonText: "OK",   
-	                closeOnConfirm: true, 
-	            });
-	        }
-	    }});
-	
-	    Object.defineProperty(BattingControls.prototype,"renderRosterNames",{writable:true,configurable:true,value:function(roster, callback) {"use strict";
-	        var teamDropdown = [];
-	        if (roster.length <= 0) {
-	            teamDropdown.push(React.createElement("li", {key: 'error'}, React.createElement("a", null, "Choose A Team")));
-	        } else {
-	            roster.forEach(function(player, index)  {
-	                teamDropdown.push(
-	                    React.createElement("li", {key: 'player_'+index}, 
-	                        React.createElement("a", {onClick: function(e)  {return callback(e, player.id);}}, 
-	                            ("" + player.first + " " + player.last)
-	                        )
-	                    )
-	                );
-	            });
-	        }
-	        return teamDropdown;
-	    }});
-	
-	    Object.defineProperty(BattingControls.prototype,"renderDataTable",{writable:true,configurable:true,value:function(data, statsCallback) {"use strict";
-	        var rows = [];
-	        data.forEach(function(player, index)  {
-	            rows.push(
-	                React.createElement("tr", {key: index}, 
-	                    React.createElement("td", null, player.id), 
-	                    React.createElement("td", null, player.first), 
-	                    React.createElement("td", null, player.last), 
-	                    React.createElement("td", null, statsCallback(player))
-	                )
-	            );
-	        })
-	
-	        return (
-	            React.createElement("table", {className: cn('table')}, 
-	                React.createElement("thead", null, 
-	                    React.createElement("tr", null, 
-	                        React.createElement("th", null, "#"), 
-	                        React.createElement("th", null, "First"), 
-	                        React.createElement("th", null, "Last"), 
-	                        React.createElement("th", null, "Stats")
-	                    )
-	                ), 
-	                React.createElement("tbody", null, 
-	                    rows
-	                )
-	            )
-	        );
-	    }});
-	
-	    Object.defineProperty(BattingControls.prototype,"renderBattingButtons",{writable:true,configurable:true,value:function() {"use strict";
-	        var batsman =
-	            React.createElement("div", {className: cn('col-sm-12'), style: { padding: "0", marginBottom: "15px"}}, 
-	                React.createElement("div", {className: "btn-group", style: { marginRight: "15px"}}, 
-	                    React.createElement("button", {type: "button", className: "btn btn-default"}, 
-	                        "Choose B1"
-	                    ), 
-	                    React.createElement("button", {type: "button", className: "btn btn-default dropdown-toggle", "data-toggle": "dropdown"}, 
-	                        React.createElement("span", {className: "caret"}), 
-	                        React.createElement("span", {className: "sr-only"}, "Toggle Dropdown")
-	                    ), 
-	                    React.createElement("ul", {className: "dropdown-menu"}, 
-	                        this.renderRosterNames(
-	                            this.props.battingData.battingTeamRoster,
-	                            function($BattingControls_, id)  {return AppActions.chooseBatsman(1, id);}
-	                        )
-	                    )
-	                ), 
-	                React.createElement("div", {className: "btn-group"}, 
-	                    React.createElement("button", {type: "button", className: "btn btn-default"}, 
-	                        "Choose B2"
-	                    ), 
-	                    React.createElement("button", {type: "button", className: "btn btn-default dropdown-toggle", "data-toggle": "dropdown"}, 
-	                        React.createElement("span", {className: "caret"}), 
-	                        React.createElement("span", {className: "sr-only"}, "Toggle Dropdown")
-	                    ), 
-	                    React.createElement("ul", {className: "dropdown-menu"}, 
-	                        this.renderRosterNames(
-	                            this.props.battingData.battingTeamRoster,
-	                            function($BattingControls_, id)  {return AppActions.chooseBatsman(2, id);}
-	                        )
-	                    )
-	                )
-	            );
-	
-	        return (
-	            React.createElement("div", {className: cn('col-sm-12'), style: { padding: "15px 0"}}, 
-	                batsman, 
-	                React.createElement("button", {type: "button", 
-	                    className: cn('btn', 'btn-primary'), 
-	                    onClick: function()  {return this.props.goGreen && AppActions.swapBatsman();}.bind(this)}, 
-	                    "Swap Batsman"
-	                )
-	            )
-	        );
-	    }});
-	
-	    Object.defineProperty(BattingControls.prototype,"renderBattingControls",{writable:true,configurable:true,value:function() {"use strict";
-	        var b1 = this.props.battingData.batsman1 || {};
-	        var b2 = this.props.battingData.batsman2 || {};
-	        var stats = [
-	            { title: ("B1 " + (b1.first || '') + " " + (b1.last || '')), value: b1.runs || 0, middot: true },
-	            { title: ("B2 " + (b2.first || '') + " " + (b2.last || '')), value: b2.runs || 0 },
-	        ];
-	        return (
-	            React.createElement("div", {className: cn('bowlingStatistics')}, 
-	                React.createElement("div", {className: cn('col-sm-6', 'battingOverview')}, 
-	                    React.createElement(StatBox, {statBoxes: stats})
-	                ), 
-	                React.createElement("div", {className: cn('col-sm-6', 'battingControls')}, 
-	                    this.renderBattingButtons()
-	                ), 
-	                React.createElement("div", {className: cn('col-sm-12', 'bowlingList')}, 
-	                    this.renderDataTable(this.props.battingData.batsman, function(batsman)  {
-	                        return ("" + (batsman.runs || 0) + " (" + (batsman.balls || 0) + ")");
-	                    })
-	                )
-	            )
-	        );
-	    }});
-	
-	
-	
-	module.exports = BattingControls;
-
-
-/***/ },
-/* 230 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-	 * Subnav Component
-	 * @flow
-	 */
-	
-	var React = __webpack_require__(2);
-	
-	var cn = __webpack_require__(209);
-	
-	var ____Class7=React.Component;for(var ____Class7____Key in ____Class7){if(____Class7.hasOwnProperty(____Class7____Key)){Subnav[____Class7____Key]=____Class7[____Class7____Key];}}var ____SuperProtoOf____Class7=____Class7===null?null:____Class7.prototype;Subnav.prototype=Object.create(____SuperProtoOf____Class7);Subnav.prototype.constructor=Subnav;Subnav.__superConstructor__=____Class7;
-	
-	    function Subnav(props) {"use strict";
-	        ____Class7.call(this,props);
-	        this.props = props;
-	    }
-	
-	    Object.defineProperty(Subnav.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
-	        return (
-	            React.createElement("div", {className: cn('full-width', 'subnav')}, 
-	                React.createElement("span", {className: cn('subnav-title')}, 
-	                    this.props.title
-	                )
-	            )
-	        );
-	    }});
-	
-	
-	
-	module.exports = Subnav;
-
-
-/***/ },
-/* 231 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-	 * Statbox Component
-	 * @flow
-	 */
-	
-	var React = __webpack_require__(2);
-	
-	var cn = __webpack_require__(209);
-	
-	var ____Class8=React.Component;for(var ____Class8____Key in ____Class8){if(____Class8.hasOwnProperty(____Class8____Key)){StatBox[____Class8____Key]=____Class8[____Class8____Key];}}var ____SuperProtoOf____Class8=____Class8===null?null:____Class8.prototype;StatBox.prototype=Object.create(____SuperProtoOf____Class8);StatBox.prototype.constructor=StatBox;StatBox.__superConstructor__=____Class8;
-	
-	    function StatBox(props) {"use strict";
-	        ____Class8.call(this,props);
-	        this.props = props;
-	    }
-	
-	    Object.defineProperty(StatBox.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
-	    		var statBoxes = this.props.statBoxes || [];
-	        var stats = [];
-	        statBoxes.forEach(function(box, index)  {
-	            var middot = box.middot ? React.createElement("span", {className: cn('middot')}) : null;
-	            stats.push(
-	                React.createElement("div", {key: index, className: cn('bowlingStatBox')}, 
-	                    React.createElement("span", {className: cn('bowlingStatBoxTitle')}, 
-	                        middot, 
-	                        box.title
-	                    ), 
-	                    React.createElement("b", null, box.value)
-	                )
-	            );
-	        });
-	
-	        return React.createElement("div", null, stats);
-	    }});
-	
-	
-	
-	StatBox.propTypes = {
-		statBoxes: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
-	};
-	
-	module.exports = StatBox;
-
-
-/***/ },
-/* 232 */
-/***/ function(module, exports, __webpack_require__) {
-
 	'use strict';
 	
 	var _interopRequireWildcard = function (obj) { return obj && obj.__esModule ? obj : { 'default': obj }; };
@@ -16563,35 +15977,35 @@ webpackJsonp([0],[
 	 * jQuery-like functions for manipulating the DOM
 	 */
 	
-	var _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation = __webpack_require__(233);
+	var _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide$isDescendant$getTopMargin$fadeIn$fadeOut$fireClick$stopEventPropagation = __webpack_require__(228);
 	
 	/*
 	 * Handy utilities
 	 */
 	
-	var _extend$hexToRgb$isIE8$logStr$colorLuminance = __webpack_require__(234);
+	var _extend$hexToRgb$isIE8$logStr$colorLuminance = __webpack_require__(229);
 	
 	/*
 	 *  Handle sweetAlert's DOM elements
 	 */
 	
-	var _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition = __webpack_require__(235);
+	var _sweetAlertInitialize$getModal$getOverlay$getInput$setFocusStyle$openModal$resetInput$fixVerticalPosition = __webpack_require__(230);
 	
 	// Handle button events and keyboard events
 	
-	var _handleButton$handleConfirm$handleCancel = __webpack_require__(238);
+	var _handleButton$handleConfirm$handleCancel = __webpack_require__(233);
 	
-	var _handleKeyDown = __webpack_require__(239);
+	var _handleKeyDown = __webpack_require__(234);
 	
 	var _handleKeyDown2 = _interopRequireWildcard(_handleKeyDown);
 	
 	// Default values
 	
-	var _defaultParams = __webpack_require__(236);
+	var _defaultParams = __webpack_require__(231);
 	
 	var _defaultParams2 = _interopRequireWildcard(_defaultParams);
 	
-	var _setParameters = __webpack_require__(240);
+	var _setParameters = __webpack_require__(235);
 	
 	var _setParameters2 = _interopRequireWildcard(_setParameters);
 	
@@ -16853,7 +16267,7 @@ webpackJsonp([0],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 233 */
+/* 228 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -17049,7 +16463,7 @@ webpackJsonp([0],[
 	exports.stopEventPropagation = stopEventPropagation;
 
 /***/ },
-/* 234 */
+/* 229 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -17127,7 +16541,7 @@ webpackJsonp([0],[
 	exports.colorLuminance = colorLuminance;
 
 /***/ },
-/* 235 */
+/* 230 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17138,11 +16552,11 @@ webpackJsonp([0],[
 	  value: true
 	});
 	
-	var _hexToRgb = __webpack_require__(234);
+	var _hexToRgb = __webpack_require__(229);
 	
-	var _removeClass$getTopMargin$fadeIn$show$addClass = __webpack_require__(233);
+	var _removeClass$getTopMargin$fadeIn$show$addClass = __webpack_require__(228);
 	
-	var _defaultParams = __webpack_require__(236);
+	var _defaultParams = __webpack_require__(231);
 	
 	var _defaultParams2 = _interopRequireWildcard(_defaultParams);
 	
@@ -17150,7 +16564,7 @@ webpackJsonp([0],[
 	 * Add modal + overlay to DOM
 	 */
 	
-	var _injectedHTML = __webpack_require__(237);
+	var _injectedHTML = __webpack_require__(232);
 	
 	var _injectedHTML2 = _interopRequireWildcard(_injectedHTML);
 	
@@ -17299,7 +16713,7 @@ webpackJsonp([0],[
 	exports.fixVerticalPosition = fixVerticalPosition;
 
 /***/ },
-/* 236 */
+/* 231 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -17336,7 +16750,7 @@ webpackJsonp([0],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 237 */
+/* 232 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -17383,7 +16797,7 @@ webpackJsonp([0],[
 	module.exports = exports["default"];
 
 /***/ },
-/* 238 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17392,11 +16806,11 @@ webpackJsonp([0],[
 	  value: true
 	});
 	
-	var _colorLuminance = __webpack_require__(234);
+	var _colorLuminance = __webpack_require__(229);
 	
-	var _getModal = __webpack_require__(235);
+	var _getModal = __webpack_require__(230);
 	
-	var _hasClass$isDescendant = __webpack_require__(233);
+	var _hasClass$isDescendant = __webpack_require__(228);
 	
 	/*
 	 * User clicked on "Confirm"/"OK" or "Cancel"
@@ -17523,7 +16937,7 @@ webpackJsonp([0],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 239 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17532,9 +16946,9 @@ webpackJsonp([0],[
 	  value: true
 	});
 	
-	var _stopEventPropagation$fireClick = __webpack_require__(233);
+	var _stopEventPropagation$fireClick = __webpack_require__(228);
 	
-	var _setFocusStyle = __webpack_require__(235);
+	var _setFocusStyle = __webpack_require__(230);
 	
 	var handleKeyDown = function handleKeyDown(event, params, modal) {
 	  var e = event || window.event;
@@ -17607,7 +17021,7 @@ webpackJsonp([0],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 240 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -17616,11 +17030,11 @@ webpackJsonp([0],[
 	  value: true
 	});
 	
-	var _isIE8 = __webpack_require__(234);
+	var _isIE8 = __webpack_require__(229);
 	
-	var _getModal$getInput$setFocusStyle = __webpack_require__(235);
+	var _getModal$getInput$setFocusStyle = __webpack_require__(230);
 	
-	var _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide = __webpack_require__(233);
+	var _hasClass$addClass$removeClass$escapeHtml$_show$show$_hide$hide = __webpack_require__(228);
 	
 	var alertTypes = ['error', 'warning', 'info', 'success', 'input', 'prompt'];
 	
@@ -17837,20 +17251,124 @@ webpackJsonp([0],[
 	module.exports = exports['default'];
 
 /***/ },
-/* 241 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
-	 * Bowling Component
+	 * Settings Store
+	 * @flow
+	 */
+	
+	var AppConstants = __webpack_require__(211);
+	var BaseStore = __webpack_require__(218);
+	
+	var $__0=
+	    
+	    
+	    
+	  AppConstants,ActionTypes=$__0.ActionTypes,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
+	
+	for(var BaseStore____Key in BaseStore){if(BaseStore.hasOwnProperty(BaseStore____Key)){SettingsStore[BaseStore____Key]=BaseStore[BaseStore____Key];}}var ____SuperProtoOfBaseStore=BaseStore===null?null:BaseStore.prototype;SettingsStore.prototype=Object.create(____SuperProtoOfBaseStore);SettingsStore.prototype.constructor=SettingsStore;SettingsStore.__superConstructor__=BaseStore;
+	
+	    function SettingsStore() {"use strict";
+	        BaseStore.call(this);
+	        this.reset();
+	
+	        this.setupActions();
+	    }
+	
+	    Object.defineProperty(SettingsStore.prototype,"reset",{writable:true,configurable:true,value:function() {"use strict";
+	        this.initialized = false;
+	        this.overs = 10;
+	        this.isPlayoffs = false;
+	        this.playoffWicketRuns = 5;
+	        this.seasonWicketRuns = 3;
+	        this.maxWickets = 6;
+	        this.maxOversPerBowler = 3;
+	        this.emitChange();
+	    }});
+	
+	    Object.defineProperty(SettingsStore.prototype,"setupActions",{writable:true,configurable:true,value:function() {"use strict";
+	        this.addAction(ActionTypes.LOAD_SCORE_BOARD, this.reset);
+	        this.addAction(ActionTypes.PLAYOFFS_ON_OFF, this.playOffs);
+	        this.addAction(ActionTypes.SET_OVERS, this.setOvers);
+	        this.addAction(ActionTypes.SET_PLAYOFF_WICKET_DEDUCTION, this.setPlayoffWicketDeduction);
+	        this.addAction(ActionTypes.SET_SEASON_WICKET_DEDUCTION, this.setSeasonWicketDeduction);
+	        this.addAction(ActionTypes.SET_MAX_WICKETS, this.setMaxWickets);
+	        this.addAction(ActionTypes.SET_MAX_OVERS_PER_BOWLER, this.setMaxOversPerBowler);
+	    }});
+	
+	    Object.defineProperty(SettingsStore.prototype,"setOvers",{writable:true,configurable:true,value:function(action) {"use strict";
+	        this.overs = action.count;
+	        this.emitChange();
+	    }});
+	
+	    Object.defineProperty(SettingsStore.prototype,"setPlayoffWicketDeduction",{writable:true,configurable:true,value:function(action) {"use strict";
+	        this.playoffWicketRuns = action.count;
+	        this.emitChange();
+	    }});
+	
+	    Object.defineProperty(SettingsStore.prototype,"setSeasonWicketDeduction",{writable:true,configurable:true,value:function(action) {"use strict";
+	        this.seasonWicketRuns = action.count;
+	        this.emitChange();
+	    }});
+	
+	    Object.defineProperty(SettingsStore.prototype,"setMaxWickets",{writable:true,configurable:true,value:function(action) {"use strict";
+	        this.maxWickets = action.count;
+	        this.emitChange();
+	    }});
+	
+	    Object.defineProperty(SettingsStore.prototype,"setMaxOversPerBowler",{writable:true,configurable:true,value:function(action) {"use strict";
+	        this.maxOversPerBowler = action.count;
+	        this.emitChange();
+	    }});
+	
+	    Object.defineProperty(SettingsStore.prototype,"playOffs",{writable:true,configurable:true,value:function(action) {"use strict";
+	        this.isPlayoffs = action.value;
+	        this.emitChange();
+	    }});
+	
+	    Object.defineProperty(SettingsStore.prototype,"getData",{writable:true,configurable:true,value:function() {"use strict";
+	        return {
+	            overs: this.overs,
+	            isPlayoffs: this.isPlayoffs,
+	            playoffWicketRuns: this.playoffWicketRuns,
+	            seasonWicketRuns: this.seasonWicketRuns,
+	            maxWickets: this.maxWickets,
+	            maxOversPerBowler: this.maxOversPerBowler,
+	        };
+	    }});
+	
+	    Object.defineProperty(SettingsStore.prototype,"getIsPlayoffs",{writable:true,configurable:true,value:function() {"use strict";
+	        return this.isPlayoffs;
+	    }});
+	
+	
+	
+	module.exports = new SettingsStore();
+
+
+/***/ },
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Match Component
 	 * @flow
 	 */
 	
 	var AppActions = __webpack_require__(210);
 	var AppConstants = __webpack_require__(211);
+	var PlayersList = __webpack_require__(238);
+	var Controls = __webpack_require__(241);
 	var React = __webpack_require__(2);
 	var RosterStore = __webpack_require__(217);
-	var Subnav = __webpack_require__(230);
-	var StatBox = __webpack_require__(231);
+	var BowlingStore = __webpack_require__(226);
+	var BattingStore = __webpack_require__(216);
+	var GameOver = __webpack_require__(242);
+	var SettingsStore = __webpack_require__(236);
+	var ScoreStore = __webpack_require__(243);
+	var Subnav = __webpack_require__(239);
 	
 	var $__0=
 	    
@@ -17858,45 +17376,486 @@ webpackJsonp([0],[
 	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class5=React.Component;for(var ____Class5____Key in ____Class5){if(____Class5.hasOwnProperty(____Class5____Key)){BowlingControls[____Class5____Key]=____Class5[____Class5____Key];}}var ____SuperProtoOf____Class5=____Class5===null?null:____Class5.prototype;BowlingControls.prototype=Object.create(____SuperProtoOf____Class5);BowlingControls.prototype.constructor=BowlingControls;BowlingControls.__superConstructor__=____Class5;
+	var ____Class1=React.Component;for(var ____Class1____Key in ____Class1){if(____Class1.hasOwnProperty(____Class1____Key)){Match[____Class1____Key]=____Class1[____Class1____Key];}}var ____SuperProtoOf____Class1=____Class1===null?null:____Class1.prototype;Match.prototype=Object.create(____SuperProtoOf____Class1);Match.prototype.constructor=Match;Match.__superConstructor__=____Class1;
 	
-	    function BowlingControls(props) {"use strict";
-	        ____Class5.call(this,props);
+	    function Match(props) {"use strict";
+	        ____Class1.call(this,props);
+	        this.state = this.$Match_getInitialState();
 	        this.props = props;
 	    }
 	
-	    Object.defineProperty(BowlingControls.prototype,"shouldComponentUpdate",{writable:true,configurable:true,value:function() {"use strict";
-	        return true;
+	    Object.defineProperty(Match.prototype,"$Match_getInitialState",{writable:true,configurable:true,value:function() {"use strict";
+	        return {
+	            rosters: RosterStore.getRosters(),
+	            score: ScoreStore.getData(),
+	            bowling: BowlingStore.getData(),
+	            batting: BattingStore.getData(),
+	            settings: SettingsStore.getData(),
+	        };
 	    }});
 	
-	    Object.defineProperty(BowlingControls.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
+	    Object.defineProperty(Match.prototype,"$Match_onChange",{writable:true,configurable:true,value:function() {"use strict";
+	        this.setState(this.$Match_getInitialState(), function()  {
+	            if (this.scoreBoard) {
+	                this.scoreBoard.postMessage(this.state, 'http://localhost');
+	            }
+	        }.bind(this));
+	    }});
+	
+	    Object.defineProperty(Match.prototype,"componentDidMount",{writable:true,configurable:true,value:function() {"use strict";
+	        this.bowlingListener = BowlingStore.addChangeListener(this.$Match_onChange.bind(this));
+	        this.battingListener = BattingStore.addChangeListener(this.$Match_onChange.bind(this));
+	        this.scoreListener = ScoreStore.addChangeListener(this.$Match_onChange.bind(this));
+	        this.settingsListener = SettingsStore.addChangeListener(this.$Match_onChange.bind(this));
+	    }});
+	
+	    Object.defineProperty(Match.prototype,"componentWillUnmount",{writable:true,configurable:true,value:function() {"use strict";
+	        this.bowlingListener && this.bowlingListener.remove();
+	        this.battingListener && this.battingListener.remove();
+	        this.scoreListener && this.scoreListener.remove();
+	        this.settingsListener && this.settingsListener.remove();
+	    }});
+	
+	    Object.defineProperty(Match.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
+	        if (ScoreStore.getIsGameOver()) {
+	            return React.createElement(GameOver, null);
+	        }
+	
+	        var goGreen = this.state.bowling.currentBowler != null &&
+	            this.state.batting.batsman1 != null &&
+	            this.state.batting.batsman2 != null;
+	
 	        return (
-	            React.createElement("div", {className: cn('row')}, 
-	                React.createElement(Subnav, {title: "Bowling"}), 
-	                this.renderBowlingControls()
+	            React.createElement("div", null, 
+	                React.createElement("div", {className: cn('row'), style: { marginBottom: "0px"}}, 
+	                    React.createElement(Subnav, {title: "Overall Statistics"}), 
+	                    this.renderStatistics()
+	                ), 
+	                React.createElement(Controls, {
+	                    battingData: this.state.batting, 
+	                    bowlingData: this.state.bowling, 
+	                    goGreen: goGreen}
+	                ), 
+	                React.createElement(PlayersList, {
+	                    bowlingData: this.state.bowling, 
+	                    battingData: this.state.batting}
+	                )
 	            )
 	        );
 	    }});
 	
-	    Object.defineProperty(BowlingControls.prototype,"renderBowlingButtons",{writable:true,configurable:true,value:function() {"use strict";
-	        var buttonClasses = cn('btn', 'btn-default');
-	        var bowlerSelect = this.props.bowlingData.changeBowler ?
-	            React.createElement("div", {className: "btn-group"}, 
-	                React.createElement("button", {type: "button", className: "btn btn-default"}, 
-	                    "Choose Next Bowler"
+	    Object.defineProperty(Match.prototype,"renderStatistics",{writable:true,configurable:true,value:function() {"use strict";
+	        var rosters = RosterStore.getRosters();
+	        var teams = this.state.score.teams;
+	        var nextInningButton = !ScoreStore.getIsPlayChanged() ?
+	            React.createElement("button", {type: "button", 
+	                className: cn('btn', 'btn-primary'), 
+	                onClick: this.nextInning.bind(this)}, 
+	                "Next Inning"
+	            ) : null;
+	        return (
+	            React.createElement("div", {className: cn('boardStatistics')}, 
+	                React.createElement("div", {className: cn('col-sm-8', 'boardScoreDisplay')}, 
+	                    React.createElement("div", {className: cn('boardScoreDisplayHomeTeam')}, 
+	                        React.createElement("div", {className: cn('col-sm-4', 'boardScoreDisplayOvers')}, 
+	                            "Overs: ", this.getOvers(teams[TeamTypes.HOME].balls)
+	                        ), 
+	                        React.createElement("div", {className: cn('col-sm-4', 'boardScoreDisplayName')}, 
+	                            this.state.batting.battingTeam === TeamTypes.HOME ? React.createElement("span", {className: cn('overviewMiddot')}) : null, 
+	                            rosters.homeTeamRoster.teamName || 'No Team Selected'
+	                        ), 
+	                        React.createElement("div", {className: cn('col-sm-4', 'boardScoreDisplayRuns')}, 
+	                            "Runs: ", teams[TeamTypes.HOME].runs, " / ", teams[TeamTypes.HOME].wickets
+	                        )
+	                    ), 
+	                    React.createElement("div", {className: cn('boardScoreDisplayAwayTeam')}, 
+	                        React.createElement("div", {className: cn('col-sm-4', 'boardScoreDisplayOvers')}, 
+	                            "Overs: ", this.getOvers(teams[TeamTypes.AWAY].balls)
+	                        ), 
+	                        React.createElement("div", {className: cn('col-sm-4', 'boardScoreDisplayName')}, 
+	                            this.state.batting.battingTeam === TeamTypes.AWAY ? React.createElement("span", {className: cn('overviewMiddot')}) : null, 
+	                            rosters.awayTeamRoster.teamName || 'No Team Selected'
+	                        ), 
+	                        React.createElement("div", {className: cn('col-sm-4', 'boardScoreDisplayRuns')}, 
+	                            "Runs: ", teams[TeamTypes.AWAY].runs, " / ", teams[TeamTypes.AWAY].wickets
+	                        )
+	                    )
 	                ), 
-	                React.createElement("button", {type: "button", className: "btn btn-default dropdown-toggle", "data-toggle": "dropdown"}, 
-	                    React.createElement("span", {className: "caret"}), 
-	                    React.createElement("span", {className: "sr-only"}, "Toggle Dropdown")
-	                ), 
-	                React.createElement("ul", {className: "dropdown-menu"}, 
-	                    this.renderRosterNames(
-	                        this.props.bowlingData.bowlingTeamRoster, 
-	                        function($BowlingControls_, id)  {return AppActions.chooseBowler(id);}
+	                React.createElement("div", {className: cn('col-sm-4', 'boardScoreButtons')}, 
+	                    nextInningButton, 
+	                    React.createElement("button", {type: "button", 
+	                        className: cn('btn', 'btn-default'), 
+	                        onClick: this.openScoreBoard.bind(this)}, 
+	                        "Open Scoreboard"
+	                    ), 
+	                    React.createElement("button", {type: "button", 
+	                        className: cn('btn', 'btn-warning'), 
+	                        onClick: function()  {return AppActions.reset();}}, 
+	                        "Reset"
+	                    ), 
+	                    React.createElement("div", {className: cn('btn-group'), role: "group"}, 
+	                        React.createElement("button", {
+	                            type: "button", 
+	                            className: cn({ 
+	                                'btn': true, 
+	                                'btn-default': true, 
+	                                'btn-primary': SettingsStore.getIsPlayoffs(),
+	                            }), 
+	                            style: { marginRight: "0"}, 
+	                            onClick: function()  {return AppActions.setPlayoffs(true);}}, 
+	                            "Playoffs ON"
+	                        ), 
+	                        React.createElement("button", {
+	                            type: "button", 
+	                            className: cn({ 
+	                                'btn': true, 
+	                                'btn-default': true, 
+	                                'btn-primary': !SettingsStore.getIsPlayoffs(),
+	                            }), 
+	                            onClick: function()  {return AppActions.setPlayoffs(false);}}, 
+	                            "Playoffs OFF"
+	                        )
 	                    )
 	                )
-	            ) : null;
+	            )
+	        );
+	    }});
 	
+	    Object.defineProperty(Match.prototype,"nextInning",{writable:true,configurable:true,value:function() {"use strict";
+	        AppActions.playChange();
+	        if (this.scoreBoard) {
+	            this.scoreBoard.postMessage(this.state, 'http://localhost');
+	        }
+	    }});
+	
+	    Object.defineProperty(Match.prototype,"openScoreBoard",{writable:true,configurable:true,value:function() {"use strict";
+	        if (this.scoreBoard) { 
+	            this.scoreBoard.close();
+	            this.scoreBoard = null;
+	        }
+	        this.scoreBoard = window.open('scoreboard.html', 'Scoreboard');
+	        setTimeout(function()  {return this.scoreBoard.postMessage(this.state, 'http://localhost');}.bind(this), 100);
+	    }});
+	
+	    Object.defineProperty(Match.prototype,"getOvers",{writable:true,configurable:true,value:function(balls) {"use strict";
+	        return ("" + parseInt(balls/6) + "." + (balls%6));
+	    }});
+	
+	
+	
+	module.exports = Match;
+
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Players List Component
+	 * @flow
+	 */
+	
+	var AppActions = __webpack_require__(210);
+	var AppConstants = __webpack_require__(211);
+	var React = __webpack_require__(2);
+	var RosterStore = __webpack_require__(217);
+	var BattingStore = __webpack_require__(216);
+	var Subnav = __webpack_require__(239);
+	var StatBox = __webpack_require__(240);
+	var SweetAlert = __webpack_require__(227);
+	
+	var $__0=
+	    
+	    
+	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
+	var cn = __webpack_require__(209);
+	
+	var ____Class5=React.Component;for(var ____Class5____Key in ____Class5){if(____Class5.hasOwnProperty(____Class5____Key)){PlayersList[____Class5____Key]=____Class5[____Class5____Key];}}var ____SuperProtoOf____Class5=____Class5===null?null:____Class5.prototype;PlayersList.prototype=Object.create(____SuperProtoOf____Class5);PlayersList.prototype.constructor=PlayersList;PlayersList.__superConstructor__=____Class5;
+	
+	    function PlayersList(props) {"use strict";
+	        ____Class5.call(this,props);
+	        this.props = props;
+	    }
+	
+	    Object.defineProperty(PlayersList.prototype,"shouldComponentUpdate",{writable:true,configurable:true,value:function() {"use strict";
+	        return true;
+	    }});
+	
+	    Object.defineProperty(PlayersList.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
+	        return (
+	            React.createElement("div", {className: cn('row')}, 
+	                React.createElement(Subnav, {title: "Players"}), 
+	                this.renderPlayersList()
+	            )
+	        );
+	    }});
+	
+	    Object.defineProperty(PlayersList.prototype,"alertUserForInput",{writable:true,configurable:true,value:function() {"use strict";
+	        var rosters = RosterStore.getRosters();
+	
+	        if (rosters.homeTeamId == null || rosters.awayTeamId == null) {
+	            SweetAlert({   
+	                title: "Choose Teams",  
+	                text: "You will not be able to proceed without choosing teams!",   
+	                type: "warning",
+	                confirmButtonColor: "#DD6B55",
+	                confirmButtonText: "Let's go choose",
+	                closeOnConfirm: true,
+	            },
+	            function(isConfirm)  {   
+	                if (isConfirm) {
+	                    window.location = 'http://localhost/#/roster';
+	                }
+	            });
+	        } else if (this.props.bowlingData.currentBowler == null) {
+	            SweetAlert({   
+	                title: "Choose a Bowler",  
+	                text: "You will not be able to proceed without choosing a bowler!",   
+	                type: "warning",
+	                confirmButtonText: "OK",   
+	                closeOnConfirm: true, 
+	            });
+	        } else if (this.props.battingData.batsman1 == null ||
+	            this.props.battingData.batsman2 == null) {
+	            SweetAlert({   
+	                title: "Choose Batsman",  
+	                text: "You will not be able to proceed without choosing batsmen!",   
+	                type: "warning",
+	                confirmButtonText: "OK",   
+	                closeOnConfirm: true, 
+	            });
+	        }
+	    }});
+	
+	    Object.defineProperty(PlayersList.prototype,"renderDataTable",{writable:true,configurable:true,value:function(playerLabel, data, statsCallback) {"use strict";
+	        var rows = [];
+	        data.forEach(function(player, index)  {
+	            rows.push(
+	                React.createElement("tr", {key: index}, 
+	                    React.createElement("td", null, player.id), 
+	                    React.createElement("td", null, player.first), 
+	                    React.createElement("td", null, player.last), 
+	                    React.createElement("td", null, statsCallback(player))
+	                )
+	            );
+	        })
+	
+	        return (
+	            React.createElement("table", {className: cn('table')}, 
+	                React.createElement("thead", null, 
+	                    React.createElement("tr", null, 
+	                        React.createElement("th", null, playerLabel, " #"), 
+	                        React.createElement("th", null, "First"), 
+	                        React.createElement("th", null, "Last"), 
+	                        React.createElement("th", null, "Stats")
+	                    )
+	                ), 
+	                React.createElement("tbody", null, 
+	                    rows
+	                )
+	            )
+	        );
+	    }});
+	
+	    Object.defineProperty(PlayersList.prototype,"renderPlayersList",{writable:true,configurable:true,value:function() {"use strict";
+	        var b1 = this.props.battingData.batsman1 || {};
+	        var b2 = this.props.battingData.batsman2 || {};
+	        var stats = [
+	            { title: ("B1 " + (b1.first || '') + " " + (b1.last || '')), value: b1.runs || 0, middot: true },
+	            { title: ("B2 " + (b2.first || '') + " " + (b2.last || '')), value: b2.runs || 0 },
+	        ];
+	        return (
+	            React.createElement("div", {className: cn('bowlingStatistics')}, 
+	                React.createElement("div", {className: cn('col-sm-6', 'bowlingList'), style: { borderRight: "1px solid #DDDDDD"}}, 
+	                    this.renderDataTable('Batsman', this.props.battingData.batsman, function(batsman)  {
+	                        return ("" + (batsman.runs || 0) + " (" + (batsman.balls || 0) + ")");
+	                    })
+	                ), 
+	                React.createElement("div", {className: cn('col-sm-6', 'bowlingList')}, 
+	                    this.renderDataTable('Bowler', this.props.bowlingData.bowlers, function(bowler)  {
+	                        return ("" + (bowler.runsAllowed || 0) + "-" + (this.getOvers(bowler.ballsBowled) || '0.0') + "-" + (bowler.wickets || 0));
+	                    }.bind(this))
+	                )
+	            )
+	        );
+	    }});
+	
+	    Object.defineProperty(PlayersList.prototype,"getOvers",{writable:true,configurable:true,value:function(balls) {"use strict";
+	        if (balls == null) return '0.0';
+	        return ("" + parseInt(balls/6) + "." + (balls%6));
+	    }});
+	
+	
+	
+	module.exports = PlayersList;
+
+
+/***/ },
+/* 239 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Subnav Component
+	 * @flow
+	 */
+	
+	var React = __webpack_require__(2);
+	
+	var cn = __webpack_require__(209);
+	
+	var ____Class8=React.Component;for(var ____Class8____Key in ____Class8){if(____Class8.hasOwnProperty(____Class8____Key)){Subnav[____Class8____Key]=____Class8[____Class8____Key];}}var ____SuperProtoOf____Class8=____Class8===null?null:____Class8.prototype;Subnav.prototype=Object.create(____SuperProtoOf____Class8);Subnav.prototype.constructor=Subnav;Subnav.__superConstructor__=____Class8;
+	
+	    function Subnav(props) {"use strict";
+	        ____Class8.call(this,props);
+	        this.props = props;
+	    }
+	
+	    Object.defineProperty(Subnav.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
+	        return (
+	            React.createElement("div", {className: cn('full-width', 'subnav')}, 
+	                React.createElement("span", {className: cn('subnav-title')}, 
+	                    this.props.title
+	                )
+	            )
+	        );
+	    }});
+	
+	
+	
+	module.exports = Subnav;
+
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Statbox Component
+	 * @flow
+	 */
+	
+	var React = __webpack_require__(2);
+	
+	var cn = __webpack_require__(209);
+	
+	var ____Class9=React.Component;for(var ____Class9____Key in ____Class9){if(____Class9.hasOwnProperty(____Class9____Key)){StatBox[____Class9____Key]=____Class9[____Class9____Key];}}var ____SuperProtoOf____Class9=____Class9===null?null:____Class9.prototype;StatBox.prototype=Object.create(____SuperProtoOf____Class9);StatBox.prototype.constructor=StatBox;StatBox.__superConstructor__=____Class9;
+	
+	    function StatBox(props) {"use strict";
+	        ____Class9.call(this,props);
+	        this.props = props;
+	    }
+	
+	    Object.defineProperty(StatBox.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
+	    		var statBoxes = this.props.statBoxes || [];
+	        var stats = [];
+	        statBoxes.forEach(function(box, index)  {
+	            var middot = box.middot ? React.createElement("span", {className: cn('middot')}) : null;
+	            stats.push(
+	                React.createElement("div", {key: index, className: cn('bowlingStatBox')}, 
+	                    React.createElement("span", {className: cn('bowlingStatBoxTitle')}, 
+	                        middot, 
+	                        box.title
+	                    ), 
+	                    React.createElement("b", null, box.value)
+	                )
+	            );
+	        });
+	
+	        return React.createElement("div", null, stats);
+	    }});
+	
+	
+	
+	StatBox.propTypes = {
+		statBoxes: React.PropTypes.arrayOf(React.PropTypes.object).isRequired,
+	};
+	
+	module.exports = StatBox;
+
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/*
+	 * Controls Component
+	 * @flow
+	 */
+	
+	var AppActions = __webpack_require__(210);
+	var AppConstants = __webpack_require__(211);
+	var React = __webpack_require__(2);
+	var RosterStore = __webpack_require__(217);
+	var Subnav = __webpack_require__(239);
+	var StatBox = __webpack_require__(240);
+	var SweetAlert = __webpack_require__(227);
+	
+	var $__0=
+	    
+	    
+	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
+	var cn = __webpack_require__(209);
+	
+	var ____Class6=React.Component;for(var ____Class6____Key in ____Class6){if(____Class6.hasOwnProperty(____Class6____Key)){Controls[____Class6____Key]=____Class6[____Class6____Key];}}var ____SuperProtoOf____Class6=____Class6===null?null:____Class6.prototype;Controls.prototype=Object.create(____SuperProtoOf____Class6);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Class6;
+	
+	    function Controls(props) {"use strict";
+	        ____Class6.call(this,props);
+	        this.props = props;
+	    }
+	
+	    Object.defineProperty(Controls.prototype,"shouldComponentUpdate",{writable:true,configurable:true,value:function() {"use strict";
+	        return true;
+	    }});
+	
+	    Object.defineProperty(Controls.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
+	        this.alertUserForInput();
+	        return (
+	            React.createElement("div", {className: cn('row')}, 
+	                React.createElement(Subnav, {title: "Controls"}), 
+	                this.renderControls()
+	            )
+	        );
+	    }});
+	
+	    Object.defineProperty(Controls.prototype,"alertUserForInput",{writable:true,configurable:true,value:function() {"use strict";
+	        var rosters = RosterStore.getRosters();
+	
+	        if (rosters.homeTeamId == null || rosters.awayTeamId == null) {
+	            SweetAlert({   
+	                title: "Choose Teams",  
+	                text: "You will not be able to proceed without choosing teams!",   
+	                type: "warning",
+	                confirmButtonColor: "#DD6B55",
+	                confirmButtonText: "Let's go choose",
+	                closeOnConfirm: true,
+	            },
+	            function(isConfirm)  {   
+	                if (isConfirm) {
+	                    window.location = 'http://localhost/#/roster';
+	                }
+	            });
+	        } else if (this.props.bowlingData.currentBowler == null) {
+	            SweetAlert({   
+	                title: "Choose a Bowler",  
+	                text: "You will not be able to proceed without choosing a bowler!",   
+	                type: "warning",
+	                confirmButtonText: "OK",   
+	                closeOnConfirm: true, 
+	            });
+	        } else if (this.props.battingData.batsman1 == null ||
+	            this.props.battingData.batsman2 == null) {
+	            SweetAlert({   
+	                title: "Choose Batsman",  
+	                text: "You will not be able to proceed without choosing batsmen!",   
+	                type: "warning",
+	                confirmButtonText: "OK",   
+	                closeOnConfirm: true, 
+	            });
+	        }
+	    }});
+	
+	    Object.defineProperty(Controls.prototype,"renderButtons",{writable:true,configurable:true,value:function() {"use strict";
+	        var buttonClasses = cn('btn', 'btn-default');
 	        return (
 	            React.createElement("div", null, 
 	                React.createElement("div", {className: cn('col-sm-12')}, 
@@ -17920,13 +17879,66 @@ webpackJsonp([0],[
 	                    )
 	                ), 
 	                React.createElement("div", {className: cn('col-sm-12')}, 
-	                    bowlerSelect
+	                    "Bowler:  ", 
+	                    React.createElement("div", {className: "btn-group", style: { marginRight: "15px"}}, 
+	                        React.createElement("button", {type: "button", className: "btn btn-default"}, 
+	                            "Choose Next Bowler"
+	                        ), 
+	                        React.createElement("button", {type: "button", className: "btn btn-default dropdown-toggle", "data-toggle": "dropdown"}, 
+	                            React.createElement("span", {className: "caret"}), 
+	                            React.createElement("span", {className: "sr-only"}, "Toggle Dropdown")
+	                        ), 
+	                        React.createElement("ul", {className: "dropdown-menu"}, 
+	                            this.renderRosterNames(
+	                                this.props.bowlingData.bowlingTeamRoster, 
+	                                function($Controls_, id)  {return AppActions.chooseBowler(id);}
+	                            )
+	                        )
+	                    )
+	                ), 
+	                React.createElement("div", {className: cn('col-sm-12'), style: { marginTop: "15px"}}, 
+	                    "Batsmen:  ", 
+	                    React.createElement("div", {className: "btn-group", style: { marginRight: "15px"}}, 
+	                        React.createElement("button", {type: "button", className: "btn btn-default"}, 
+	                            "Choose B1"
+	                        ), 
+	                        React.createElement("button", {type: "button", className: "btn btn-default dropdown-toggle", "data-toggle": "dropdown"}, 
+	                            React.createElement("span", {className: "caret"}), 
+	                            React.createElement("span", {className: "sr-only"}, "Toggle Dropdown")
+	                        ), 
+	                        React.createElement("ul", {className: "dropdown-menu"}, 
+	                            this.renderRosterNames(
+	                                this.props.battingData.battingTeamRoster,
+	                                function($Controls_, id)  {return AppActions.chooseBatsman(1, id);}
+	                            )
+	                        )
+	                    ), 
+	                    React.createElement("div", {className: "btn-group", style: { marginRight: "15px"}}, 
+	                        React.createElement("button", {type: "button", className: "btn btn-default"}, 
+	                            "Choose B2"
+	                        ), 
+	                        React.createElement("button", {type: "button", className: "btn btn-default dropdown-toggle", "data-toggle": "dropdown"}, 
+	                            React.createElement("span", {className: "caret"}), 
+	                            React.createElement("span", {className: "sr-only"}, "Toggle Dropdown")
+	                        ), 
+	                        React.createElement("ul", {className: "dropdown-menu"}, 
+	                            this.renderRosterNames(
+	                                this.props.battingData.battingTeamRoster,
+	                                function($Controls_, id)  {return AppActions.chooseBatsman(2, id);}
+	                            )
+	                        )
+	                    ), 
+	                    React.createElement("button", {type: "button", 
+	                        className: cn('btn', 'btn-primary'), 
+	                        onClick: function()  {return this.props.goGreen && AppActions.swapBatsman();}.bind(this)}, 
+	                        "Swap Batsman"
+	                    )
 	                )
 	            )
 	        );
 	    }});
 	
-	    Object.defineProperty(BowlingControls.prototype,"renderRosterNames",{writable:true,configurable:true,value:function(roster, callback) {"use strict";
+	    Object.defineProperty(Controls.prototype,"renderRosterNames",{writable:true,configurable:true,value:function(roster, callback) {"use strict";
 	        var teamDropdown = [];
 	        if (roster.length <= 0) {
 	            teamDropdown.push(React.createElement("li", {key: 'error'}, React.createElement("a", null, "Choose A Team")));
@@ -17944,7 +17956,7 @@ webpackJsonp([0],[
 	        return teamDropdown;
 	    }});
 	
-	    Object.defineProperty(BowlingControls.prototype,"renderDataTable",{writable:true,configurable:true,value:function(data, statsCallback) {"use strict";
+	    Object.defineProperty(Controls.prototype,"renderDataTable",{writable:true,configurable:true,value:function(data, statsCallback) {"use strict";
 	        var rows = [];
 	        data.forEach(function(player, index)  {
 	            rows.push(
@@ -17974,13 +17986,17 @@ webpackJsonp([0],[
 	        );
 	    }});
 	
-	    Object.defineProperty(BowlingControls.prototype,"renderBowlingControls",{writable:true,configurable:true,value:function() {"use strict";
+	    Object.defineProperty(Controls.prototype,"renderControls",{writable:true,configurable:true,value:function() {"use strict";
 	        var data = this.props.bowlingData || {};
 	        var bowler = data.currentBowler || null;
+	        var b1 = this.props.battingData.batsman1 || {};
+	        var b2 = this.props.battingData.batsman2 || {};
 	        var stats = [
 	            { title: 'Runs This Over', value: this.calcRuns(data.currentOver) || 0 },
 	            { title: 'Current Over', value: this.printOver(data.currentOver) || '-' },
 	            { title: 'Bowler', value: bowler ? ("" + bowler.first + " " + bowler.last) : 'None' },
+	            { title: ("B1 " + (b1.first || '') + " " + (b1.last || '')), value: b1.runs || 0, middot: true },
+	            { title: ("B2 " + (b2.first || '') + " " + (b2.last || '')), value: b2.runs || 0 },
 	        ];
 	        return (
 	            React.createElement("div", {className: cn('bowlingStatistics')}, 
@@ -17989,19 +18005,14 @@ webpackJsonp([0],[
 	                        React.createElement(StatBox, {statBoxes: stats})
 	                    ), 
 	                    React.createElement("div", {className: cn('col-sm-6', 'bowlingControls')}, 
-	                        this.renderBowlingButtons()
-	                    ), 
-	                    React.createElement("div", {className: cn('col-sm-12', 'bowlingList')}, 
-	                        this.renderDataTable(this.props.bowlingData.bowlers, function(bowler)  {
-	                            return ("" + (bowler.runsAllowed || 0) + "-" + (this.getOvers(bowler.ballsBowled) || '0.0') + "-" + (bowler.wickets || 0));
-	                        }.bind(this))
+	                        this.renderButtons()
 	                    )
 	                )
 	            )
 	        );
 	    }});
 	
-	    Object.defineProperty(BowlingControls.prototype,"calcRuns",{writable:true,configurable:true,value:function(over) {"use strict";
+	    Object.defineProperty(Controls.prototype,"calcRuns",{writable:true,configurable:true,value:function(over) {"use strict";
 	        var total = 0;
 	        over.forEach(function(ball)  {
 	            switch(ball) {
@@ -18019,7 +18030,7 @@ webpackJsonp([0],[
 	        return total;
 	    }});
 	
-	    Object.defineProperty(BowlingControls.prototype,"printOver",{writable:true,configurable:true,value:function(over) {"use strict";
+	    Object.defineProperty(Controls.prototype,"printOver",{writable:true,configurable:true,value:function(over) {"use strict";
 	        var text = '';
 	        over.forEach(function(ball)  {
 	            text += ball + '-';
@@ -18027,14 +18038,9 @@ webpackJsonp([0],[
 	        return text.substr(0, text.length-1);
 	    }});
 	
-	    Object.defineProperty(BowlingControls.prototype,"getOvers",{writable:true,configurable:true,value:function(balls) {"use strict";
-	        if (balls == null) return '0.0';
-	        return ("" + parseInt(balls/6) + "." + (balls%6));
-	    }});
 	
 	
-	
-	module.exports = BowlingControls;
+	module.exports = Controls;
 
 
 /***/ },
@@ -18050,16 +18056,16 @@ webpackJsonp([0],[
 	var React = __webpack_require__(2);
 	var RosterStore = __webpack_require__(217);
 	var ScoreStore = __webpack_require__(243);
-	var Subnav = __webpack_require__(230);
-	var SweetAlert = __webpack_require__(232);
+	var Subnav = __webpack_require__(239);
+	var SweetAlert = __webpack_require__(227);
 	
 	var $__0=  AppConstants,TeamTypes=$__0.TeamTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class6=React.Component;for(var ____Class6____Key in ____Class6){if(____Class6.hasOwnProperty(____Class6____Key)){GameOver[____Class6____Key]=____Class6[____Class6____Key];}}var ____SuperProtoOf____Class6=____Class6===null?null:____Class6.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Class6);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Class6;
+	var ____Class7=React.Component;for(var ____Class7____Key in ____Class7){if(____Class7.hasOwnProperty(____Class7____Key)){GameOver[____Class7____Key]=____Class7[____Class7____Key];}}var ____SuperProtoOf____Class7=____Class7===null?null:____Class7.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Class7);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Class7;
 	
 	    function GameOver(props) {"use strict";
-	        ____Class6.call(this,props);
+	        ____Class7.call(this,props);
 	        this.props = props;
 	        this.playerData = [];
 	        this.matchData = [];
@@ -18318,7 +18324,7 @@ webpackJsonp([0],[
 	var BowlingStore = __webpack_require__(226);
 	var BattingStore = __webpack_require__(216);
 	var BaseStore = __webpack_require__(218);
-	var SettingsStore = __webpack_require__(227);
+	var SettingsStore = __webpack_require__(236);
 	
 	var $__0=
 	    
@@ -18512,7 +18518,7 @@ webpackJsonp([0],[
 	var Link = __webpack_require__(160).Link;
 	var React = __webpack_require__(2);
 	var RosterStore = __webpack_require__(217);
-	var Subnav = __webpack_require__(230);
+	var Subnav = __webpack_require__(239);
 	
 	var $__0=  AppConstants,TeamTypes=$__0.TeamTypes;
 	var cn = __webpack_require__(209);
@@ -18782,15 +18788,15 @@ webpackJsonp([0],[
 	
 	var AppActions = __webpack_require__(210);
 	var React = __webpack_require__(2);
-	var Subnav = __webpack_require__(230);
-	var SettingsStore = __webpack_require__(227);
+	var Subnav = __webpack_require__(239);
+	var SettingsStore = __webpack_require__(236);
 	
 	var cn = __webpack_require__(209);
 	
-	var ____Classm=React.Component;for(var ____Classm____Key in ____Classm){if(____Classm.hasOwnProperty(____Classm____Key)){Settings[____Classm____Key]=____Classm[____Classm____Key];}}var ____SuperProtoOf____Classm=____Classm===null?null:____Classm.prototype;Settings.prototype=Object.create(____SuperProtoOf____Classm);Settings.prototype.constructor=Settings;Settings.__superConstructor__=____Classm;
+	var ____Class3=React.Component;for(var ____Class3____Key in ____Class3){if(____Class3.hasOwnProperty(____Class3____Key)){Settings[____Class3____Key]=____Class3[____Class3____Key];}}var ____SuperProtoOf____Class3=____Class3===null?null:____Class3.prototype;Settings.prototype=Object.create(____SuperProtoOf____Class3);Settings.prototype.constructor=Settings;Settings.__superConstructor__=____Class3;
 	
 	    function Settings(props) {"use strict";
-	        ____Classm.call(this,props);
+	        ____Class3.call(this,props);
 	        this.props = props;
 	        this.state = SettingsStore.getData();
 	    }
