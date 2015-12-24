@@ -128,18 +128,23 @@ class Roster extends React.Component {
     renderTeamSelections() {
         return (
             <div className={cn('roster-team-selection')}>
+                <div className={cn('col-sm-6')} style={{ padding: '15px', borderRight: '1px solid #DDDDDD' }}>
                 {this.renderTeam(
                     this.state.fetchingHomeTeam,
                     this.homeTeam, 
                     this.state.homeTeamRoster || {}, 
                     (e, team) => this.teamSelected(e, TeamTypes.HOME, team)
                 )}
+                </div>
+                <div className={cn('col-sm-6')} style={{ padding: '15px' }}>
                 {this.renderTeam(
                     this.state.fetchingAwayTeam,
                     this.awayTeam,
                     this.state.awayTeamRoster || {},
                     (e, team) => this.teamSelected(e, TeamTypes.AWAY, team)
                 )}
+                </div>
+                <div style={{ clear: "both" }}></div>
             </div>
         );
     }

@@ -149,7 +149,6 @@ a:visited {    text-decoration: none;
     display: inline-block;
     box-sizing: border-box;
     width: 100%;
-    padding: 15px;
     border-bottom: 1px solid #DDDDDD;
 }
 
@@ -299,6 +298,31 @@ a:visited {    text-decoration: none;
 
 .dataTable thead tr {
     background-color: #F8F8F8;
+}
+
+.dataTableTitle {
+    margin: 15px 0;
+    font-weight: bold;
+}
+
+.gameOverActions button {
+    margin-right: 10px;
+}
+
+.acknowledgement {
+    width: 100%;
+    color: #DDDDDD;
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    margin: 50px 0;
+}
+
+.copyright {
+    display: block;
+    font-weight: normal;
+    font-size: 12px;
+    margin: 5px 0;
 }
 
 /* ==========================================================================

@@ -77,8 +77,15 @@ class Match extends React.Component {
                     <Subnav title="Overall Statistics" />
                     {this.renderStatistics()}
                 </div>
-                <BowlingControls bowlingData={this.state.bowling} goGreen={goGreen} />
-                <BattingControls battingData={this.state.batting} goGreen={goGreen} />
+                <BowlingControls 
+                    bowlingData={this.state.bowling} 
+                    goGreen={goGreen} 
+                />
+                <BattingControls 
+                    bowlingData={this.state.bowling}
+                    battingData={this.state.batting} 
+                    goGreen={goGreen} 
+                />
             </div>
         );
     }

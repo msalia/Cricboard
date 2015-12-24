@@ -10,6 +10,7 @@ var RosterStore = require('RosterStore');
 var BattingStore = require('BattingStore');
 var Subnav = require('Subnav');
 var StatBox = require('StatBox');
+var SweetAlert = require('sweetalert');
 
 var {
     TeamTypes,
@@ -29,12 +30,45 @@ class BattingControls extends React.Component {
     }
 
     render() {
+        this.alertUserForInput();
+
         return (
             <div className={cn('row')}>
                 <Subnav title="Batting" />
                 {this.renderBattingControls()}
             </div>
         );
+    }
+
+    alertUserForInput() {
+        var rosters = RosterStore.getRosters();
+
+        if (rosters.homeTeamId == null || rosters.awayTeamId == null) {
+            SweetAlert({   
+                title: "Choose Teams",  
+                text: "You will not proceed without choosing new teams!",   
+                type: "warning",
+                confirmButtonText: "OK",   
+                closeOnConfirm: true, 
+            });
+        } else if (this.props.bowlingData.currentBowler == null) {
+            SweetAlert({   
+                title: "Choose a Bowler",  
+                text: "You will not proceed without choosing a new bowler!",   
+                type: "warning",
+                confirmButtonText: "OK",   
+                closeOnConfirm: true, 
+            });
+        } else if (this.props.battingData.batsman1 == null ||
+            this.props.battingData.batsman2 == null) {
+            SweetAlert({   
+                title: "Choose Batsman",  
+                text: "You will not proceed without choosing new batsman!",   
+                type: "warning",
+                confirmButtonText: "OK",   
+                closeOnConfirm: true, 
+            });
+        }
     }
 
     renderRosterNames(roster, callback) {
