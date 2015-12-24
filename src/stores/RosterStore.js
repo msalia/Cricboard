@@ -5,6 +5,7 @@
 
 var AppConstants = require('AppConstants');
 var BaseStore = require('BaseStore');
+var $ = require('jquery');
 
 var {
     ActionTypes,
@@ -17,8 +18,12 @@ class RosterStore extends BaseStore {
         super();
         this.homeTeamId = null;
         this.awayTeamId = null;
+        this.teams = [];
         this.homeTeamRoster = {};
         this.awayTeamRoster = {};
+        this.fetchingHomeTeam = false;
+        this.fetchingAwayTeam = false;
+        this.fetchingTeams = false;
         this.tossWonBy = TeamTypes.HOME;
         this.choseToBat = false;
         this.setupActions();
@@ -33,6 +38,7 @@ class RosterStore extends BaseStore {
     }
 
     initLoad(action) {
+        this.fetchTeams();
         this.emitChange();
     }
 
@@ -68,31 +74,44 @@ class RosterStore extends BaseStore {
     }
 
     fetchHomeTeamRoster() {
-        // TODO: fetch
-        console.log('fetching home team');
-        this.homeTeamRoster = this.fetchTeamRoster(this.homeTeamId);
+        if (this.fetchingHomeTeam) { return; }
+        this.fetchingHomeTeam = true;
+        this.fetchTeamRoster(TeamTypes.HOME, this.homeTeamId);
         this.emitChange();
     }
 
     fetchAwayTeamRoster() {
-        // TODO: fetch
-        console.log('fetching away team');
-        this.awayTeamRoster = this.fetchTeamRoster(this.awayTeamId);
+        if (this.fetchingAwayTeam) { return; }
+        this.fetchingAwayTeam = true;
+        this.fetchTeamRoster(TeamTypes.AWAY, this.awayTeamId);
         this.emitChange();
     }
 
-    fetchTeamRoster(teamId) {
-        // TODO: fetch from server
-        return {
-            total: 4,
-            teamName: 'Toronto Tigers',
-            players: [
-                { id: 1001, first: 'Mukund', last: 'Salia' },
-                { id: 1002, first: 'Ankur', last: 'Patel' },
-                { id: 1003, first: 'Hemal', last: 'Patel' },
-                { id: 1004, first: 'Piyush', last: 'Patel' },
-            ],
-        };
+    fetchTeamRoster(teamType, teamId) {
+        $.ajax({
+            url: 'http://api.pramukhcup.ca/fetchTeam',
+            data: { id: teamId },
+            type: 'GET',
+            crossDomain: true,
+            dataType: 'jsonp',
+        })
+        .fail((xhr, status) => {
+            console.error('Fetching Team', status);
+        })
+        .done(data => {
+            console.log(data);
+            if (teamType === TeamTypes.HOME) {
+                this.homeTeamRoster = data;
+                this.fetchingHomeTeam = false;
+            } else {
+                this.awayTeamRoster = data;
+                this.fetchingAwayTeam = false;
+            }
+        })
+        .complete(() => {
+            this.emitChange();
+        });
+        this.emitChange();
     }
 
     getRosters() {
@@ -103,17 +122,43 @@ class RosterStore extends BaseStore {
             awayTeamRoster: this.awayTeamRoster,
             tossWonBy: this.tossWonBy,
             choseToBat: this.choseToBat,
+            fetchingHomeTeam: this.fetchingHomeTeam,
+            fetchingAwayTeam: this.fetchingAwayTeam,
         };
         return rosters;
     }
 
     getTeamsList() {
         return [
-            {id: 0, label: 'Team 0'},
-            {id: 1, label: 'Team 1'},
-            {id: 2, label: 'Team 2'},
-            {id: 3, label: 'Team 3'},
-        ];
+            { id: 0, label: "Team 1" },
+        ];//this.teams;
+    }
+
+    fetchTeams() {
+        if (this.fetchingTeams) { return; }
+
+        this.fetchTeams = true;
+        $.ajax({
+            url: 'http://api.pramukhcup.ca/fetchTeams',
+            type: 'GET',
+            crossDomain: true,
+            dataType: 'jsonp',
+        })
+        .fail((xhr, status) => {
+            console.error('Fetching Teams', status);
+        })
+        .done(data => {
+            console.log(data);
+        })
+        .complete(() => {
+            this.fetchTeams = false;
+            this.emitChange();
+        });
+        this.emitChange();
+    }
+
+    isFetchingTeams() {
+        return this.fetchingTeams;
     }
 
 }

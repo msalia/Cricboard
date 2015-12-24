@@ -19,8 +19,10 @@ var AppConstants = {
         CLEAR_ROSTER: null,
         LOAD_SCORE_BOARD: null,
         PLAY_CHANGE: null,
+        GAME_OVER: null,
         RESET: null,
       	TOSS_WON_BY: null,
+        PLAYOFFS_ON_OFF: null,
     }),
 
     TeamTypes: keyMirror({

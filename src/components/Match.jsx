@@ -11,6 +11,8 @@ var React = require('react');
 var RosterStore = require('RosterStore');
 var BowlingStore = require('BowlingStore');
 var BattingStore = require('BattingStore');
+var GameOver = require('GameOver');
+var SettingsStore = require('SettingsStore');
 var ScoreStore = require('ScoreStore');
 var Subnav = require('Subnav');
 
@@ -34,6 +36,7 @@ class Match extends React.Component {
             score: ScoreStore.getData(),
             bowling: BowlingStore.getData(),
             batting: BattingStore.getData(),
+            settings: SettingsStore.getData(),
         };
     }
 
@@ -49,15 +52,21 @@ class Match extends React.Component {
         this.bowlingListener = BowlingStore.addChangeListener(this._onChange.bind(this));
         this.battingListener = BattingStore.addChangeListener(this._onChange.bind(this));
         this.scoreListener = ScoreStore.addChangeListener(this._onChange.bind(this));
+        this.settingsListener = SettingsStore.addChangeListener(this._onChange.bind(this));
     }
 
     componentWillUnmount() {
         this.bowlingListener && this.bowlingListener.remove();
         this.battingListener && this.battingListener.remove();
         this.scoreListener && this.scoreListener.remove();
+        this.settingsListener && this.settingsListener.remove();
     }
 
     render() {
+        if (ScoreStore.getIsGameOver()) {
+            return <GameOver />;
+        }
+
         var goGreen = this.state.bowling.currentBowler != null &&
             this.state.batting.batsman1 != null &&
             this.state.batting.batsman2 != null;
@@ -121,6 +130,29 @@ class Match extends React.Component {
                         onClick={() => AppActions.reset()}>
                         Reset
                     </button>
+                    <div className={cn('btn-group')} role="group">
+                        <button 
+                            type="button" 
+                            className={cn({ 
+                                'btn': true, 
+                                'btn-default': true, 
+                                'btn-primary': SettingsStore.getIsPlayoffs(),
+                            })} 
+                            style={{ marginRight: "0" }}
+                            onClick={() => AppActions.setPlayoffs(true)}>
+                            Playoffs ON
+                        </button>
+                        <button 
+                            type="button" 
+                            className={cn({ 
+                                'btn': true, 
+                                'btn-default': true, 
+                                'btn-primary': !SettingsStore.getIsPlayoffs(),
+                            })} 
+                            onClick={() => AppActions.setPlayoffs(false)}>
+                            Playoffs OFF
+                        </button>
+                    </div>
                 </div>
             </div>
         );

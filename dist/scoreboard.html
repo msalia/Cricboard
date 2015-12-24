@@ -15,31 +15,40 @@
         <div id="app-root">
             <div class="teamNames">
                 <div id="batting">NO DATA AVAILABLE</div>
-                <div id="bowling"></div>
-            </div>
-            <div class="bowlingTeamScore">
-                <div id="bowlingScore"></div>
-            </div>
-            <div class="battingTeamScore">
-                <div id="battingScore"></div>
-            </div>
-            <div class="divider"></div>
-            <div class="playerInfo">
-                <div class="playerName">
-                    <div id="strikeBatsman"></div>
-                    <div id="strikeBatsmanScore"></div>
-                </div>
-                <div class="playerName">
-                    <div id="runningBatsman"></div>
-                    <div id="runningBatsmanScore"></div>
-                </div>
-                <div class="playerName" style="border-right: none">
-                    <div id="bowler"></div>
-                    <div id="bowlerScore"></div>
+                <div id="bowling">
+                    <div id="bowlingTeamName"></div>
+                    <div class="bowlingTeamScore">
+                        <div id="bowlingScore"></div>
+                    </div>
                 </div>
                 <div style="clear: both;"></div>
             </div>
-            <div class="divider"></div>
+            <div class="battingTeamScore">
+                <div id="battingScore"></div>
+                <div style="clear: both;"></div>
+            </div>
+            <div class="stats">
+                <div class="divider"></div>
+                <div class="playerInfo">
+                    <div class="playerName">
+                        <div id="strikeBatsman"></div>
+                        <div id="strikeBatsmanScore"></div>
+                    </div>
+                    <div class="playerName">
+                        <div id="runningBatsman"></div>
+                        <div id="runningBatsmanScore"></div>
+                    </div>
+                    <div class="playerName" style="border-right: none; background-color: red;">
+                        <div id="bowler"></div>
+                        <div id="bowlerScore"></div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+                <div class="divider"></div>
+                <div id="gameOverHolder">
+                </div>
+                <div style="clear: both;"></div>
+            </div>
         </div>
 
         <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
@@ -64,7 +73,7 @@
 
                 // set team names
                 document.getElementById('batting').innerHTML = battingTeam.teamName || 'Team 1';
-                document.getElementById('bowling').innerHTML = bowlingTeam.teamName || 'Team 2';
+                document.getElementById('bowlingTeamName').innerHTML = bowlingTeam.teamName || 'Team 2';
 
                 // set bowling team score if any
                 var battingTeamScore = (batting.battingTeam === HOME) ? score.teams.HOME : score.teams.AWAY;
@@ -74,17 +83,21 @@
                 document.getElementById('bowlingScore').innerHTML = bowlingTeamScore.runs + '/' + bowlingTeamScore.wickets;
             
                 // player info
-                var batsman1 = batting.batsman1;
-                var batsman2 = batting.batsman2;
-                var bowler = bowling.currentBowler;
+                var batsman1 = batting.batsman1 || {};
+                var batsman2 = batting.batsman2 || {};
+                var bowler = bowling.currentBowler || {};
                 
                 document.getElementById('strikeBatsman').innerHTML = (batsman1.first || 'None') + ' ' + (batsman1.last || '') + '*';
                 document.getElementById('runningBatsman').innerHTML = (batsman2.first || 'None') + ' ' + (batsman2.last || '');
-                document.getElementById('bowler').innerHTML = (bowler.first || 'None') + ' ' + (bowler.last || '');
+                document.getElementById('bowler').innerHTML = (bowler.first || 'None') + ' ' + (bowler.last || '') + ' (Bowler)';
 
                 document.getElementById('strikeBatsmanScore').innerHTML = (batsman1.runs || 0) + ' (' + (batsman1.balls || 0) + ')';
                 document.getElementById('runningBatsmanScore').innerHTML = (batsman2.runs || 0) + ' (' + (batsman2.balls || 0) + ')';
                 document.getElementById('bowlerScore').innerHTML = (bowler.runs || 0) + '-' + (bowler.overs || 0);
+
+                if (!!score.gameOver) {
+                    document.getElementById('gameOverHolder').innerHTML = "<div id='gameOver'>GAME OVER</div>";
+                }
             }
         </script>
     </body>

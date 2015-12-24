@@ -3,11 +3,13 @@
  * @flow
  */
 
+var AppActions = require('AppActions');
 var AppConstants = require('AppConstants');
 var RosterStore = require('RosterStore');
 var BowlingStore = require('BowlingStore');
 var BattingStore = require('BattingStore');
 var BaseStore = require('BaseStore');
+var SettingsStore = require('SettingsStore');
 
 var {
     ActionTypes,
@@ -28,6 +30,7 @@ class ScoreStore extends BaseStore {
         this.initialized = false;
         this.playChanged = false;
         this.battingTeam = null;
+        this.gameOver = false;
         this.resetRuns();
         this.emitChange();
     }
@@ -45,6 +48,12 @@ class ScoreStore extends BaseStore {
         this.addAction(ActionTypes.SCORE_RUNS, this.score);
         this.addAction(ActionTypes.PLAY_CHANGE, this.playChange);
         this.addAction(ActionTypes.RESET, this.resetRuns);
+        this.addAction(ActionTypes.GAME_OVER, this.gameDone);
+    }
+
+    gameDone() {
+        this.gameOver = true;
+        this.emitChange();
     }
 
     loadScoreboard(action) {
@@ -76,7 +85,27 @@ class ScoreStore extends BaseStore {
         this.teams[this.battingTeam].runs = BattingStore.getRuns();
         this.teams[this.battingTeam].balls = BowlingStore.getBalls();
         this.teams[this.battingTeam].wickets = BattingStore.getWickets();
+        this.checkGameState();
         this.emitChange();
+    }
+
+    checkGameState() {
+        this.getDispatcher().waitFor([ 
+            SettingsStore.getDispatchToken(),
+        ]);
+
+        var bowlingTeam = this.battingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
+        if (this.runsWinCondition(this.battingTeam, bowlingTeam)) {
+            setTimeout(() => AppActions.gameOver(), 0);
+        }
+    }
+
+    runsWinCondition(battingTeam, bowlingTeam) {
+        return (
+            this.playChanged && // Must be in second inning
+            this.teams[battingTeam].runs > 0 && // No team can win with 0 runs.
+            this.teams[battingTeam].runs > this.teams[bowlingTeam].runs // Batting team gets more runs than the bowling team
+        );
     }
 
     playChange(action) {
@@ -92,6 +121,7 @@ class ScoreStore extends BaseStore {
     getData() {
         return {
             teams: this.teams,
+            gameOver: this.gameOver,
         };
     }
 
@@ -113,6 +143,10 @@ class ScoreStore extends BaseStore {
 
     getIsPlayChanged() {
         return this.playChanged;
+    }
+
+    getIsGameOver() {
+        return this.gameOver;
     }
 
 }

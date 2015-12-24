@@ -83,7 +83,16 @@ class Roster extends React.Component {
         );
     }
 
-    renderTeam(label, roster, onClick) {
+    renderTeam(fetching, label, roster, onClick) {
+        if (fetching || RosterStore.isFetchingTeams()) {
+            return (
+                <div className={cn('roster-team-selection-team')}>
+                    {label} <br />
+                    <span className="glyphicon glyphicon-repeat loadingIcon" />
+                </div>
+            );
+        }
+
         var teamList = RosterStore.getTeamsList();
         var teamDropdown = [];
         teamList.forEach(team => {
@@ -120,11 +129,13 @@ class Roster extends React.Component {
         return (
             <div className={cn('roster-team-selection')}>
                 {this.renderTeam(
+                    this.state.fetchingHomeTeam,
                     this.homeTeam, 
                     this.state.homeTeamRoster || {}, 
                     (e, team) => this.teamSelected(e, TeamTypes.HOME, team)
                 )}
                 {this.renderTeam(
+                    this.state.fetchingAwayTeam,
                     this.awayTeam,
                     this.state.awayTeamRoster || {},
                     (e, team) => this.teamSelected(e, TeamTypes.AWAY, team)

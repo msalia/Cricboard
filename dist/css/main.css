@@ -109,7 +109,7 @@ a:visited {    text-decoration: none;
 }
 
 .boardScoreButtons button {
-    margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 10px;
 }
 
@@ -156,6 +156,20 @@ a:visited {    text-decoration: none;
 .roster-team-selection-team:last-child {
     border: 0;
 }
+
+.rosterLoading {
+    padding: 15px;
+}
+
+.loadingIcon {
+    -webkit-animation: spin 4s linear infinite;
+    -moz-animation: spin 4s linear infinite;
+    animation: spin 4s linear infinite;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
 .teamDetails {
     margin-top: 20px;

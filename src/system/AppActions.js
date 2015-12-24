@@ -61,6 +61,14 @@ class AppActions {
         this.dispatch(ActionTypes.PLAY_CHANGE, {});
     }
 
+    gameOver() {
+        this.dispatch(ActionTypes.GAME_OVER, {});
+    }
+
+    setPlayoffs(value) {
+        this.dispatch(ActionTypes.PLAYOFFS_ON_OFF, { value });
+    }
+
     swapBatsman() {
         this.dispatch(ActionTypes.SWAP_BATSMAN, {});
     }

@@ -3,9 +3,11 @@
  * @flow
  */
 
+var AppActions = require('AppActions');
 var AppConstants = require('AppConstants');
 var RosterStore = require('RosterStore');
 var BaseStore = require('BaseStore');
+var SettingsStore = require('SettingsStore');
 var BowlingStore = require('BowlingStore');
 
 var {
@@ -25,6 +27,7 @@ class BattingStore extends BaseStore {
 
     reset() {
         this.initialized = false;
+        this.playChanged = false;
         this.battingTeam = null;
         this.battingTeamRoster = [];
         this.fullTeam = [];
@@ -95,6 +98,7 @@ class BattingStore extends BaseStore {
             return;
         }
 
+        this.playChanged = true;
         this.battingTeam = this.battingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
         this.loadPlayers(this.battingTeam);
         this.resetScore();
@@ -134,20 +138,44 @@ class BattingStore extends BaseStore {
             return;
         }
 
+        this.getDispatcher().waitFor([ 
+            SettingsStore.getDispatchToken(),
+        ]);
+
+        var settings = SettingsStore.getData();
         switch(action.scoreType) {
             case ScoreTypes.WIDE:
             case ScoreTypes.NO_BALL:
                 this.runs++;
                 break;
             case ScoreTypes.WICKET:
-                this.runs -= 3;
+                this.runs -= settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
                 this.wickets++;
                 this.strikeBatsman.balls += 1;
                 this.strikeBatsman = null;
                 this.shouldProceed = false;
                 break;
         }
+
+        this.checkGameState();
         this.emitChange();
+    }
+
+    checkGameState() {
+        if (this.battingWinCondition()) {
+            if (!this.playChanged) {
+                setTimeout(() => AppActions.playChange(), 0);
+            } else {
+                setTimeout(() => AppActions.gameOver(), 0);
+            }
+        }
+    }
+
+    battingWinCondition() {
+        this.getDispatcher().waitFor([ 
+            SettingsStore.getDispatchToken(),
+        ]);
+        return (this.wickets >= SettingsStore.getData().maxWickets);
     }
 
     scoreRuns(action) {

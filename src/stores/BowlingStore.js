@@ -3,8 +3,10 @@
  * @flow
  */
 
+var AppActions = require('AppActions');
 var AppConstants = require('AppConstants');
 var RosterStore = require('RosterStore');
+var SettingsStore = require('SettingsStore');
 var BaseStore = require('BaseStore');
 
 var {
@@ -24,6 +26,7 @@ class BowlingStore extends BaseStore {
 
     reset() {
         this.initialized = false;
+        this.playChanged = false;
         this.bowlingTeam = null;
         this.bowlingTeamRoster = [];
         this.fullTeam = [];
@@ -59,6 +62,7 @@ class BowlingStore extends BaseStore {
             return;
         }
 
+        this.playChanged = true;
         this.bowlingTeam = this.bowlingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
         this.loadPlayers(this.bowlingTeam);
         this.resetBalls();
@@ -107,10 +111,8 @@ class BowlingStore extends BaseStore {
 
         if (found >= 0) {
             this.currentBowler = bowlers[found];
-            if (this.currentBowler.overs) {
-                this.currentBowler.overs += 1;
-            } else {
-                this.currentBowler.overs = 1;
+            if (!this.currentBowler.ballsBowled) {
+                this.currentBowler.ballsBowled = 0;
             }
 
             this.currentOver = [];
@@ -147,10 +149,10 @@ class BowlingStore extends BaseStore {
     }
 
     incrementCurrentBowlerRuns(amount) {
-        if (this.currentBowler.runs) {
-            this.currentBowler.runs += amount;
+        if (this.currentBowler.runsAllowed) {
+            this.currentBowler.runsAllowed += amount;
         } else {
-            this.currentBowler.runs = amount;
+            this.currentBowler.runsAllowed = amount;
         }
     }
 
@@ -172,6 +174,17 @@ class BowlingStore extends BaseStore {
         if (this.shouldProceed) {
             this.balls++;
         }
+
+        if (!this.currentBowler.ballsBowled) {
+            this.currentBowler.ballsBowled = 1;
+        } else {
+            this.currentBowler.ballsBowled += 1;
+        }
+
+        if (this.checkGameState()) {
+            return;
+        }
+
         if (this.balls > 0 && this.balls % 6 === 0) {
             this.overs.push(this.currentOver);
             this.changeBowler = true;
@@ -179,6 +192,24 @@ class BowlingStore extends BaseStore {
             this.shouldProceed = false;
         }
         this.emitChange();
+    }
+
+    checkGameState() {
+        if (this.ballsWinCondition()) {
+            if (!this.playChanged) {
+                setTimeout(() => AppActions.playChange(), 0);
+            } else {
+                setTimeout(() => AppActions.gameOver(), 0);
+            }
+            return true;
+        }
+    }
+
+    ballsWinCondition() {
+        this.getDispatcher().waitFor([ 
+            SettingsStore.getDispatchToken(),
+        ]);
+        return (this.balls >= SettingsStore.getData().overs * 6);
     }
 
     getData() {

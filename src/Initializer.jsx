@@ -9,6 +9,7 @@ var AppConstants = require('AppConstants');
 var AppDispatcher = require('AppDispatcher');
 var BattingStore = require('BattingStore');
 var BowlingStore = require('BowlingStore');
+var SettingsStore = require('SettingsStore');
 var Match = require('Match');
 var RosterStore = require('RosterStore');
 var React = require('react');
@@ -19,6 +20,7 @@ var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var Redirect = ReactRouter.Redirect;
 var ScoreStore = require('ScoreStore');
+var Settings = require('Settings');
 
 var {ActionTypes} = AppConstants;
 
@@ -31,6 +33,7 @@ class Initializer {
             BattingStore,
             BowlingStore,
             ScoreStore,
+            SettingsStore,
         ];
     }
 
@@ -50,7 +53,7 @@ class Initializer {
                             <Route path="/" component={App}>
                                 <Route path="roster" component={Roster}/>
                                 <Route path="match" component={Match}/>
-                                <Route path="settings" component={Roster}/>
+                                <Route path="settings" component={Settings}/>
                             </Route>
                         </Router>
                     ), 

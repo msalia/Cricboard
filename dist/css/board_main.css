@@ -56,22 +56,41 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+html,
+body,
+#app-root {
+    position: absolute;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
 #app-root {
     color: #FFFFFF;
     padding: 20px;
-    position: absolute;
+    height: 100%;
+    min-height: 100%;
     background-color: #000000;
-    top: 0;
-    right: 0;
+}
+
+.stats {
+    background-color: #000000; 
+    position: absolute;
     bottom: 0;
     left: 0;
+    right: 0;
+    height: 300px;
 }
 
 .teamNames {
-    font-size: 30px;
+    font-size: 50px;
     font-weight: bold;
     width: 100%;
-    height: 45px;
+    height: 55px;
     margin-bottom: 5px;
 }
 
@@ -84,17 +103,20 @@ textarea {
 }
 
 .bowlingTeamScore {
-    font-size: 30px;
-    width: 100%;
+    line-height: 120px;
+    height: 120px;
+    font-size: 100px;
     text-align: right;
 }
 
 .battingTeamScore {
-    font-size: 340px;
+    position: absolute;
+    font-size: 40vh;
     font-weight: bold;
-    line-height: 350px;
-    width: 100%;
     text-align: left;
+    height: 100%;
+    padding-top: 60px;
+    padding-bottom: 300px;
 }
 
 .divider {
@@ -106,13 +128,13 @@ textarea {
 
 .playerInfo {
     width: 100%;
-    font-size: 20px;
+    font-size: 30px;
 }
 
 .playerName {
     float: left;
     box-sizing: border-box;
-    height: 100px;
+    height: 150px;
     padding: 10px;
     width: 32%;
     border-right: 1px solid #FFFFFF;
@@ -120,6 +142,15 @@ textarea {
 
 .playerName:last-child {
     border: none;
+}
+
+#gameOver {
+    background-color: green;
+    font-size: 40px;
+    height: 50px;
+    line-height: 100px;
+    width: 100%;
+    text-align: center;
 }
 
 #strikeBatsmanScore,
