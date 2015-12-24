@@ -1,5 +1,5 @@
 /*
- * Bowling Component
+ * Controls Component
  * @flow
  */
 
@@ -9,6 +9,7 @@ var React = require('react');
 var RosterStore = require('RosterStore');
 var Subnav = require('Subnav');
 var StatBox = require('StatBox');
+var SweetAlert = require('sweetalert');
 
 var {
     TeamTypes,
@@ -16,7 +17,7 @@ var {
 } = AppConstants;
 var cn = require('classnames');
 
-class BowlingControls extends React.Component {
+class Controls extends React.Component {
 
     constructor(props) {
         super(props);
@@ -28,33 +29,54 @@ class BowlingControls extends React.Component {
     }
 
     render() {
+        this.alertUserForInput();
         return (
             <div className={cn('row')}>
-                <Subnav title="Bowling" />
-                {this.renderBowlingControls()}
+                <Subnav title="Controls" />
+                {this.renderControls()}
             </div>
         );
     }
 
-    renderBowlingButtons() {
-        var buttonClasses = cn('btn', 'btn-default');
-        var bowlerSelect = this.props.bowlingData.changeBowler ?
-            <div className="btn-group">
-                <button type="button" className="btn btn-default">
-                    Choose Next Bowler
-                </button>
-                <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                    <span className="caret"></span>
-                    <span className="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul className="dropdown-menu">
-                    {this.renderRosterNames(
-                        this.props.bowlingData.bowlingTeamRoster, 
-                        (_, id) => AppActions.chooseBowler(id)
-                    )}
-                </ul>
-            </div> : null;
+    alertUserForInput() {
+        var rosters = RosterStore.getRosters();
 
+        if (rosters.homeTeamId == null || rosters.awayTeamId == null) {
+            SweetAlert({   
+                title: "Choose Teams",  
+                text: "You will not be able to proceed without choosing teams!",   
+                type: "warning",
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Let's go choose",
+                closeOnConfirm: true,
+            },
+            isConfirm => {   
+                if (isConfirm) {
+                    window.location = 'http://localhost/#/roster';
+                }
+            });
+        } else if (this.props.bowlingData.currentBowler == null) {
+            SweetAlert({   
+                title: "Choose a Bowler",  
+                text: "You will not be able to proceed without choosing a bowler!",   
+                type: "warning",
+                confirmButtonText: "OK",   
+                closeOnConfirm: true, 
+            });
+        } else if (this.props.battingData.batsman1 == null ||
+            this.props.battingData.batsman2 == null) {
+            SweetAlert({   
+                title: "Choose Batsman",  
+                text: "You will not be able to proceed without choosing batsmen!",   
+                type: "warning",
+                confirmButtonText: "OK",   
+                closeOnConfirm: true, 
+            });
+        }
+    }
+
+    renderButtons() {
+        var buttonClasses = cn('btn', 'btn-default');
         return (
             <div>
                 <div className={cn('col-sm-12')}>
@@ -78,7 +100,60 @@ class BowlingControls extends React.Component {
                     </div>
                 </div>
                 <div className={cn('col-sm-12')}>
-                    {bowlerSelect}
+                    Bowler: &nbsp;
+                    <div className="btn-group" style={{ marginRight: "15px" }}>
+                        <button type="button" className="btn btn-default">
+                            Choose Next Bowler
+                        </button>
+                        <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span className="caret"></span>
+                            <span className="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul className="dropdown-menu">
+                            {this.renderRosterNames(
+                                this.props.bowlingData.bowlingTeamRoster, 
+                                (_, id) => AppActions.chooseBowler(id)
+                            )}
+                        </ul>
+                    </div>
+                </div>
+                <div className={cn('col-sm-12')} style={{ marginTop: "15px" }}>
+                    Batsmen: &nbsp;
+                    <div className="btn-group" style={{ marginRight: "15px" }}>
+                        <button type="button" className="btn btn-default">
+                            Choose B1
+                        </button>
+                        <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span className="caret"></span>
+                            <span className="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul className="dropdown-menu">
+                            {this.renderRosterNames(
+                                this.props.battingData.battingTeamRoster,
+                                (_, id) => AppActions.chooseBatsman(1, id)
+                            )}
+                        </ul>
+                    </div>
+                    <div className="btn-group" style={{ marginRight: "15px" }}>
+                        <button type="button" className="btn btn-default">
+                            Choose B2
+                        </button>
+                        <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span className="caret"></span>
+                            <span className="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul className="dropdown-menu">
+                            {this.renderRosterNames(
+                                this.props.battingData.battingTeamRoster,
+                                (_, id) => AppActions.chooseBatsman(2, id)
+                            )}
+                        </ul>
+                    </div>
+                    <button type="button" 
+                        className={cn('btn', 'btn-primary')}
+                        onClick={() => this.props.goGreen && AppActions.swapBatsman()}>
+                        Swap Batsman
+                    </button>
                 </div>
             </div>
         );
@@ -132,13 +207,17 @@ class BowlingControls extends React.Component {
         );
     }
 
-    renderBowlingControls() {
+    renderControls() {
         var data = this.props.bowlingData || {};
         var bowler = data.currentBowler || null;
+        var b1 = this.props.battingData.batsman1 || {};
+        var b2 = this.props.battingData.batsman2 || {};
         var stats = [
             { title: 'Runs This Over', value: this.calcRuns(data.currentOver) || 0 },
             { title: 'Current Over', value: this.printOver(data.currentOver) || '-' },
             { title: 'Bowler', value: bowler ? `${bowler.first} ${bowler.last}` : 'None' },
+            { title: `B1 ${b1.first || ''} ${b1.last || ''}`, value: b1.runs || 0, middot: true },
+            { title: `B2 ${b2.first || ''} ${b2.last || ''}`, value: b2.runs || 0 },
         ];
         return (
             <div className={cn('bowlingStatistics')}>
@@ -147,12 +226,7 @@ class BowlingControls extends React.Component {
                         <StatBox statBoxes={stats} />
                     </div>
                     <div className={cn('col-sm-6', 'bowlingControls')}>
-                        {this.renderBowlingButtons()}
-                    </div>
-                    <div className={cn('col-sm-12', 'bowlingList')}>
-                        {this.renderDataTable(this.props.bowlingData.bowlers, bowler => {
-                            return `${bowler.runsAllowed || 0}-${this.getOvers(bowler.ballsBowled) || '0.0'}-${bowler.wickets || 0}`;
-                        })}
+                        {this.renderButtons()}
                     </div>
                 </div>
             </div>
@@ -185,11 +259,6 @@ class BowlingControls extends React.Component {
         return text.substr(0, text.length-1);
     }
 
-    getOvers(balls) {
-        if (balls == null) return '0.0';
-        return `${parseInt(balls/6)}.${balls%6}`;
-    }
-
 }
 
-module.exports = BowlingControls;
+module.exports = Controls;

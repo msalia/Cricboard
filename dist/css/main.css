@@ -261,7 +261,6 @@ a:visited {    text-decoration: none;
 .battingOverview,
 .bowlingOverview {
     border-right: 1px solid #DDDDDD;
-    height: 162px;
 }
 
 .bowlingStatBox {
@@ -294,10 +293,6 @@ a:visited {    text-decoration: none;
     position: absolute;
     left: 15px;
     top: 14px;
-}
-
-.bowlingControls {
-    height: 162px;
 }
 
 .bowlingList {

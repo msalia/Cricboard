@@ -5,8 +5,8 @@
 
 var AppActions = require('AppActions');
 var AppConstants = require('AppConstants');
-var BattingControls = require('BattingControls');
-var BowlingControls = require('BowlingControls');
+var PlayersList = require('PlayersList');
+var Controls = require('Controls');
 var React = require('react');
 var RosterStore = require('RosterStore');
 var BowlingStore = require('BowlingStore');
@@ -77,14 +77,14 @@ class Match extends React.Component {
                     <Subnav title="Overall Statistics" />
                     {this.renderStatistics()}
                 </div>
-                <BowlingControls 
+                <Controls 
+                    battingData={this.state.batting} 
                     bowlingData={this.state.bowling} 
                     goGreen={goGreen} 
                 />
-                <BattingControls 
+                <PlayersList 
                     bowlingData={this.state.bowling}
-                    battingData={this.state.batting} 
-                    goGreen={goGreen} 
+                    battingData={this.state.batting}
                 />
             </div>
         );

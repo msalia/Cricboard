@@ -111,6 +111,8 @@ body,
 
 .battingTeamScore {
     position: absolute;
+    left: 15px;
+    top: -15px;
     font-size: 40vh;
     font-weight: bold;
     text-align: left;
