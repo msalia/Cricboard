@@ -46,15 +46,21 @@ class BattingControls extends React.Component {
         if (rosters.homeTeamId == null || rosters.awayTeamId == null) {
             SweetAlert({   
                 title: "Choose Teams",  
-                text: "You will not proceed without choosing new teams!",   
+                text: "You will not be able to proceed without choosing teams!",   
                 type: "warning",
-                confirmButtonText: "OK",   
-                closeOnConfirm: true, 
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Let's go choose",
+                closeOnConfirm: true,
+            },
+            isConfirm => {   
+                if (isConfirm) {
+                    window.location = 'http://localhost/#/roster';
+                }
             });
         } else if (this.props.bowlingData.currentBowler == null) {
             SweetAlert({   
                 title: "Choose a Bowler",  
-                text: "You will not proceed without choosing a new bowler!",   
+                text: "You will not be able to proceed without choosing a bowler!",   
                 type: "warning",
                 confirmButtonText: "OK",   
                 closeOnConfirm: true, 
@@ -63,7 +69,7 @@ class BattingControls extends React.Component {
             this.props.battingData.batsman2 == null) {
             SweetAlert({   
                 title: "Choose Batsman",  
-                text: "You will not proceed without choosing new batsman!",   
+                text: "You will not be able to proceed without choosing batsmen!",   
                 type: "warning",
                 confirmButtonText: "OK",   
                 closeOnConfirm: true, 

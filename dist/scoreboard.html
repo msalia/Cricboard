@@ -95,9 +95,13 @@
                 document.getElementById('runningBatsmanScore').innerHTML = (batsman2.runs || 0) + ' (' + (batsman2.balls || 0) + ')';
                 document.getElementById('bowlerScore').innerHTML = (bowler.runs || 0) + '-' + (bowler.overs || 0);
 
+                var gameOver = "";
                 if (!!score.gameOver) {
-                    document.getElementById('gameOverHolder').innerHTML = "<div id='gameOver'>GAME OVER</div>";
+                    gameOver = "<div id='gameOver'>GAME OVER</div>";
+                } else if (score.message) {
+                    gameOver = "<div id='gameOver'>" + score.message + "</div>";
                 }
+                document.getElementById('gameOverHolder').innerHTML = gameOver;
             }
         </script>
     </body>

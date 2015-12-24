@@ -7,6 +7,8 @@ var AppActions = require('AppActions');
 var AppConstants = require('AppConstants');
 var RosterStore = require('RosterStore');
 var BaseStore = require('BaseStore');
+var SweetAlert = require('sweetalert');
+var SettingsStore = require('SettingsStore');
 
 var {
     ActionTypes,
@@ -107,7 +109,21 @@ class BowlingStore extends BaseStore {
         var found = bowlers.findIndex(player => player.id === playerId);
 
         if (found >= 0) {
-            this.currentBowler = bowlers[found];
+            var bowler = bowlers[found];
+            var maxOvers = SettingsStore.getData().maxOversPerBowler;
+            if (bowler.ballsBowled != null &&
+                parseInt(bowler.ballsBowled / 6) >= maxOvers) {
+                SweetAlert({   
+                    title: "Cannot choose bowler!",  
+                    text: `${bowler.first} ${bowler.last} has already bowled ${maxOvers} over(s).`,   
+                    type: "error",
+                    confirmButtonText: "OK",   
+                    closeOnConfirm: true, 
+                });
+                return;
+            }
+
+            this.currentBowler = bowler;
             if (!this.currentBowler.ballsBowled) {
                 this.currentBowler.ballsBowled = 0;
             }

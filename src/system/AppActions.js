@@ -69,6 +69,26 @@ class AppActions {
         this.dispatch(ActionTypes.PLAYOFFS_ON_OFF, { value });
     }
 
+    setOvers(count) {
+        this.dispatch(ActionTypes.SET_OVERS, { count });
+    }
+
+    setSeasonWicketDeduction(count) {
+        this.dispatch(ActionTypes.SET_SEASON_WICKET_DEDUCTION, { count });
+    }
+
+    setPlayoffWicketDeduction(count) {
+        this.dispatch(ActionTypes.SET_PLAYOFF_WICKET_DEDUCTION, { count });
+    }
+
+    setMaxWickets(count) {
+        this.dispatch(ActionTypes.SET_MAX_WICKETS, { count });
+    }
+
+    setMaxOversPerBowler(count) {
+        this.dispatch(ActionTypes.SET_MAX_OVERS_PER_BOWLER, { count });
+    }
+
     swapBatsman() {
         this.dispatch(ActionTypes.SWAP_BATSMAN, {});
     }

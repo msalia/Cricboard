@@ -137,7 +137,18 @@ class ScoreStore extends BaseStore {
         return {
             teams: this.teams,
             gameOver: this.gameOver,
+            message: this.getMessage(),
         };
+    }
+
+    getMessage() {
+        if (this.playChanged) {
+            var bowlingTeam = this.battingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
+            var batting = this.teams[this.battingTeam];
+            var bowling = this.teams[bowlingTeam];
+            return `${(bowling.runs + 1) - batting.runs} runs needed from ${(SettingsStore.getData().overs * 6) - batting.balls} balls to win.`;
+        }
+        return null;
     }
 
     getRuns() {

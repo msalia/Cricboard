@@ -9,6 +9,7 @@ var RosterStore = require('RosterStore');
 var BaseStore = require('BaseStore');
 var BowlingStore = require('BowlingStore');
 var SettingsStore = require('SettingsStore');
+var SweetAlert = require('sweetalert');
 
 var {
     ActionTypes,
@@ -114,14 +115,26 @@ class BattingStore extends BaseStore {
         var found = batsman.findIndex(player => player.id === id);
         var alreadyBatted = this.batsman.findIndex(player => player.id === id);
 
-        if (found >= 0 && alreadyBatted < 0) {
+        if (found >= 0) {
+            var batter = batsman[found];
+            if (alreadyBatted >= 0) {
+                SweetAlert({   
+                    title: "Cannot choose batsman!",  
+                    text: `${batter.first} ${batter.last} has already batted.`,   
+                    type: "error",
+                    confirmButtonText: "OK",   
+                    closeOnConfirm: true, 
+                });
+                return;
+            }
+
             if (position === 1) {
-                this.strikeBatsman = batsman[found];
+                this.strikeBatsman = batter;
                 this.strikeBatsman.runs = 0;
                 this.strikeBatsman.balls = 0;
                 this.batsman.push(this.strikeBatsman);
             } else {
-                this.runningBatsman = batsman[found];
+                this.runningBatsman = batter;
                 this.runningBatsman.runs = 0;
                 this.runningBatsman.balls = 0;
                 this.batsman.push(this.runningBatsman);

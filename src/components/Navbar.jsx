@@ -33,7 +33,7 @@ class Navbar extends React.Component {
         var tabData = [ 
             [ 'Rosters', '/roster' ], 
             [ 'Match', '/match' ], 
-            //TODO: [ 'Settings', '/settings' ],
+            [ 'Settings', '/settings' ],
         ];
         tabData.forEach((tab, index) => {
             tabs.push(
