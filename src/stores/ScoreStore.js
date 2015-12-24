@@ -39,6 +39,7 @@ class ScoreStore extends BaseStore {
         this.teams = {};
         this.teams[TeamTypes.HOME] = { runs: 0, wickets: 0, balls: 0 };
         this.teams[TeamTypes.AWAY] = { runs: 0, wickets: 0, balls: 0 };
+        this.playChanged = false;
         this.emitChange();
     }
 
@@ -97,7 +98,17 @@ class ScoreStore extends BaseStore {
         var bowlingTeam = this.battingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
         if (this.runsWinCondition(this.battingTeam, bowlingTeam)) {
             setTimeout(() => AppActions.gameOver(), 0);
+        } else if (this.battingWinCondition() || this.ballsWinCondition()) {
+            if (!this.playChanged) {
+                setTimeout(() => AppActions.playChange(), 0);
+            } else {
+                setTimeout(() => AppActions.gameOver(), 0);
+            }
         }
+    }
+
+    ballsWinCondition() {
+        return (this.teams[battingTeam].balls >= SettingsStore.getData().overs * 6);
     }
 
     runsWinCondition(battingTeam, bowlingTeam) {
@@ -106,6 +117,10 @@ class ScoreStore extends BaseStore {
             this.teams[battingTeam].runs > 0 && // No team can win with 0 runs.
             this.teams[battingTeam].runs > this.teams[bowlingTeam].runs // Batting team gets more runs than the bowling team
         );
+    }
+
+    battingWinCondition() {
+        return (this.teams[this.battingTeam].wickets >= SettingsStore.getData().maxWickets);
     }
 
     playChange(action) {

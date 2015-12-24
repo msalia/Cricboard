@@ -100,6 +100,7 @@ class Match extends React.Component {
                             Overs: {this.getOvers(teams[TeamTypes.HOME].balls)}
                         </div>
                         <div className={cn('col-sm-4', 'boardScoreDisplayName')}>
+                            {this.state.batting.battingTeam === TeamTypes.HOME ? <span className={cn('overviewMiddot')} /> : null}
                             {rosters.homeTeamRoster.teamName || 'No Team Selected'}
                         </div>
                         <div className={cn('col-sm-4', 'boardScoreDisplayRuns')}>
@@ -111,6 +112,7 @@ class Match extends React.Component {
                             Overs: {this.getOvers(teams[TeamTypes.AWAY].balls)}
                         </div>
                         <div className={cn('col-sm-4', 'boardScoreDisplayName')}>
+                            {this.state.batting.battingTeam === TeamTypes.AWAY ? <span className={cn('overviewMiddot')} /> : null}
                             {rosters.awayTeamRoster.teamName || 'No Team Selected'}
                         </div>
                         <div className={cn('col-sm-4', 'boardScoreDisplayRuns')}>

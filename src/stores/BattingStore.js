@@ -7,8 +7,8 @@ var AppActions = require('AppActions');
 var AppConstants = require('AppConstants');
 var RosterStore = require('RosterStore');
 var BaseStore = require('BaseStore');
-var SettingsStore = require('SettingsStore');
 var BowlingStore = require('BowlingStore');
+var SettingsStore = require('SettingsStore');
 
 var {
     ActionTypes,
@@ -27,7 +27,6 @@ class BattingStore extends BaseStore {
 
     reset() {
         this.initialized = false;
-        this.playChanged = false;
         this.battingTeam = null;
         this.battingTeamRoster = [];
         this.fullTeam = [];
@@ -98,7 +97,6 @@ class BattingStore extends BaseStore {
             return;
         }
 
-        this.playChanged = true;
         this.battingTeam = this.battingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
         this.loadPlayers(this.battingTeam);
         this.resetScore();
@@ -157,25 +155,7 @@ class BattingStore extends BaseStore {
                 break;
         }
 
-        this.checkGameState();
         this.emitChange();
-    }
-
-    checkGameState() {
-        if (this.battingWinCondition()) {
-            if (!this.playChanged) {
-                setTimeout(() => AppActions.playChange(), 0);
-            } else {
-                setTimeout(() => AppActions.gameOver(), 0);
-            }
-        }
-    }
-
-    battingWinCondition() {
-        this.getDispatcher().waitFor([ 
-            SettingsStore.getDispatchToken(),
-        ]);
-        return (this.wickets >= SettingsStore.getData().maxWickets);
     }
 
     scoreRuns(action) {

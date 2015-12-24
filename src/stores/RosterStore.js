@@ -89,26 +89,29 @@ class RosterStore extends BaseStore {
 
     fetchTeamRoster(teamType, teamId) {
         $.ajax({
-            url: 'http://api.pramukhcup.ca/fetchTeam',
+            url: 'http://api.pramukhcup.ca/getTeam',
             data: { id: teamId },
             type: 'GET',
             crossDomain: true,
+            jsonpCallback: 'callback',
             dataType: 'jsonp',
         })
         .fail((xhr, status) => {
             console.error('Fetching Team', status);
         })
         .done(data => {
-            console.log(data);
             if (teamType === TeamTypes.HOME) {
                 this.homeTeamRoster = data;
-                this.fetchingHomeTeam = false;
             } else {
                 this.awayTeamRoster = data;
-                this.fetchingAwayTeam = false;
             }
         })
         .complete(() => {
+            if (teamType === TeamTypes.HOME) {
+                this.fetchingHomeTeam = false;
+            } else {
+                this.fetchingAwayTeam = false;
+            }
             this.emitChange();
         });
         this.emitChange();
@@ -129,9 +132,7 @@ class RosterStore extends BaseStore {
     }
 
     getTeamsList() {
-        return [
-            { id: 0, label: "Team 1" },
-        ];//this.teams;
+        return this.teams;
     }
 
     fetchTeams() {
@@ -139,16 +140,17 @@ class RosterStore extends BaseStore {
 
         this.fetchTeams = true;
         $.ajax({
-            url: 'http://api.pramukhcup.ca/fetchTeams',
+            url: 'http://api.pramukhcup.ca/getTeams',
             type: 'GET',
             crossDomain: true,
+            jsonpCallback: 'callback',
             dataType: 'jsonp',
         })
         .fail((xhr, status) => {
             console.error('Fetching Teams', status);
         })
         .done(data => {
-            console.log(data);
+            this.teams = data;
         })
         .complete(() => {
             this.fetchTeams = false;

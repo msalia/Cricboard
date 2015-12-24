@@ -230,6 +230,7 @@ a:visited {    text-decoration: none;
 
 .boardScoreDisplayName {
     background-color: #FFFFFF;
+    position: relative;
 }
 
 .boardScoreDisplayHomeTeam .boardScoreDisplayName {
@@ -262,6 +263,7 @@ a:visited {    text-decoration: none;
     margin-right: 10px;
 }
 
+.overviewMiddot,
 .middot {
     display: inline-block;
     height: 10px;
@@ -269,6 +271,12 @@ a:visited {    text-decoration: none;
     margin-right: 5px;
     border-radius: 5px;
     background-color: #5ABDDB;
+}
+
+.overviewMiddot {
+    position: absolute;
+    left: 15px;
+    top: 14px;
 }
 
 .bowlingControls {
