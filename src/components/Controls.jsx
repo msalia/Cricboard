@@ -93,10 +93,16 @@ class Controls extends React.Component {
                         <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreRuns(0)}>0</button>
                         <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreRuns(1)}>1</button>
                         <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreRuns(2)}>2</button>
+                        <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreRuns(3)}>3</button>
                         <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreRuns(4)}>4</button>
                         <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreRuns(6)}>6</button>
                         <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreRuns(1, false)}>+1</button>
                         <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreRuns(-1, false)}>-1</button>
+                    </div>
+                    &nbsp;&nbsp;Balls: &nbsp;
+                    <div className={cn('btn-group')} role="group">
+                        <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreBalls(1)}>+1</button>
+                        <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreBalls(-1)}>-1</button>
                     </div>
                 </div>
                 <div className={cn('col-sm-12')}>

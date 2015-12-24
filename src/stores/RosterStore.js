@@ -89,7 +89,7 @@ class RosterStore extends BaseStore {
 
     fetchTeamRoster(teamType, teamId) {
         $.ajax({
-            url: 'http://api.pramukhcup.ca/getTeam',
+            url: `${AppConstants.API_ENDPOINT}/getTeam`,
             data: { id: teamId },
             type: 'GET',
             crossDomain: true,
@@ -140,7 +140,7 @@ class RosterStore extends BaseStore {
 
         this.fetchTeams = true;
         $.ajax({
-            url: 'http://api.pramukhcup.ca/getTeams',
+            url: `${AppConstants.API_ENDPOINT}/getTeams`,
             type: 'GET',
             crossDomain: true,
             jsonpCallback: 'callback',

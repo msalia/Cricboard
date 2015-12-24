@@ -53,6 +53,7 @@ class BowlingStore extends BaseStore {
         this.addAction(ActionTypes.CHOOSE_BOWLER, this.chooseBowler);
         this.addAction(ActionTypes.SCORE_EXTRA, this.scoreExtra);
         this.addAction(ActionTypes.SCORE_RUNS, this.scoreRuns);
+        this.addAction(ActionTypes.SCORE_BALLS, this.scoreBalls);
         this.addAction(ActionTypes.PLAY_CHANGE, this.playChange);
         this.addAction(ActionTypes.RESET, this.resetBalls);
     }
@@ -187,15 +188,51 @@ class BowlingStore extends BaseStore {
         this.emitChange();
     }
 
-    incrementBalls() {
+    scoreBalls(action) {
+        if (action.balls === 1) {
+            this.incrementBalls(1);
+            this.currentOver.push(0);
+        } else {
+            this.decrementBalls(1);
+            this.currentOver.pop();
+        }
+        this.emitChange();
+    }
+
+    decrementBalls(amount) {
+        var balls = 1;
+        if (amount != null) {
+            balls = amount;
+        }
         if (this.shouldProceed) {
-            this.balls++;
+            this.balls -= balls;
+            if (this.balls < 0) {
+                this.balls = 0;
+            }
+        }
+
+        if (this.currentBowler.ballsBowled != null && this.currentBowler.ballsBowled >= amount) {
+            this.currentBowler.ballsBowled -= amount;
+            if (this.currentBowler.ballsBowled < 0) {
+                this.currentBowler.ballsBowled = 0;
+            }
+        }
+        this.emitChange();
+    }
+
+    incrementBalls(amount) {
+        var balls = 1;
+        if (amount != null) {
+            balls = amount;
+        }
+        if (this.shouldProceed) {
+            this.balls += balls;
         }
 
         if (!this.currentBowler.ballsBowled) {
-            this.currentBowler.ballsBowled = 1;
+            this.currentBowler.ballsBowled = balls;
         } else {
-            this.currentBowler.ballsBowled += 1;
+            this.currentBowler.ballsBowled += balls;
         }
 
         if (this.balls > 0 && this.balls % 6 === 0) {

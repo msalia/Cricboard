@@ -49,6 +49,10 @@ class AppActions {
         this.dispatch(ActionTypes.SCORE_RUNS, { runs, ballIncre });
     }
 
+    scoreBalls(balls) {
+        this.dispatch(ActionTypes.SCORE_BALLS, { balls });
+    }
+
     loadScoreboard() {
         this.dispatch(ActionTypes.LOAD_SCORE_BOARD, {});
     }

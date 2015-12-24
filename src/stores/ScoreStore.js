@@ -47,6 +47,7 @@ class ScoreStore extends BaseStore {
         this.addAction(ActionTypes.LOAD_SCORE_BOARD, this.loadScoreboard);
         this.addAction(ActionTypes.SCORE_EXTRA, this.score);
         this.addAction(ActionTypes.SCORE_RUNS, this.score);
+        this.addAction(ActionTypes.SCORE_BALLS, this.score);
         this.addAction(ActionTypes.PLAY_CHANGE, this.playChange);
         this.addAction(ActionTypes.RESET, this.resetRuns);
         this.addAction(ActionTypes.GAME_OVER, this.gameDone);

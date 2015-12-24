@@ -43,7 +43,7 @@ class Match extends React.Component {
     _onChange() {
         this.setState(this._getInitialState(), () => {
             if (this.scoreBoard) {
-                this.scoreBoard.postMessage(this.state, 'http://localhost');
+                this.scoreBoard.postMessage(this.state, AppConstants.SCORE_BOARDS_DOMAIN);
             }
         });
     }
@@ -170,7 +170,7 @@ class Match extends React.Component {
     nextInning() {
         AppActions.playChange();
         if (this.scoreBoard) {
-            this.scoreBoard.postMessage(this.state, 'http://localhost');
+            this.scoreBoard.postMessage(this.state, AppConstants.SCORE_BOARDS_DOMAIN);
         }
     }
 
@@ -180,7 +180,7 @@ class Match extends React.Component {
             this.scoreBoard = null;
         }
         this.scoreBoard = window.open('scoreboard.html', 'Scoreboard');
-        setTimeout(() => this.scoreBoard.postMessage(this.state, 'http://localhost'), 100);
+        setTimeout(() => this.scoreBoard.postMessage(this.state, AppConstants.SCORE_BOARDS_DOMAIN), 100);
     }
 
     getOvers(balls) {

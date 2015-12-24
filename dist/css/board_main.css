@@ -129,7 +129,8 @@ body,
 
 .playerInfo {
     width: 100%;
-    font-size: 30px;
+    font-size: 50px;
+    line-height: 60px;
 }
 
 .playerName {
@@ -156,7 +157,7 @@ body,
 #strikeBatsmanScore,
 #runningBatsmanScore,
 #bowlerScore {
-    font-size: 40px;
+    font-size: 60px;
 }
 
 /* ==========================================================================

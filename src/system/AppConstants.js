@@ -7,6 +7,9 @@ var keyMirror = require('keyMirror');
 
 var AppConstants = {
 
+    API_ENDPOINT: 'http://api.pramukhcup.ca',
+    SCORE_BOARDS_DOMAIN: 'http://localhost',
+
     ActionTypes: keyMirror({
       	INIT_LOAD: null,
       	CHOSE_TO_BAT: null,
@@ -20,6 +23,7 @@ var AppConstants = {
         SET_MAX_OVERS_PER_BOWLER: null,
         SCORE_EXTRA: null,
         SCORE_RUNS: null,
+        SCORE_BALLS: null,
         SWAP_BATSMAN: null,
         CLEAR_ROSTER: null,
         LOAD_SCORE_BOARD: null,
