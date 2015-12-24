@@ -151,7 +151,7 @@ class BowlingControls extends React.Component {
                     </div>
                     <div className={cn('col-sm-12', 'bowlingList')}>
                         {this.renderDataTable(this.props.bowlingData.bowlers, bowler => {
-                            return `${bowler.runsAllowed || 0}-${this.getOvers(bowler.ballsBowled) || '0.0'}`;
+                            return `${bowler.runsAllowed || 0}-${this.getOvers(bowler.ballsBowled) || '0.0'}-${bowler.wickets || 0}`;
                         })}
                     </div>
                 </div>

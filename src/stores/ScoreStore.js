@@ -108,7 +108,7 @@ class ScoreStore extends BaseStore {
     }
 
     ballsWinCondition() {
-        return (this.teams[battingTeam].balls >= SettingsStore.getData().overs * 6);
+        return (this.teams[this.battingTeam].balls >= SettingsStore.getData().overs * 6);
     }
 
     runsWinCondition(battingTeam, bowlingTeam) {

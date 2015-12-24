@@ -111,6 +111,9 @@ class BowlingStore extends BaseStore {
             if (!this.currentBowler.ballsBowled) {
                 this.currentBowler.ballsBowled = 0;
             }
+            if (!this.currentBowler.wickets) {
+                this.currentBowler.wickets = 0;
+            }
 
             this.currentOver = [];
             this.changeBowler = false;
@@ -139,6 +142,7 @@ class BowlingStore extends BaseStore {
                 break;
             case ScoreTypes.WICKET:
                 this.currentOver.push('W');
+                this.currentBowler.wickets += 1;
                 this.incrementBalls();
                 break;
         }

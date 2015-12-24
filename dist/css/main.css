@@ -292,6 +292,15 @@ a:visited {    text-decoration: none;
     height: 128px;
 }
 
+.dataTable {
+    margin-top: 15px;
+    border: 1px solid #DDDDDD;
+}
+
+.dataTable thead tr {
+    background-color: #F8F8F8;
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */
