@@ -48,6 +48,8 @@ class GameOver extends React.Component {
                     <td>{player.sixes || 0}</td>
                     <td>{player.runsAllowed || 0}</td>
                     <td>{player.ballsBowled || 0}</td>
+                    <td>{player.foursAllowed || 0}</td>
+                    <td>{player.sixesAllowed || 0}</td>
                     <td>{player.extrasGiven || 0}</td>
                     <td>{player.wickets || 0}</td>
                 </tr>
@@ -179,6 +181,8 @@ class GameOver extends React.Component {
                         <th>Sixes</th>
                         <th>Runs Allowed</th>
                         <th>Balls Bowled</th>
+                        <th>Fours Allowed</th>
+                        <th>Sixes Allowed</th>
                         <th>Extras Given</th>
                         <th>Wickets</th>
                     </tr>
@@ -334,7 +338,7 @@ class GameOver extends React.Component {
         }
 
         var csvContent = "data:text/csv;charset=utf-8,\n";
-        csvContent += "id,runs,balls,fours,sixes,runs_allowed,balls_bowled,extras_given,wickets\n";
+        csvContent += "id,runs,balls,fours,sixes,runs_allowed,balls_bowled,fours_allowed,sixes_allowed,extras_given,wickets\n";
         this.playerData.forEach((player, index) => {
             var infoArray = [
                 player.id,
@@ -344,6 +348,8 @@ class GameOver extends React.Component {
                 player.sixes || 0,
                 player.runsAllowed || 0,
                 player.ballsBowled || 0,
+                player.foursAllowed || 0,
+                player.sixesAllowed || 0,
                 player.extrasGiven || 0,
                 player.wickets || 0,
             ];

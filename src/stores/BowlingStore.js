@@ -105,7 +105,7 @@ class BowlingStore extends BaseStore {
     }
 
     gameDone(action) {
-        if (this.currentBowler) {
+        if (this.currentBowler && this.currentBowler.id != null) {
             this.overs.push({ bowlerId: this.currentBowler.id, over: [].concat(this.currentOver) });
         }
         this.emitChange();
@@ -144,6 +144,12 @@ class BowlingStore extends BaseStore {
             }
             if (!this.currentBowler.wickets) {
                 this.currentBowler.wickets = 0;
+            }
+            if (!this.currentBowler.foursAllowed) {
+                this.currentBowler.foursAllowed = 0;
+            }
+            if (!this.currentBowler.sixesAllowed) {
+                this.currentBowler.sixesAllowed = 0;
             }
 
             this.currentOver = [];
@@ -215,6 +221,12 @@ class BowlingStore extends BaseStore {
             if (action.ballIncre) {
                 this.incrementBalls();
             }
+        }
+
+        if (action.runs === 6) {
+            this.currentBowler.sixesAllowed += 1;
+        } else {
+            this.currentBowler.foursAllowed += 1;
         }
         this.emitChange();
     }

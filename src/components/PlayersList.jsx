@@ -75,7 +75,7 @@ class PlayersList extends React.Component {
         }
     }
 
-    renderDataTable(playerLabel, data, statsCallback) {
+    renderDataTable(playerLabel, data, statsCallback, batting) {
         var rows = [];
         data.forEach((player, index) => {
             rows.push(
@@ -84,8 +84,8 @@ class PlayersList extends React.Component {
                     <td>{player.first}</td>
                     <td>{player.last}</td>
                     <td>{statsCallback(player)}</td>
-                    <td>{player.fours || 0}</td>
-                    <td>{player.sixes || 0}</td>
+                    <td>{(batting ? player.fours : player.foursAllowed) || 0}</td>
+                    <td>{(batting ? player.sixes : player.sixesAllowed) || 0}</td>
                 </tr>
             );
         })
@@ -121,12 +121,12 @@ class PlayersList extends React.Component {
                 <div className={cn('col-sm-6', 'bowlingList')} style={{ borderRight: "1px solid #DDDDDD" }}>
                     {this.renderDataTable('Batsman', this.props.battingData.batsman, batsman => {
                         return `${batsman.runs || 0} (${batsman.balls || 0})`;
-                    })}
+                    }, true)}
                 </div>
                 <div className={cn('col-sm-6', 'bowlingList')}>
                     {this.renderDataTable('Bowler', this.props.bowlingData.bowlers, bowler => {
                         return `${bowler.runsAllowed || 0}-${this.getOvers(bowler.ballsBowled) || '0.0'}-${bowler.wickets || 0} (E: ${bowler.extrasGiven || 0})`;
-                    })}
+                    }, false)}
                 </div>
             </div>
         );
