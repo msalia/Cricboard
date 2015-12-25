@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="css/normalize.min.css">
-        <link rel="stylesheet" href="css/board_main.min.css">
+        <link rel="stylesheet" href="css/board_main.css">
     </head>
     <body>
         <div id="app-root">
@@ -23,7 +23,8 @@
                 <div style="clear: both;"></div>
             </div>
             <div class="battingTeamScore">
-                <div id="battingScore"></div>
+                <div id="battingScore" style="float:left;"></div>
+                <div id="overs" style="float:left;padding-top:80px;margin-left:20px;font-size: 70px;"></div>
                 <div style="clear: both;"></div>
             </div>
             <div class="stats">
@@ -53,6 +54,9 @@
         <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
         <script>
             window.addEventListener("message", receiveMessage, false);
+            function getOvers(balls) {
+                return parseInt(balls/6) + "." + balls % 6;
+            }
 
             function receiveMessage(event) {
                 if (event.origin !== "http://localhost") return;
@@ -79,6 +83,7 @@
                 var bowlingTeamScore = (bowling.bowlingTeam === HOME) ? score.teams.HOME : score.teams.AWAY;
 
                 document.getElementById('battingScore').innerHTML = battingTeamScore.runs + '/' + battingTeamScore.wickets;
+                document.getElementById('overs').innerHTML = '(' + getOvers(battingTeamScore.balls || 0) + ')';
                 document.getElementById('bowlingScore').innerHTML = bowlingTeamScore.runs + '/' + bowlingTeamScore.wickets;
             
                 // player info
@@ -88,11 +93,11 @@
                 
                 document.getElementById('strikeBatsman').innerHTML = (batsman1.first || 'None') + ' ' + (batsman1.last || '') + '*';
                 document.getElementById('runningBatsman').innerHTML = (batsman2.first || 'None') + ' ' + (batsman2.last || '');
-                document.getElementById('bowler').innerHTML = (bowler.first || 'None') + ' ' + (bowler.last || '') + ' (Bowler)';
+                document.getElementById('bowler').innerHTML = (bowler.first || 'None') + ' ' + (bowler.last || '');
 
                 document.getElementById('strikeBatsmanScore').innerHTML = (batsman1.runs || 0) + ' (' + (batsman1.balls || 0) + ')';
                 document.getElementById('runningBatsmanScore').innerHTML = (batsman2.runs || 0) + ' (' + (batsman2.balls || 0) + ')';
-                document.getElementById('bowlerScore').innerHTML = (bowler.runs || 0) + '-' + (bowler.overs || 0);
+                document.getElementById('bowlerScore').innerHTML = (bowler.runsAllowed || 0) + '-' + (bowler.ballsBowled || 0);
 
                 var gameOver = "";
                 if (!!score.gameOver) {

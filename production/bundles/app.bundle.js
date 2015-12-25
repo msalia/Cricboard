@@ -5105,6 +5105,10 @@ webpackJsonp([0],[
 	        this.dispatch(ActionTypes.SCORE_RUNS, { runs:runs, ballIncre:ballIncre });
 	    }});
 	
+	    Object.defineProperty(AppActions.prototype,"scoreBalls",{writable:true,configurable:true,value:function(balls) {"use strict";
+	        this.dispatch(ActionTypes.SCORE_BALLS, { balls:balls });
+	    }});
+	
 	    Object.defineProperty(AppActions.prototype,"loadScoreboard",{writable:true,configurable:true,value:function() {"use strict";
 	        this.dispatch(ActionTypes.LOAD_SCORE_BOARD, {});
 	    }});
@@ -5171,6 +5175,9 @@ webpackJsonp([0],[
 	
 	var AppConstants = {
 	
+	    API_ENDPOINT: 'http://localhost',
+	    SCORE_BOARDS_DOMAIN: 'http://localhost',
+	
 	    ActionTypes: keyMirror({
 	      	INIT_LOAD: null,
 	      	CHOSE_TO_BAT: null,
@@ -5184,6 +5191,7 @@ webpackJsonp([0],[
 	        SET_MAX_OVERS_PER_BOWLER: null,
 	        SCORE_EXTRA: null,
 	        SCORE_RUNS: null,
+	        SCORE_BALLS: null,
 	        SWAP_BATSMAN: null,
 	        CLEAR_ROSTER: null,
 	        LOAD_SCORE_BOARD: null,
@@ -5620,7 +5628,7 @@ webpackJsonp([0],[
 	
 	    Object.defineProperty(RosterStore.prototype,"fetchTeamRoster",{writable:true,configurable:true,value:function(teamType, teamId) {"use strict";
 	        $.ajax({
-	            url: 'http://api.pramukhcup.ca/getTeam',
+	            url: ("" + AppConstants.API_ENDPOINT + "/getTeam"),
 	            data: { id: teamId },
 	            type: 'GET',
 	            crossDomain: true,
@@ -5671,7 +5679,7 @@ webpackJsonp([0],[
 	
 	        this.fetchTeams = true;
 	        $.ajax({
-	            url: 'http://api.pramukhcup.ca/getTeams',
+	            url: ("" + AppConstants.API_ENDPOINT + "/getTeams"),
 	            type: 'GET',
 	            crossDomain: true,
 	            jsonpCallback: 'callback',
@@ -15771,6 +15779,7 @@ webpackJsonp([0],[
 	        this.addAction(ActionTypes.CHOOSE_BOWLER, this.chooseBowler);
 	        this.addAction(ActionTypes.SCORE_EXTRA, this.scoreExtra);
 	        this.addAction(ActionTypes.SCORE_RUNS, this.scoreRuns);
+	        this.addAction(ActionTypes.SCORE_BALLS, this.scoreBalls);
 	        this.addAction(ActionTypes.PLAY_CHANGE, this.playChange);
 	        this.addAction(ActionTypes.RESET, this.resetBalls);
 	    }});
@@ -15905,15 +15914,51 @@ webpackJsonp([0],[
 	        this.emitChange();
 	    }});
 	
-	    Object.defineProperty(BowlingStore.prototype,"incrementBalls",{writable:true,configurable:true,value:function() {"use strict";
+	    Object.defineProperty(BowlingStore.prototype,"scoreBalls",{writable:true,configurable:true,value:function(action) {"use strict";
+	        if (action.balls === 1) {
+	            this.incrementBalls(1);
+	            this.currentOver.push(0);
+	        } else {
+	            this.decrementBalls(1);
+	            this.currentOver.pop();
+	        }
+	        this.emitChange();
+	    }});
+	
+	    Object.defineProperty(BowlingStore.prototype,"decrementBalls",{writable:true,configurable:true,value:function(amount) {"use strict";
+	        var balls = 1;
+	        if (amount != null) {
+	            balls = amount;
+	        }
 	        if (this.shouldProceed) {
-	            this.balls++;
+	            this.balls -= balls;
+	            if (this.balls < 0) {
+	                this.balls = 0;
+	            }
+	        }
+	
+	        if (this.currentBowler.ballsBowled != null && this.currentBowler.ballsBowled >= amount) {
+	            this.currentBowler.ballsBowled -= amount;
+	            if (this.currentBowler.ballsBowled < 0) {
+	                this.currentBowler.ballsBowled = 0;
+	            }
+	        }
+	        this.emitChange();
+	    }});
+	
+	    Object.defineProperty(BowlingStore.prototype,"incrementBalls",{writable:true,configurable:true,value:function(amount) {"use strict";
+	        var balls = 1;
+	        if (amount != null) {
+	            balls = amount;
+	        }
+	        if (this.shouldProceed) {
+	            this.balls += balls;
 	        }
 	
 	        if (!this.currentBowler.ballsBowled) {
-	            this.currentBowler.ballsBowled = 1;
+	            this.currentBowler.ballsBowled = balls;
 	        } else {
-	            this.currentBowler.ballsBowled += 1;
+	            this.currentBowler.ballsBowled += balls;
 	        }
 	
 	        if (this.balls > 0 && this.balls % 6 === 0) {
@@ -17376,10 +17421,10 @@ webpackJsonp([0],[
 	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class1=React.Component;for(var ____Class1____Key in ____Class1){if(____Class1.hasOwnProperty(____Class1____Key)){Match[____Class1____Key]=____Class1[____Class1____Key];}}var ____SuperProtoOf____Class1=____Class1===null?null:____Class1.prototype;Match.prototype=Object.create(____SuperProtoOf____Class1);Match.prototype.constructor=Match;Match.__superConstructor__=____Class1;
+	var ____Classi=React.Component;for(var ____Classi____Key in ____Classi){if(____Classi.hasOwnProperty(____Classi____Key)){Match[____Classi____Key]=____Classi[____Classi____Key];}}var ____SuperProtoOf____Classi=____Classi===null?null:____Classi.prototype;Match.prototype=Object.create(____SuperProtoOf____Classi);Match.prototype.constructor=Match;Match.__superConstructor__=____Classi;
 	
 	    function Match(props) {"use strict";
-	        ____Class1.call(this,props);
+	        ____Classi.call(this,props);
 	        this.state = this.$Match_getInitialState();
 	        this.props = props;
 	    }
@@ -17397,7 +17442,7 @@ webpackJsonp([0],[
 	    Object.defineProperty(Match.prototype,"$Match_onChange",{writable:true,configurable:true,value:function() {"use strict";
 	        this.setState(this.$Match_getInitialState(), function()  {
 	            if (this.scoreBoard) {
-	                this.scoreBoard.postMessage(this.state, 'http://localhost');
+	                this.scoreBoard.postMessage(this.state, AppConstants.SCORE_BOARDS_DOMAIN);
 	            }
 	        }.bind(this));
 	    }});
@@ -17524,7 +17569,7 @@ webpackJsonp([0],[
 	    Object.defineProperty(Match.prototype,"nextInning",{writable:true,configurable:true,value:function() {"use strict";
 	        AppActions.playChange();
 	        if (this.scoreBoard) {
-	            this.scoreBoard.postMessage(this.state, 'http://localhost');
+	            this.scoreBoard.postMessage(this.state, AppConstants.SCORE_BOARDS_DOMAIN);
 	        }
 	    }});
 	
@@ -17534,7 +17579,7 @@ webpackJsonp([0],[
 	            this.scoreBoard = null;
 	        }
 	        this.scoreBoard = window.open('scoreboard.html', 'Scoreboard');
-	        setTimeout(function()  {return this.scoreBoard.postMessage(this.state, 'http://localhost');}.bind(this), 100);
+	        setTimeout(function()  {return this.scoreBoard.postMessage(this.state, AppConstants.SCORE_BOARDS_DOMAIN);}.bind(this), 100);
 	    }});
 	
 	    Object.defineProperty(Match.prototype,"getOvers",{writable:true,configurable:true,value:function(balls) {"use strict";
@@ -17796,10 +17841,10 @@ webpackJsonp([0],[
 	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class6=React.Component;for(var ____Class6____Key in ____Class6){if(____Class6.hasOwnProperty(____Class6____Key)){Controls[____Class6____Key]=____Class6[____Class6____Key];}}var ____SuperProtoOf____Class6=____Class6===null?null:____Class6.prototype;Controls.prototype=Object.create(____SuperProtoOf____Class6);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Class6;
+	var ____Classf=React.Component;for(var ____Classf____Key in ____Classf){if(____Classf.hasOwnProperty(____Classf____Key)){Controls[____Classf____Key]=____Classf[____Classf____Key];}}var ____SuperProtoOf____Classf=____Classf===null?null:____Classf.prototype;Controls.prototype=Object.create(____SuperProtoOf____Classf);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Classf;
 	
 	    function Controls(props) {"use strict";
-	        ____Class6.call(this,props);
+	        ____Classf.call(this,props);
 	        this.props = props;
 	    }
 	
@@ -17872,10 +17917,16 @@ webpackJsonp([0],[
 	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreRuns(0);}.bind(this)}, "0"), 
 	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreRuns(1);}.bind(this)}, "1"), 
 	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreRuns(2);}.bind(this)}, "2"), 
+	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreRuns(3);}.bind(this)}, "3"), 
 	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreRuns(4);}.bind(this)}, "4"), 
 	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreRuns(6);}.bind(this)}, "6"), 
 	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreRuns(1, false);}.bind(this)}, "+1"), 
 	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreRuns(-1, false);}.bind(this)}, "-1")
+	                    ), 
+	                    "  Balls:  ", 
+	                    React.createElement("div", {className: cn('btn-group'), role: "group"}, 
+	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreBalls(1);}.bind(this)}, "+1"), 
+	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreBalls(-1);}.bind(this)}, "-1")
 	                    )
 	                ), 
 	                React.createElement("div", {className: cn('col-sm-12')}, 
@@ -18362,6 +18413,7 @@ webpackJsonp([0],[
 	        this.addAction(ActionTypes.LOAD_SCORE_BOARD, this.loadScoreboard);
 	        this.addAction(ActionTypes.SCORE_EXTRA, this.score);
 	        this.addAction(ActionTypes.SCORE_RUNS, this.score);
+	        this.addAction(ActionTypes.SCORE_BALLS, this.score);
 	        this.addAction(ActionTypes.PLAY_CHANGE, this.playChange);
 	        this.addAction(ActionTypes.RESET, this.resetRuns);
 	        this.addAction(ActionTypes.GAME_OVER, this.gameDone);
