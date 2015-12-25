@@ -15911,14 +15911,14 @@ webpackJsonp([0],[
 	
 	        switch(action.scoreType) {
 	            case ScoreTypes.EXTRA:
-	                this.isExtra = true;
-	                if (this.isWicket) {
+	                this.isExtra = !this.isExtra;
+	                if (this.isWicket && this.isExtras) {
 	                    this.isWicket = false;
 	                }
 	                break;
 	            case ScoreTypes.WICKET:
-	                this.isWicket = true;
-	                if (this.isExtra) {
+	                this.isWicket = !this.isWicket;
+	                if (this.isExtra && this.isWicket) {
 	                    this.isExtra = false;
 	                }
 	                break;
@@ -17917,10 +17917,10 @@ webpackJsonp([0],[
 	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Classk=React.Component;for(var ____Classk____Key in ____Classk){if(____Classk.hasOwnProperty(____Classk____Key)){Controls[____Classk____Key]=____Classk[____Classk____Key];}}var ____SuperProtoOf____Classk=____Classk===null?null:____Classk.prototype;Controls.prototype=Object.create(____SuperProtoOf____Classk);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Classk;
+	var ____Class6=React.Component;for(var ____Class6____Key in ____Class6){if(____Class6.hasOwnProperty(____Class6____Key)){Controls[____Class6____Key]=____Class6[____Class6____Key];}}var ____SuperProtoOf____Class6=____Class6===null?null:____Class6.prototype;Controls.prototype=Object.create(____SuperProtoOf____Class6);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Class6;
 	
 	    function Controls(props) {"use strict";
-	        ____Classk.call(this,props);
+	        ____Class6.call(this,props);
 	        this.props = props;
 	    }
 	
@@ -18202,10 +18202,10 @@ webpackJsonp([0],[
 	var $__0=  AppConstants,TeamTypes=$__0.TeamTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Classo=React.Component;for(var ____Classo____Key in ____Classo){if(____Classo.hasOwnProperty(____Classo____Key)){GameOver[____Classo____Key]=____Classo[____Classo____Key];}}var ____SuperProtoOf____Classo=____Classo===null?null:____Classo.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Classo);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Classo;
+	var ____Class7=React.Component;for(var ____Class7____Key in ____Class7){if(____Class7.hasOwnProperty(____Class7____Key)){GameOver[____Class7____Key]=____Class7[____Class7____Key];}}var ____SuperProtoOf____Class7=____Class7===null?null:____Class7.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Class7);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Class7;
 	
 	    function GameOver(props) {"use strict";
-	        ____Classo.call(this,props);
+	        ____Class7.call(this,props);
 	        this.props = props;
 	        this.playerData = [];
 	        this.matchData = [];
@@ -18611,7 +18611,10 @@ webpackJsonp([0],[
 	            var bowlingTeam = this.battingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
 	            var batting = this.teams[this.battingTeam];
 	            var bowling = this.teams[bowlingTeam];
-	            return ("" + ((bowling.runs + 1) - batting.runs) + " runs needed from " + ((SettingsStore.getData().overs * 6) - batting.balls) + " balls to win.");
+	            var runsRemaining = (bowling.runs + 1) - batting.runs;
+	            var ballsRemaining = (SettingsStore.getData().overs * 6) - batting.balls;
+	            var rr = (runsRemaining / ballsRemaining) * 6;
+	            return ("" + runsRemaining + " runs needed from " + ballsRemaining + " balls to win. RR: " + rr);
 	        }
 	        return null;
 	    }});

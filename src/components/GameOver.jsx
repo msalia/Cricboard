@@ -40,6 +40,7 @@ class GameOver extends React.Component {
                     <td>{player.balls || 0}</td>
                     <td>{player.runsAllowed || 0}</td>
                     <td>{player.ballsBowled || 0}</td>
+                    <td>{player.extrasGiven || 0}</td>
                     <td>{player.wickets || 0}</td>
                 </tr>
             );
@@ -118,6 +119,25 @@ class GameOver extends React.Component {
         );
     }
 
+    renderOverStats() {
+        return (
+            <table className={cn('table', 'dataTable')}>
+                <thead>
+                    <tr>
+                        <th>Over #</th>
+                        <th>Bowler ID</th>
+                        <th>Runs</th>
+                        <th>Wickets</th>
+                        <th>Extras</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.genOverRows()}
+                </tbody>
+            </table>
+        );
+    }
+
     renderPlayerStats() {
         return (
             <table className={cn('table', 'dataTable')}>
@@ -130,6 +150,7 @@ class GameOver extends React.Component {
                         <th>Balls Faced</th>
                         <th>Runs Allowed</th>
                         <th>Balls Bowled</th>
+                        <th>Extras Given</th>
                         <th>Wickets</th>
                     </tr>
                 </thead>
@@ -211,6 +232,29 @@ class GameOver extends React.Component {
         link.click();
     }
 
+    exportOversCSV() {
+        var csvContent = "data:text/csv;charset=utf-8,\n";
+        csvContent += "over_num,bowler_id,runs,wickets,extras\n";
+        this.overData.forEach((team, index) => {
+            var overStats = this.calcOverStats(over);
+            var infoArray = [
+                index + 1,
+                over.bowlerId,
+                overStats.runs,
+                overStats.wickets,
+                overStats.extras
+            ];
+           var dataString = infoArray.join(",");
+           csvContent += index < this.overData.length ? dataString + "\n" : dataString;
+        });
+
+        // open download file
+        var link = document.createElement("a");
+        link.setAttribute("href", encodeURI(csvContent));
+        link.setAttribute("download", `OVERS_STATS_${this.getFileName(RosterStore.getRosters())}`);
+        link.click();
+    }
+
     exportPlayerCSV() {
         var rosters = RosterStore.getRosters();
         if (rosters.homeTeamRoster.teamName == null || rosters.awayTeamRoster.teamName == null) {
@@ -226,6 +270,7 @@ class GameOver extends React.Component {
                 player.balls || 0,
                 player.runsAllowed || 0,
                 player.ballsBowled || 0,
+                player.extrasGiven || 0,
                 player.wickets || 0,
             ];
            var dataString = infoArray.join(",");

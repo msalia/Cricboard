@@ -149,7 +149,7 @@ class ScoreStore extends BaseStore {
             var bowling = this.teams[bowlingTeam];
             var runsRemaining = (bowling.runs + 1) - batting.runs;
             var ballsRemaining = (SettingsStore.getData().overs * 6) - batting.balls;
-            var rr = (runsRemaining / ballsRemaining) * 6;
+            var rr = parseInt(((runsRemaining / ballsRemaining) * 6) * 100) / 100;
             return `${runsRemaining} runs needed from ${ballsRemaining} balls to win. RR: ${rr}`;
         }
         return null;

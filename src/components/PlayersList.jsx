@@ -121,7 +121,7 @@ class PlayersList extends React.Component {
                 </div>
                 <div className={cn('col-sm-6', 'bowlingList')}>
                     {this.renderDataTable('Bowler', this.props.bowlingData.bowlers, bowler => {
-                        return `${bowler.runsAllowed || 0}-${this.getOvers(bowler.ballsBowled) || '0.0'}-${bowler.wickets || 0}`;
+                        return `${bowler.runsAllowed || 0}-${this.getOvers(bowler.ballsBowled) || '0.0'}-${bowler.wickets || 0} (E: ${bowler.extrasGiven || 0})`;
                     })}
                 </div>
             </div>

@@ -107,7 +107,9 @@ class Controls extends React.Component {
                         <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreRuns(1, false)}>+1</button>
                         <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreRuns(-1, false)}>-1</button>
                     </div>
-                    &nbsp;&nbsp;Balls: &nbsp;
+                </div>
+                <div className={cn('col-sm-12')} style={{ marginBottom: "15px" }}>
+                    Balls: &nbsp;
                     <div className={cn('btn-group')} role="group">
                         <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreBalls(1)}>+1</button>
                         <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreBalls(-1)}>-1</button>

@@ -131,6 +131,9 @@ class BowlingStore extends BaseStore {
             if (!this.currentBowler.ballsBowled) {
                 this.currentBowler.ballsBowled = 0;
             }
+            if (!this.currentBowler.extrasGiven) {
+                this.currentBowler.extrasGiven = 0;
+            }
             if (!this.currentBowler.wickets) {
                 this.currentBowler.wickets = 0;
             }
@@ -184,6 +187,7 @@ class BowlingStore extends BaseStore {
         if (this.isExtra) {
             this.currentOver.push('E:' + action.runs);
             this.incrementCurrentBowlerRuns(action.runs + 1);
+            this.currentBowler.extrasGiven += 1;
             this.isExtra = false;
         } else if (this.isWicket) {
             this.getDispatcher().waitFor([ 
@@ -253,7 +257,8 @@ class BowlingStore extends BaseStore {
         }
 
         if (this.balls > 0 && this.balls % 6 === 0) {
-            this.overs.push(this.currentOver);
+            this.overs.push({ bowlerId: this.currentBowler.id, over: this.currentOver });
+            this.currentOver = [];
             this.changeBowler = true;
             this.currentBowler = null;
             this.shouldProceed = false;
@@ -264,6 +269,7 @@ class BowlingStore extends BaseStore {
     getData() {
         return {
             balls: this.balls,
+            overs: this.overs,
             bowlingTeam: this.bowlingTeam,
             bowlingTeamRoster: this.bowlingTeamRoster || [],
             bowlers: this.bowlers || [],
@@ -283,7 +289,7 @@ class BowlingStore extends BaseStore {
     getExtras() {
         var extras = this.calcExtras(this.currentOver || []);
         this.overs.forEach(over => {
-            extras += this.calcExtras(over);
+            extras += this.calcExtras(over.over);
         });
         return extras;
     }
@@ -297,14 +303,12 @@ class BowlingStore extends BaseStore {
                     case 'E:':
                         total += 1;
                         break;
+                    default:
+                        break;
                 }
             }
         });
         return total;
-    }
-
-    getCurrentOver() {
-        return this.overs[this.currentOver];
     }
 
     getBalls() {
