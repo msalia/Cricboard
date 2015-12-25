@@ -17787,7 +17787,9 @@ webpackJsonp([0],[
 	                    React.createElement("td", null, player.id), 
 	                    React.createElement("td", null, player.first), 
 	                    React.createElement("td", null, player.last), 
-	                    React.createElement("td", null, statsCallback(player))
+	                    React.createElement("td", null, statsCallback(player)), 
+	                    React.createElement("td", null, player.fours || 0), 
+	                    React.createElement("td", null, player.sixes || 0)
 	                )
 	            );
 	        })
@@ -17799,7 +17801,9 @@ webpackJsonp([0],[
 	                        React.createElement("th", null, playerLabel, " #"), 
 	                        React.createElement("th", null, "First"), 
 	                        React.createElement("th", null, "Last"), 
-	                        React.createElement("th", null, "Stats")
+	                        React.createElement("th", null, "Stats"), 
+	                        React.createElement("th", null, "Fours"), 
+	                        React.createElement("th", null, "Sixes")
 	                    )
 	                ), 
 	                React.createElement("tbody", null, 
@@ -18816,7 +18820,7 @@ webpackJsonp([0],[
 	            var rr = parseInt(((runs / balls) * 6) * 100) / 100;
 	            var ballsRemaining = (SettingsStore.getData().overs * 6) - balls;
 	            var projectedTotal = runs + (rr * (ballsRemaining / 6));
-	            return ("RR: " + (rr || 0) + " Projected Total: " + (projectedTotal || 0));
+	            return ("RR: " + (rr || 0) + " ---|--- Projected Total: " + parseInt(projectedTotal || 0));
 	        }
 	        return null;
 	    }});
