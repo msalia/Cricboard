@@ -59,6 +59,7 @@ class BowlingStore extends BaseStore {
         this.addAction(ActionTypes.SCORE_BALLS, this.scoreBalls);
         this.addAction(ActionTypes.PLAY_CHANGE, this.playChange);
         this.addAction(ActionTypes.RESET, this.resetBalls);
+        this.addAction(ActionTypes.GAME_OVER, this.gameDone);
     }
 
     playChange(action) {
@@ -101,6 +102,11 @@ class BowlingStore extends BaseStore {
         this.bowlingTeamRoster = team === TeamTypes.HOME ? homeTeam.players : awayTeam.players;
         this.bowlingTeamRoster = this.bowlingTeamRoster || [];
         this.fullTeam = this.bowlingTeamRoster.slice();
+    }
+
+    gameDone(action) {
+        this.overs.push({ bowlerId: this.currentBowler.id, over: [].concat(this.currentOver) });
+        this.emitChange();
     }
 
     chooseBowler(action) {
@@ -201,10 +207,12 @@ class BowlingStore extends BaseStore {
             this.currentBowler.wickets++;
             this.incrementBalls();
             this.isWicket = false;
-        } else if (action.ballIncre) {
+        } else {
             this.incrementCurrentBowlerRuns(action.runs);
             this.currentOver.push(action.runs);
-            this.incrementBalls();
+            if (action.ballIncre) {
+                this.incrementBalls();
+            }
         }
         this.emitChange();
     }
@@ -257,7 +265,7 @@ class BowlingStore extends BaseStore {
         }
 
         if (this.balls > 0 && this.balls % 6 === 0) {
-            this.overs.push({ bowlerId: this.currentBowler.id, over: this.currentOver });
+            this.overs.push({ bowlerId: this.currentBowler.id, over: [].concat(this.currentOver) });
             this.currentOver = [];
             this.changeBowler = true;
             this.currentBowler = null;

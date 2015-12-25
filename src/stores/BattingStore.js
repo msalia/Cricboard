@@ -139,6 +139,12 @@ class BattingStore extends BaseStore {
                 if (this.strikeBatsman.balls == null) {
                     this.strikeBatsman.balls = 0;
                 }
+                if (this.strikeBatsman.sixes == null) {
+                    this.strikeBatsman.sixes = 0;
+                }
+                if (this.strikeBatsman.fours == null) {
+                    this.strikeBatsman.fours = 0;
+                }
                 (alreadyBatted < 0) && this.batsman.push(this.strikeBatsman);
             } else {
                 this.runningBatsman = batter;
@@ -147,6 +153,12 @@ class BattingStore extends BaseStore {
                 }
                 if (this.runningBatsman.balls == null) {
                     this.runningBatsman.balls = 0;
+                }
+                if (this.runningBatsman.sixes == null) {
+                    this.runningBatsman.sixes = 0;
+                }
+                if (this.runningBatsman.fours == null) {
+                    this.runningBatsman.fours = 0;
                 }
                 (alreadyBatted < 0) && this.batsman.push(this.runningBatsman);
             }
@@ -201,9 +213,17 @@ class BattingStore extends BaseStore {
             this.strikeBatsman = null;
             this.shouldProceed = false;
             this.isWicket = false;
-        } else if (action.ballIncre) {
+        } else {
             this.strikeBatsman.runs += action.runs;
-            this.strikeBatsman.balls += 1;
+            if (action.ballIncre) {
+                this.strikeBatsman.balls += 1;
+            }
+        }
+        
+        if (action.runs === 4) {
+            this.strikeBatsman.fours += 1;
+        } else if (action.runs === 6) {
+            this.strikeBatsman.sixes += 1;
         }
         this.emitChange();
     }

@@ -37,8 +37,8 @@ class ScoreStore extends BaseStore {
 
     resetRuns() {
         this.teams = {};
-        this.teams[TeamTypes.HOME] = { runs: 0, wickets: 0, balls: 0 };
-        this.teams[TeamTypes.AWAY] = { runs: 0, wickets: 0, balls: 0 };
+        this.teams[TeamTypes.HOME] = { runs: 0, wickets: 0, balls: 0, overs: {} };
+        this.teams[TeamTypes.AWAY] = { runs: 0, wickets: 0, balls: 0, overs: {} };
         this.playChanged = false;
         this.emitChange();
     }
@@ -54,6 +54,11 @@ class ScoreStore extends BaseStore {
     }
 
     gameDone() {
+        this.getDispatcher().waitFor([ 
+            BowlingStore.getDispatchToken(),
+            BattingStore.getDispatchToken(),
+        ]);
+
         this.gameOver = true;
         this.emitChange();
     }
@@ -87,6 +92,7 @@ class ScoreStore extends BaseStore {
         this.teams[this.battingTeam].runs = BattingStore.getRuns();
         this.teams[this.battingTeam].balls = BowlingStore.getBalls();
         this.teams[this.battingTeam].wickets = BattingStore.getWickets();
+        this.teams[this.battingTeam].overs = BowlingStore.getOvers();
         this.checkGameState();
         this.emitChange();
     }
@@ -143,6 +149,10 @@ class ScoreStore extends BaseStore {
     }
 
     getMessage() {
+        if (!this.battingTeam) {
+            return null;
+        }
+
         if (this.playChanged) {
             var bowlingTeam = this.battingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
             var batting = this.teams[this.battingTeam];
@@ -150,7 +160,14 @@ class ScoreStore extends BaseStore {
             var runsRemaining = (bowling.runs + 1) - batting.runs;
             var ballsRemaining = (SettingsStore.getData().overs * 6) - batting.balls;
             var rr = parseInt(((runsRemaining / ballsRemaining) * 6) * 100) / 100;
-            return `${runsRemaining} runs needed from ${ballsRemaining} balls to win. RR: ${rr}`;
+            return `${runsRemaining} runs needed from ${ballsRemaining} balls to win. RRR: ${rr}`;
+        } else {
+            var runs = this.teams[this.battingTeam].runs;
+            var balls = this.teams[this.battingTeam].balls;
+            var rr = parseInt(((runs / balls) * 6) * 100) / 100;
+            var ballsRemaining = (SettingsStore.getData().overs * 6) - balls;
+            var projectedTotal = runs + (rr * (ballsRemaining / 6));
+            return `RR: ${rr || 0} Projected Total: ${projectedTotal || 0}`;
         }
         return null;
     }
