@@ -153,14 +153,14 @@ class BowlingStore extends BaseStore {
 
         switch(action.scoreType) {
             case ScoreTypes.EXTRA:
-                this.isExtra = true;
-                if (this.isWicket) {
+                this.isExtra = !this.isExtra;
+                if (this.isWicket && this.isExtras) {
                     this.isWicket = false;
                 }
                 break;
             case ScoreTypes.WICKET:
-                this.isWicket = true;
-                if (this.isExtra) {
+                this.isWicket = !this.isWicket;
+                if (this.isExtra && this.isWicket) {
                     this.isExtra = false;
                 }
                 break;
