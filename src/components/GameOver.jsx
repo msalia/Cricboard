@@ -64,6 +64,7 @@ class GameOver extends React.Component {
                 teamName: homeTeam.teamName || 'None Selected',
                 runs: score.teams[TeamTypes.HOME].runs,
                 wickets: score.teams[TeamTypes.HOME].wickets,
+                balls: score.teams[TeamTypes.HOME].balls,
                 tossWon: rosters.tossWonBy === TeamTypes.HOME ? 'Yes' : 'No',
                 choseTo: rosters.tossWonBy === TeamTypes.HOME 
                     ? (rosters.choseToBat ? 'BAT' : 'BOWL') : null,
@@ -73,6 +74,7 @@ class GameOver extends React.Component {
                 teamName: awayTeam.teamName || 'None Selected',
                 runs: score.teams[TeamTypes.AWAY].runs,
                 wickets: score.teams[TeamTypes.AWAY].wickets,
+                balls: score.teams[TeamTypes.AWAY].balls,
                 tossWon: rosters.tossWonBy === TeamTypes.AWAY ? 'Yes' : 'No',
                 choseTo: rosters.tossWonBy === TeamTypes.AWAY 
                     ? (rosters.choseToBat ? 'BAT' : 'BOWL') : null,
@@ -86,6 +88,7 @@ class GameOver extends React.Component {
                     <td>{team.teamName}</td>
                     <td>{team.runs}</td>
                     <td>{team.wickets}</td>
+                    <td>{this.getOvers(team.balls)}</td>
                     <td>{team.tossWon}</td>
                     <td>{team.choseTo}</td>
                 </tr>
@@ -103,6 +106,7 @@ class GameOver extends React.Component {
                         <th>Team</th>
                         <th>Runs</th>
                         <th>Wickets</th>
+                        <th>Overs</th>
                         <th>Toss Won</th>
                         <th>Chose To</th>
                     </tr>
@@ -192,6 +196,7 @@ class GameOver extends React.Component {
                 team.teamName,
                 team.runs || 0,
                 team.wickets || 0,
+                team.balls || 0,
                 team.tossWon || 'No',
                 team.choseTo || '',
             ];
@@ -253,6 +258,10 @@ class GameOver extends React.Component {
         () => {
             window.location = "http://localhost/";
         });
+    }
+
+    getOvers(balls) {
+        return `${parseInt(balls/6)}.${balls%6}`;
     }
 
 }

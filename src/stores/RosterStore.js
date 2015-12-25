@@ -64,7 +64,7 @@ class RosterStore extends BaseStore {
     }
 
     chosePlay(action) {
-        this.choseToBat = action.decision;
+        this.choseToBat = (action.decision === 'Bat');
         this.emitChange();
     }
 

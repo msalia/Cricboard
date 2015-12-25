@@ -57,6 +57,7 @@ class BattingStore extends BaseStore {
         this.addAction(ActionTypes.CHOOSE_BATSMAN, this.chooseBatsman);
         this.addAction(ActionTypes.SCORE_EXTRA, this.scoreExtra);
         this.addAction(ActionTypes.SCORE_RUNS, this.scoreRuns);
+        this.addAction(ActionTypes.SCORE_BALLS, this.scoreBalls);
         this.addAction(ActionTypes.PLAY_CHANGE, this.playChange);
         this.addAction(ActionTypes.SWAP_BATSMAN, this.swapBatsman);
         this.addAction(ActionTypes.RESET, this.resetScore);
@@ -180,6 +181,15 @@ class BattingStore extends BaseStore {
         if (action.ballIncre) {
             this.strikeBatsman.runs += action.runs;
             this.strikeBatsman.balls += 1;
+        }
+        this.emitChange();
+    }
+
+    scoreBalls(action) {
+        if (action.balls === 1) {
+            this.strikeBatsman.balls += 1;
+        } else {
+            this.strikeBatsman.balls -= 1;
         }
         this.emitChange();
     }
