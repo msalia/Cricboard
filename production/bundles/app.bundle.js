@@ -5175,7 +5175,7 @@ webpackJsonp([0],[
 	
 	var AppConstants = {
 	
-	    API_ENDPOINT: 'http://localhost',
+	    API_ENDPOINT: 'http://localhost/Chitragupta',
 	    SCORE_BOARDS_DOMAIN: 'http://localhost',
 	
 	    ActionTypes: keyMirror({
@@ -5362,6 +5362,7 @@ webpackJsonp([0],[
 	        this.addAction(ActionTypes.CHOOSE_BATSMAN, this.chooseBatsman);
 	        this.addAction(ActionTypes.SCORE_EXTRA, this.scoreExtra);
 	        this.addAction(ActionTypes.SCORE_RUNS, this.scoreRuns);
+	        this.addAction(ActionTypes.SCORE_BALLS, this.scoreBalls);
 	        this.addAction(ActionTypes.PLAY_CHANGE, this.playChange);
 	        this.addAction(ActionTypes.SWAP_BATSMAN, this.swapBatsman);
 	        this.addAction(ActionTypes.RESET, this.resetScore);
@@ -5489,6 +5490,15 @@ webpackJsonp([0],[
 	        this.emitChange();
 	    }});
 	
+	    Object.defineProperty(BattingStore.prototype,"scoreBalls",{writable:true,configurable:true,value:function(action) {"use strict";
+	        if (action.balls === 1) {
+	            this.strikeBatsman.balls += 1;
+	        } else {
+	            this.strikeBatsman.balls -= 1;
+	        }
+	        this.emitChange();
+	    }});
+	
 	    Object.defineProperty(BattingStore.prototype,"swapBatsman",{writable:true,configurable:true,value:function(action) {"use strict";
 	        var strike = this.strikeBatsman;
 	        this.strikeBatsman = this.runningBatsman;
@@ -5603,7 +5613,7 @@ webpackJsonp([0],[
 	    }});
 	
 	    Object.defineProperty(RosterStore.prototype,"chosePlay",{writable:true,configurable:true,value:function(action) {"use strict";
-	        this.choseToBat = action.decision;
+	        this.choseToBat = (action.decision === 'Bat');
 	        this.emitChange();
 	    }});
 	
@@ -17421,10 +17431,10 @@ webpackJsonp([0],[
 	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Classi=React.Component;for(var ____Classi____Key in ____Classi){if(____Classi.hasOwnProperty(____Classi____Key)){Match[____Classi____Key]=____Classi[____Classi____Key];}}var ____SuperProtoOf____Classi=____Classi===null?null:____Classi.prototype;Match.prototype=Object.create(____SuperProtoOf____Classi);Match.prototype.constructor=Match;Match.__superConstructor__=____Classi;
+	var ____Class1=React.Component;for(var ____Class1____Key in ____Class1){if(____Class1.hasOwnProperty(____Class1____Key)){Match[____Class1____Key]=____Class1[____Class1____Key];}}var ____SuperProtoOf____Class1=____Class1===null?null:____Class1.prototype;Match.prototype=Object.create(____SuperProtoOf____Class1);Match.prototype.constructor=Match;Match.__superConstructor__=____Class1;
 	
 	    function Match(props) {"use strict";
-	        ____Classi.call(this,props);
+	        ____Class1.call(this,props);
 	        this.state = this.$Match_getInitialState();
 	        this.props = props;
 	    }
@@ -17841,10 +17851,10 @@ webpackJsonp([0],[
 	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Classf=React.Component;for(var ____Classf____Key in ____Classf){if(____Classf.hasOwnProperty(____Classf____Key)){Controls[____Classf____Key]=____Classf[____Classf____Key];}}var ____SuperProtoOf____Classf=____Classf===null?null:____Classf.prototype;Controls.prototype=Object.create(____SuperProtoOf____Classf);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Classf;
+	var ____Class6=React.Component;for(var ____Class6____Key in ____Class6){if(____Class6.hasOwnProperty(____Class6____Key)){Controls[____Class6____Key]=____Class6[____Class6____Key];}}var ____SuperProtoOf____Class6=____Class6===null?null:____Class6.prototype;Controls.prototype=Object.create(____SuperProtoOf____Class6);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Class6;
 	
 	    function Controls(props) {"use strict";
-	        ____Classf.call(this,props);
+	        ____Class6.call(this,props);
 	        this.props = props;
 	    }
 	
@@ -18113,10 +18123,10 @@ webpackJsonp([0],[
 	var $__0=  AppConstants,TeamTypes=$__0.TeamTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class7=React.Component;for(var ____Class7____Key in ____Class7){if(____Class7.hasOwnProperty(____Class7____Key)){GameOver[____Class7____Key]=____Class7[____Class7____Key];}}var ____SuperProtoOf____Class7=____Class7===null?null:____Class7.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Class7);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Class7;
+	var ____Classh=React.Component;for(var ____Classh____Key in ____Classh){if(____Classh.hasOwnProperty(____Classh____Key)){GameOver[____Classh____Key]=____Classh[____Classh____Key];}}var ____SuperProtoOf____Classh=____Classh===null?null:____Classh.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Classh);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Classh;
 	
 	    function GameOver(props) {"use strict";
-	        ____Class7.call(this,props);
+	        ____Classh.call(this,props);
 	        this.props = props;
 	        this.playerData = [];
 	        this.matchData = [];
@@ -18164,6 +18174,7 @@ webpackJsonp([0],[
 	                teamName: homeTeam.teamName || 'None Selected',
 	                runs: score.teams[TeamTypes.HOME].runs,
 	                wickets: score.teams[TeamTypes.HOME].wickets,
+	                balls: score.teams[TeamTypes.HOME].balls,
 	                tossWon: rosters.tossWonBy === TeamTypes.HOME ? 'Yes' : 'No',
 	                choseTo: rosters.tossWonBy === TeamTypes.HOME 
 	                    ? (rosters.choseToBat ? 'BAT' : 'BOWL') : null,
@@ -18173,6 +18184,7 @@ webpackJsonp([0],[
 	                teamName: awayTeam.teamName || 'None Selected',
 	                runs: score.teams[TeamTypes.AWAY].runs,
 	                wickets: score.teams[TeamTypes.AWAY].wickets,
+	                balls: score.teams[TeamTypes.AWAY].balls,
 	                tossWon: rosters.tossWonBy === TeamTypes.AWAY ? 'Yes' : 'No',
 	                choseTo: rosters.tossWonBy === TeamTypes.AWAY 
 	                    ? (rosters.choseToBat ? 'BAT' : 'BOWL') : null,
@@ -18186,11 +18198,12 @@ webpackJsonp([0],[
 	                    React.createElement("td", null, team.teamName), 
 	                    React.createElement("td", null, team.runs), 
 	                    React.createElement("td", null, team.wickets), 
+	                    React.createElement("td", null, this.getOvers(team.balls)), 
 	                    React.createElement("td", null, team.tossWon), 
 	                    React.createElement("td", null, team.choseTo)
 	                )
 	            );
-	        });
+	        }.bind(this));
 	        return rows;
 	    }});
 	
@@ -18203,6 +18216,7 @@ webpackJsonp([0],[
 	                        React.createElement("th", null, "Team"), 
 	                        React.createElement("th", null, "Runs"), 
 	                        React.createElement("th", null, "Wickets"), 
+	                        React.createElement("th", null, "Overs"), 
 	                        React.createElement("th", null, "Toss Won"), 
 	                        React.createElement("th", null, "Chose To")
 	                    )
@@ -18292,6 +18306,7 @@ webpackJsonp([0],[
 	                team.teamName,
 	                team.runs || 0,
 	                team.wickets || 0,
+	                team.balls || 0,
 	                team.tossWon || 'No',
 	                team.choseTo || '',
 	            ];
@@ -18353,6 +18368,10 @@ webpackJsonp([0],[
 	        function()  {
 	            window.location = "http://localhost/";
 	        });
+	    }});
+	
+	    Object.defineProperty(GameOver.prototype,"getOvers",{writable:true,configurable:true,value:function(balls) {"use strict";
+	        return ("" + parseInt(balls/6) + "." + (balls%6));
 	    }});
 	
 	
