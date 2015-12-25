@@ -105,7 +105,9 @@ class BowlingStore extends BaseStore {
     }
 
     gameDone(action) {
-        this.overs.push({ bowlerId: this.currentBowler.id, over: [].concat(this.currentOver) });
+        if (this.currentBowler) {
+            this.overs.push({ bowlerId: this.currentBowler.id, over: [].concat(this.currentOver) });
+        }
         this.emitChange();
     }
 

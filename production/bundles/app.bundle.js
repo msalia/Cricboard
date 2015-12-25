@@ -5175,7 +5175,7 @@ webpackJsonp([0],[
 	
 	var AppConstants = {
 	
-	    API_ENDPOINT: 'http://localhost/Chitragupta',
+	    API_ENDPOINT: 'http://api.pramukhcup.ca',
 	    SCORE_BOARDS_DOMAIN: 'http://localhost',
 	
 	    ActionTypes: keyMirror({
