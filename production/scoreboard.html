@@ -97,7 +97,7 @@
 
                 document.getElementById('strikeBatsmanScore').innerHTML = (batsman1.runs || 0) + ' (' + (batsman1.balls || 0) + ')';
                 document.getElementById('runningBatsmanScore').innerHTML = (batsman2.runs || 0) + ' (' + (batsman2.balls || 0) + ')';
-                document.getElementById('bowlerScore').innerHTML = (bowler.runsAllowed || 0) + '-' + (bowler.wickets || 0) + ' (' + getOvers(bowler.ballsBowled || 0) + ')';
+                document.getElementById('bowlerScore').innerHTML = (bowler.runsAllowed || 0) + '-' + (bowler.wickets || 0) + ' (O: ' + getOvers(bowler.ballsBowled || 0) + ', E: ' + (bowler.extrasGiven || 0) + ')';
 
                 var gameOver = "";
                 if (!!score.gameOver) {
