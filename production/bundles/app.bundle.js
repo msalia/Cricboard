@@ -5443,6 +5443,12 @@ webpackJsonp([0],[
 	                if (this.strikeBatsman.balls == null) {
 	                    this.strikeBatsman.balls = 0;
 	                }
+	                if (this.strikeBatsman.sixes == null) {
+	                    this.strikeBatsman.sixes = 0;
+	                }
+	                if (this.strikeBatsman.fours == null) {
+	                    this.strikeBatsman.fours = 0;
+	                }
 	                (alreadyBatted < 0) && this.batsman.push(this.strikeBatsman);
 	            } else {
 	                this.runningBatsman = batter;
@@ -5451,6 +5457,12 @@ webpackJsonp([0],[
 	                }
 	                if (this.runningBatsman.balls == null) {
 	                    this.runningBatsman.balls = 0;
+	                }
+	                if (this.runningBatsman.sixes == null) {
+	                    this.runningBatsman.sixes = 0;
+	                }
+	                if (this.runningBatsman.fours == null) {
+	                    this.runningBatsman.fours = 0;
 	                }
 	                (alreadyBatted < 0) && this.batsman.push(this.runningBatsman);
 	            }
@@ -5505,9 +5517,17 @@ webpackJsonp([0],[
 	            this.strikeBatsman = null;
 	            this.shouldProceed = false;
 	            this.isWicket = false;
-	        } else if (action.ballIncre) {
+	        } else {
 	            this.strikeBatsman.runs += action.runs;
-	            this.strikeBatsman.balls += 1;
+	            if (action.ballIncre) {
+	                this.strikeBatsman.balls += 1;
+	            }
+	        }
+	        
+	        if (action.runs === 4) {
+	            this.strikeBatsman.fours += 1;
+	        } else if (action.runs === 6) {
+	            this.strikeBatsman.sixes += 1;
 	        }
 	        this.emitChange();
 	    }});
@@ -15817,6 +15837,7 @@ webpackJsonp([0],[
 	        this.addAction(ActionTypes.SCORE_BALLS, this.scoreBalls);
 	        this.addAction(ActionTypes.PLAY_CHANGE, this.playChange);
 	        this.addAction(ActionTypes.RESET, this.resetBalls);
+	        this.addAction(ActionTypes.GAME_OVER, this.gameDone);
 	    }});
 	
 	    Object.defineProperty(BowlingStore.prototype,"playChange",{writable:true,configurable:true,value:function(action) {"use strict";
@@ -15859,6 +15880,11 @@ webpackJsonp([0],[
 	        this.bowlingTeamRoster = team === TeamTypes.HOME ? homeTeam.players : awayTeam.players;
 	        this.bowlingTeamRoster = this.bowlingTeamRoster || [];
 	        this.fullTeam = this.bowlingTeamRoster.slice();
+	    }});
+	
+	    Object.defineProperty(BowlingStore.prototype,"gameDone",{writable:true,configurable:true,value:function(action) {"use strict";
+	        this.overs.push({ bowlerId: this.currentBowler.id, over: [].concat(this.currentOver) });
+	        this.emitChange();
 	    }});
 	
 	    Object.defineProperty(BowlingStore.prototype,"chooseBowler",{writable:true,configurable:true,value:function(action) {"use strict";
@@ -15959,10 +15985,12 @@ webpackJsonp([0],[
 	            this.currentBowler.wickets++;
 	            this.incrementBalls();
 	            this.isWicket = false;
-	        } else if (action.ballIncre) {
+	        } else {
 	            this.incrementCurrentBowlerRuns(action.runs);
 	            this.currentOver.push(action.runs);
-	            this.incrementBalls();
+	            if (action.ballIncre) {
+	                this.incrementBalls();
+	            }
 	        }
 	        this.emitChange();
 	    }});
@@ -16015,7 +16043,7 @@ webpackJsonp([0],[
 	        }
 	
 	        if (this.balls > 0 && this.balls % 6 === 0) {
-	            this.overs.push({ bowlerId: this.currentBowler.id, over: this.currentOver });
+	            this.overs.push({ bowlerId: this.currentBowler.id, over: [].concat(this.currentOver) });
 	            this.currentOver = [];
 	            this.changeBowler = true;
 	            this.currentBowler = null;
@@ -18208,13 +18236,19 @@ webpackJsonp([0],[
 	var $__0=  AppConstants,TeamTypes=$__0.TeamTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Classw=React.Component;for(var ____Classw____Key in ____Classw){if(____Classw.hasOwnProperty(____Classw____Key)){GameOver[____Classw____Key]=____Classw[____Classw____Key];}}var ____SuperProtoOf____Classw=____Classw===null?null:____Classw.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Classw);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Classw;
+	var ____Class7=React.Component;for(var ____Class7____Key in ____Class7){if(____Class7.hasOwnProperty(____Class7____Key)){GameOver[____Class7____Key]=____Class7[____Class7____Key];}}var ____SuperProtoOf____Class7=____Class7===null?null:____Class7.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Class7);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Class7;
 	
 	    function GameOver(props) {"use strict";
-	        ____Classw.call(this,props);
+	        ____Class7.call(this,props);
 	        this.props = props;
 	        this.playerData = [];
 	        this.matchData = [];
+	
+	        var data = ScoreStore.getData();
+	        this.overData = {};
+	        // remember, when HOME team bats, we store AWAY team overs
+	        this.overData[TeamTypes.HOME] = data.teams[TeamTypes.AWAY];
+	        this.overData[TeamTypes.AWAY] = data.teams[TeamTypes.HOME];
 	    }
 	
 	    Object.defineProperty(GameOver.prototype,"genPlayerStats",{writable:true,configurable:true,value:function() {"use strict";
@@ -18233,6 +18267,8 @@ webpackJsonp([0],[
 	                    React.createElement("td", null, player.last), 
 	                    React.createElement("td", null, player.runs || 0), 
 	                    React.createElement("td", null, player.balls || 0), 
+	                    React.createElement("td", null, player.fours || 0), 
+	                    React.createElement("td", null, player.sixes || 0), 
 	                    React.createElement("td", null, player.runsAllowed || 0), 
 	                    React.createElement("td", null, player.ballsBowled || 0), 
 	                    React.createElement("td", null, player.extrasGiven || 0), 
@@ -18240,6 +18276,25 @@ webpackJsonp([0],[
 	                )
 	            );
 	        });
+	        return rows;
+	    }});
+	
+	    Object.defineProperty(GameOver.prototype,"genOverRows",{writable:true,configurable:true,value:function(teamType) {"use strict";
+	        var overs = this.overData[teamType] || {};
+	        var oversPlayed = overs.overs || [];
+	        var rows = [];
+	        oversPlayed.forEach(function(over, index)  {
+	            var overStats = this.calcOverStats(over.over);
+	            rows.push(
+	                React.createElement("tr", {key: index}, 
+	                    React.createElement("td", null, index + 1), 
+	                    React.createElement("td", null, over.bowlerId || '-'), 
+	                    React.createElement("td", null, overStats.runs || 0), 
+	                    React.createElement("td", null, overStats.wickets || 0), 
+	                    React.createElement("td", null, overStats.extras || 0)
+	                )
+	            );
+	        }.bind(this));
 	        return rows;
 	    }});
 	
@@ -18314,7 +18369,7 @@ webpackJsonp([0],[
 	        );
 	    }});
 	
-	    Object.defineProperty(GameOver.prototype,"renderOverStats",{writable:true,configurable:true,value:function() {"use strict";
+	    Object.defineProperty(GameOver.prototype,"renderOverStats",{writable:true,configurable:true,value:function(teamType) {"use strict";
 	        return (
 	            React.createElement("table", {className: cn('table', 'dataTable')}, 
 	                React.createElement("thead", null, 
@@ -18327,7 +18382,7 @@ webpackJsonp([0],[
 	                    )
 	                ), 
 	                React.createElement("tbody", null, 
-	                    this.genOverRows()
+	                    this.genOverRows(teamType)
 	                )
 	            )
 	        );
@@ -18343,6 +18398,8 @@ webpackJsonp([0],[
 	                        React.createElement("th", null, "Last"), 
 	                        React.createElement("th", null, "Runs Made"), 
 	                        React.createElement("th", null, "Balls Faced"), 
+	                        React.createElement("th", null, "Fours"), 
+	                        React.createElement("th", null, "Sixes"), 
 	                        React.createElement("th", null, "Runs Allowed"), 
 	                        React.createElement("th", null, "Balls Bowled"), 
 	                        React.createElement("th", null, "Extras Given"), 
@@ -18357,6 +18414,10 @@ webpackJsonp([0],[
 	    }});
 	
 	    Object.defineProperty(GameOver.prototype,"render",{writable:true,configurable:true,value:function() {"use strict";
+	        var rosters = RosterStore.getRosters();
+	        var homeTeamName = rosters.homeTeamRoster.teamName || '';
+	        var awayTeamName = rosters.awayTeamRoster.teamName || '';
+	
 	        return (
 	            React.createElement("div", {className: cn('row')}, 
 	                React.createElement(Subnav, {title: "Game Over"}), 
@@ -18369,6 +18430,10 @@ webpackJsonp([0],[
 	                        React.createElement("button", {className: cn('btn', 'btn-info'), 
 	                            onClick: this.exportMatchCSV.bind(this)}, 
 	                            "Download Match CSV"
+	                        ), 
+	                        React.createElement("button", {className: cn('btn', 'btn-info'), 
+	                            onClick: this.exportOversCSV.bind(this)}, 
+	                            "Download Overs CSV"
 	                        ), 
 	                        React.createElement("button", {className: cn('btn', 'btn-info'), 
 	                            onClick: this.exportPlayerCSV.bind(this)}, 
@@ -18384,6 +18449,18 @@ webpackJsonp([0],[
 	                    ), 
 	                    React.createElement("div", null, 
 	                        this.renderMatchStats()
+	                    ), 
+	                    React.createElement("div", {className: cn('dataTableTitle')}, 
+	                        homeTeamName, " Over Stats"
+	                    ), 
+	                    React.createElement("div", null, 
+	                        this.renderOverStats(TeamTypes.HOME)
+	                    ), 
+	                    React.createElement("div", {className: cn('dataTableTitle')}, 
+	                        awayTeamName, " Over Stats"
+	                    ), 
+	                    React.createElement("div", null, 
+	                        this.renderOverStats(TeamTypes.AWAY)
 	                    ), 
 	                    React.createElement("div", {className: cn('dataTableTitle')}, 
 	                        "Player Stats"
@@ -18428,19 +18505,42 @@ webpackJsonp([0],[
 	    }});
 	
 	    Object.defineProperty(GameOver.prototype,"exportOversCSV",{writable:true,configurable:true,value:function() {"use strict";
+	        var rosters = RosterStore.getRosters();
+	        var homeTeamName = rosters.homeTeamRoster.teamName || '';
+	        var awayTeamName = rosters.awayTeamRoster.teamName || '';
+	
 	        var csvContent = "data:text/csv;charset=utf-8,\n";
+	        csvContent += homeTeamName + "\n",
 	        csvContent += "over_num,bowler_id,runs,wickets,extras\n";
-	        this.overData.forEach(function(team, index)  {
-	            var overStats = this.calcOverStats(over);
+	        var homeOvers = this.overData[TeamTypes.HOME].overs || [];
+	        var awayOvers = this.overData[TeamTypes.AWAY].overs || [];
+	        homeOvers.forEach(function(over, index)  {
+	            var overStats = this.calcOverStats(over.over);
 	            var infoArray = [
 	                index + 1,
 	                over.bowlerId,
 	                overStats.runs,
 	                overStats.wickets,
-	                overStats.extras
+	                overStats.extras,
 	            ];
 	           var dataString = infoArray.join(",");
-	           csvContent += index < this.overData.length ? dataString + "\n" : dataString;
+	           csvContent += dataString + "\n";
+	        }.bind(this));
+	
+	        csvContent += awayTeamName + "\n",
+	        csvContent += "over_num,bowler_id,runs,wickets,extras\n";
+	
+	        awayOvers.forEach(function(over, index)  {
+	            var overStats = this.calcOverStats(over.over);
+	            var infoArray = [
+	                index + 1,
+	                over.bowlerId,
+	                overStats.runs,
+	                overStats.wickets,
+	                overStats.extras,
+	            ];
+	           var dataString = infoArray.join(",");
+	           csvContent += index < awayOvers.length ? dataString + "\n" : dataString;
 	        }.bind(this));
 	
 	        // open download file
@@ -18457,12 +18557,14 @@ webpackJsonp([0],[
 	        }
 	
 	        var csvContent = "data:text/csv;charset=utf-8,\n";
-	        csvContent += "id,runs,balls,runs_allowed,balls_bowled,wickets\n";
+	        csvContent += "id,runs,balls,fours,sixes,runs_allowed,balls_bowled,extras_given,wickets\n";
 	        this.playerData.forEach(function(player, index)  {
 	            var infoArray = [
 	                player.id,
 	                player.runs || 0,
 	                player.balls || 0,
+	                player.fours || 0,
+	                player.sixes || 0,
 	                player.runsAllowed || 0,
 	                player.ballsBowled || 0,
 	                player.extrasGiven || 0,
@@ -18498,6 +18600,38 @@ webpackJsonp([0],[
 	        function()  {
 	            window.location = "http://localhost/";
 	        });
+	    }});
+	
+	    Object.defineProperty(GameOver.prototype,"calcOverStats",{writable:true,configurable:true,value:function(over) {"use strict";
+	        over = over || [];
+	        var runs = 0;
+	        var wickets = 0;
+	        var extras = 0;
+	        over.forEach(function(ball)  {
+	            if (typeof ball === 'string') {
+	                var type = ball.substr(0,2);
+	                switch (type) {
+	                    case 'W:':
+	                        wickets += 1;
+	                        runs += parseInt(ball.substr(2));
+	                        break;
+	                    case 'E:':
+	                        extras += 1;
+	                        runs += parseInt(ball.substr(2)) + 1;
+	                        break;
+	                    default:
+	                        break;
+	                }
+	            } else {
+	                runs += ball;
+	            }
+	        });
+	
+	        return {
+	            runs: runs,
+	            wickets: wickets,
+	            extras: extras,
+	        };
 	    }});
 	
 	    Object.defineProperty(GameOver.prototype,"getOvers",{writable:true,configurable:true,value:function(balls) {"use strict";
@@ -18552,8 +18686,8 @@ webpackJsonp([0],[
 	
 	    Object.defineProperty(ScoreStore.prototype,"resetRuns",{writable:true,configurable:true,value:function() {"use strict";
 	        this.teams = {};
-	        this.teams[TeamTypes.HOME] = { runs: 0, wickets: 0, balls: 0 };
-	        this.teams[TeamTypes.AWAY] = { runs: 0, wickets: 0, balls: 0 };
+	        this.teams[TeamTypes.HOME] = { runs: 0, wickets: 0, balls: 0, overs: {} };
+	        this.teams[TeamTypes.AWAY] = { runs: 0, wickets: 0, balls: 0, overs: {} };
 	        this.playChanged = false;
 	        this.emitChange();
 	    }});
@@ -18569,6 +18703,11 @@ webpackJsonp([0],[
 	    }});
 	
 	    Object.defineProperty(ScoreStore.prototype,"gameDone",{writable:true,configurable:true,value:function() {"use strict";
+	        this.getDispatcher().waitFor([ 
+	            BowlingStore.getDispatchToken(),
+	            BattingStore.getDispatchToken(),
+	        ]);
+	
 	        this.gameOver = true;
 	        this.emitChange();
 	    }});
@@ -18602,6 +18741,7 @@ webpackJsonp([0],[
 	        this.teams[this.battingTeam].runs = BattingStore.getRuns();
 	        this.teams[this.battingTeam].balls = BowlingStore.getBalls();
 	        this.teams[this.battingTeam].wickets = BattingStore.getWickets();
+	        this.teams[this.battingTeam].overs = BowlingStore.getOvers();
 	        this.checkGameState();
 	        this.emitChange();
 	    }});
@@ -18658,6 +18798,10 @@ webpackJsonp([0],[
 	    }});
 	
 	    Object.defineProperty(ScoreStore.prototype,"getMessage",{writable:true,configurable:true,value:function() {"use strict";
+	        if (!this.battingTeam) {
+	            return null;
+	        }
+	
 	        if (this.playChanged) {
 	            var bowlingTeam = this.battingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
 	            var batting = this.teams[this.battingTeam];
@@ -18665,7 +18809,14 @@ webpackJsonp([0],[
 	            var runsRemaining = (bowling.runs + 1) - batting.runs;
 	            var ballsRemaining = (SettingsStore.getData().overs * 6) - batting.balls;
 	            var rr = parseInt(((runsRemaining / ballsRemaining) * 6) * 100) / 100;
-	            return ("" + runsRemaining + " runs needed from " + ballsRemaining + " balls to win. RR: " + rr);
+	            return ("" + runsRemaining + " runs needed from " + ballsRemaining + " balls to win. RRR: " + rr);
+	        } else {
+	            var runs = this.teams[this.battingTeam].runs;
+	            var balls = this.teams[this.battingTeam].balls;
+	            var rr = parseInt(((runs / balls) * 6) * 100) / 100;
+	            var ballsRemaining = (SettingsStore.getData().overs * 6) - balls;
+	            var projectedTotal = runs + (rr * (ballsRemaining / 6));
+	            return ("RR: " + (rr || 0) + " Projected Total: " + (projectedTotal || 0));
 	        }
 	        return null;
 	    }});

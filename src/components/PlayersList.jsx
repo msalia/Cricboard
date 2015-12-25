@@ -84,6 +84,8 @@ class PlayersList extends React.Component {
                     <td>{player.first}</td>
                     <td>{player.last}</td>
                     <td>{statsCallback(player)}</td>
+                    <td>{player.fours || 0}</td>
+                    <td>{player.sixes || 0}</td>
                 </tr>
             );
         })
@@ -96,6 +98,8 @@ class PlayersList extends React.Component {
                         <th>First</th>
                         <th>Last</th>
                         <th>Stats</th>
+                        <th>Fours</th>
+                        <th>Sixes</th>
                     </tr>
                 </thead>
                 <tbody>

@@ -167,7 +167,7 @@ class ScoreStore extends BaseStore {
             var rr = parseInt(((runs / balls) * 6) * 100) / 100;
             var ballsRemaining = (SettingsStore.getData().overs * 6) - balls;
             var projectedTotal = runs + (rr * (ballsRemaining / 6));
-            return `RR: ${rr || 0} Projected Total: ${projectedTotal || 0}`;
+            return `RR: ${rr || 0} ---|--- Projected Total: ${parseInt(projectedTotal || 0)}`;
         }
         return null;
     }
