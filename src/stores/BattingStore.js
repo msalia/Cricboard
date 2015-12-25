@@ -32,6 +32,9 @@ class BattingStore extends BaseStore {
         this.battingTeamRoster = [];
         this.fullTeam = [];
 
+        this.isExtra = false;
+        this.isWicket = false;
+
         this.loadPlayers();
         this.resetScore();
         this.emitChange();
@@ -120,25 +123,32 @@ class BattingStore extends BaseStore {
             var batter = batsman[found];
             if (alreadyBatted >= 0) {
                 SweetAlert({   
-                    title: "Cannot choose batsman!",  
+                    title: "Are you sure?",  
                     text: `${batter.first} ${batter.last} has already batted.`,   
                     type: "error",
-                    confirmButtonText: "OK",   
+                    confirmButtonText: "I know what I'm doing!",   
                     closeOnConfirm: true, 
                 });
-                return;
             }
 
             if (position === 1) {
                 this.strikeBatsman = batter;
-                this.strikeBatsman.runs = 0;
-                this.strikeBatsman.balls = 0;
-                this.batsman.push(this.strikeBatsman);
+                if (this.strikeBatsman.runs == null) {
+                    this.strikeBatsman.runs = 0;
+                }
+                if (this.strikeBatsman.balls == null) {
+                    this.strikeBatsman.balls = 0;
+                }
+                (alreadyBatted < 0) && this.batsman.push(this.strikeBatsman);
             } else {
                 this.runningBatsman = batter;
-                this.runningBatsman.runs = 0;
-                this.runningBatsman.balls = 0;
-                this.batsman.push(this.runningBatsman);
+                if (this.runningBatsman.runs == null) {
+                    this.runningBatsman.runs = 0;
+                }
+                if (this.runningBatsman.balls == null) {
+                    this.runningBatsman.balls = 0;
+                }
+                (alreadyBatted < 0) && this.batsman.push(this.runningBatsman);
             }
             this.shouldProceed = this.strikeBatsman != null && this.runningBatsman != null;
         }
@@ -150,22 +160,18 @@ class BattingStore extends BaseStore {
             return;
         }
 
-        this.getDispatcher().waitFor([ 
-            SettingsStore.getDispatchToken(),
-        ]);
-
-        var settings = SettingsStore.getData();
         switch(action.scoreType) {
-            case ScoreTypes.WIDE:
-            case ScoreTypes.NO_BALL:
-                this.runs++;
+            case ScoreTypes.EXTRA:
+                this.isExtra = true;
+                if (this.isWicket) {
+                    this.isWicket = false;
+                }
                 break;
             case ScoreTypes.WICKET:
-                this.runs -= settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
-                this.wickets++;
-                this.strikeBatsman.balls += 1;
-                this.strikeBatsman = null;
-                this.shouldProceed = false;
+                this.isWicket = true;
+                if (this.isExtra) {
+                    this.isExtra = false;
+                }
                 break;
         }
 
@@ -178,7 +184,22 @@ class BattingStore extends BaseStore {
         }
 
         this.runs += action.runs;
-        if (action.ballIncre) {
+        if (this.isExtra) {
+            this.isExtra = false;
+        } else if (this.isWicket) {
+            this.getDispatcher().waitFor([ 
+                SettingsStore.getDispatchToken(),
+            ]);
+
+            var settings = SettingsStore.getData();
+            this.runs -= settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
+            this.wickets++;
+            this.strikeBatsman.balls += 1;
+            this.strikeBatsman.runs += action.runs;
+            this.strikeBatsman = null;
+            this.shouldProceed = false;
+            this.isWicket = false;
+        } else if (action.ballIncre) {
             this.strikeBatsman.runs += action.runs;
             this.strikeBatsman.balls += 1;
         }

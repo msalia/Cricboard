@@ -9,6 +9,7 @@ var React = require('react');
 var RosterStore = require('RosterStore');
 var Subnav = require('Subnav');
 var StatBox = require('StatBox');
+var SettingsStore = require('SettingsStore');
 var SweetAlert = require('sweetalert');
 
 var {
@@ -80,11 +81,18 @@ class Controls extends React.Component {
         return (
             <div>
                 <div className={cn('col-sm-12')}>
-                    Extra: &nbsp;
+                    Auxillary: &nbsp;
                     <div className={cn('btn-group')} role="group">
-                        <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreExtra(ScoreTypes.WIDE)}>Wide</button>
-                        <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreExtra(ScoreTypes.NO_BALL)}>No Ball</button>
-                        <button type="button" className={buttonClasses} onClick={() => this.props.goGreen && AppActions.scoreExtra(ScoreTypes.WICKET)}>Wicket</button>
+                        <button type="button" 
+                            className={cn({ 'btn': true, 'btn-default': true, 'btn-primary': this.props.bowlingData.isExtra })} 
+                            onClick={() => this.props.goGreen && AppActions.scoreExtra(ScoreTypes.EXTRA)}>
+                            Extra
+                        </button>
+                        <button type="button" 
+                            className={cn({ 'btn': true, 'btn-default': true, 'btn-primary': this.props.bowlingData.isWicket })} 
+                            onClick={() => this.props.goGreen && AppActions.scoreExtra(ScoreTypes.WICKET)}>
+                            Wicket
+                        </button>
                     </div>
                 </div>
                 <div className={cn('col-sm-12')} style={{ margin: "15px 0" }}>
@@ -241,17 +249,19 @@ class Controls extends React.Component {
 
     calcRuns(over) {
         var total = 0;
+        var settings = SettingsStore.getData();
         over.forEach(ball => {
-            switch(ball) {
-                case 'W':
-                    total -= 3;
-                    break;
-                case 'Wd':
-                case 'Nb':
-                    total += 1;
-                    break;
-                default:
-                    total += ball;
+            if (typeof ball === 'string') {
+                var type = ball.substr(0,2);
+                switch (type) {
+                    case 'W:':
+                        total -= settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
+                    case 'E:':
+                        total += parseInt(ball.substr(2));
+                        break;
+                }
+            } else {
+                total += ball;
             }
         });
         return total;

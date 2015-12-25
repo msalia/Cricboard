@@ -31,6 +31,9 @@ class BowlingStore extends BaseStore {
         this.bowlingTeamRoster = [];
         this.fullTeam = [];
 
+        this.isExtra = false;
+        this.isWicket = false;
+
         this.loadPlayers();
         this.resetBalls();
         this.emitChange();
@@ -149,18 +152,17 @@ class BowlingStore extends BaseStore {
         }
 
         switch(action.scoreType) {
-            case ScoreTypes.WIDE:
-                this.currentOver.push('Wd');
-                this.incrementCurrentBowlerRuns(1);
-                break;
-            case ScoreTypes.NO_BALL:
-                this.currentOver.push('Nb');
-                this.incrementCurrentBowlerRuns(1);
+            case ScoreTypes.EXTRA:
+                this.isExtra = true;
+                if (this.isWicket) {
+                    this.isWicket = false;
+                }
                 break;
             case ScoreTypes.WICKET:
-                this.currentOver.push('W');
-                this.currentBowler.wickets += 1;
-                this.incrementBalls();
+                this.isWicket = true;
+                if (this.isExtra) {
+                    this.isExtra = false;
+                }
                 break;
         }
         this.emitChange();
@@ -179,9 +181,24 @@ class BowlingStore extends BaseStore {
             return;
         }
 
-        this.incrementCurrentBowlerRuns(action.runs);
+        if (this.isExtra) {
+            this.currentOver.push('E:' + action.runs);
+            this.incrementCurrentBowlerRuns(action.runs);
+            this.isExtra = false;
+        } else if (this.isWicket) {
+            this.getDispatcher().waitFor([ 
+                SettingsStore.getDispatchToken(),
+            ]);
 
-        if (action.ballIncre) {
+            var settings = SettingsStore.getData();
+            var deduction = settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
+            this.incrementCurrentBowlerRuns(action.runs - deduction);
+            this.currentOver.push('W:' + action.runs);
+            this.currentBowler.wickets++;
+            this.incrementBalls();
+            this.isWicket = false;
+        } else if (action.ballIncre) {
+            this.incrementCurrentBowlerRuns(action.runs);
             this.currentOver.push(action.runs);
             this.incrementBalls();
         }
@@ -253,6 +270,8 @@ class BowlingStore extends BaseStore {
             currentOver: this.currentOver,
             currentBowler: this.currentBowler,
             changeBowler: this.changeBowler,
+            isExtra: this.isExtra,
+            isWicket: this.isWicket,
         };
     }
 

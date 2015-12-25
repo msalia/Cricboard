@@ -35,13 +35,12 @@ var AppConstants = {
     }),
 
     TeamTypes: keyMirror({
-    		HOME: null,
-    		AWAY: null,
+		HOME: null,
+		AWAY: null,
     }),
 
     ScoreTypes: keyMirror({
-        WIDE: null,
-        NO_BALL: null,
+        EXTRA: null,
         WICKET: null,
         RUNS: null
     }),
