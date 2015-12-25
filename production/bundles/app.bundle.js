@@ -5489,6 +5489,8 @@ webpackJsonp([0],[
 	
 	        this.runs += action.runs;
 	        if (this.isExtra) {
+	            this.runs += 1;
+	            this.strikeBatsman.runs += action.runs;
 	            this.isExtra = false;
 	        } else if (this.isWicket) {
 	            this.getDispatcher().waitFor([ 
@@ -15939,7 +15941,7 @@ webpackJsonp([0],[
 	
 	        if (this.isExtra) {
 	            this.currentOver.push('E:' + action.runs);
-	            this.incrementCurrentBowlerRuns(action.runs);
+	            this.incrementCurrentBowlerRuns(action.runs + 1);
 	            this.isExtra = false;
 	        } else if (this.isWicket) {
 	            this.getDispatcher().waitFor([ 
@@ -16028,11 +16030,35 @@ webpackJsonp([0],[
 	            changeBowler: this.changeBowler,
 	            isExtra: this.isExtra,
 	            isWicket: this.isWicket,
+	            extras: this.getExtras(),
 	        };
 	    }});
 	
 	    Object.defineProperty(BowlingStore.prototype,"getOvers",{writable:true,configurable:true,value:function() {"use strict";
 	        return this.overs;
+	    }});
+	
+	    Object.defineProperty(BowlingStore.prototype,"getExtras",{writable:true,configurable:true,value:function() {"use strict";
+	        var extras = this.calcExtras(this.currentOver || []);
+	        this.overs.forEach(function(over)  {
+	            extras += this.calcExtras(over);
+	        }.bind(this));
+	        return extras;
+	    }});
+	
+	    Object.defineProperty(BowlingStore.prototype,"calcExtras",{writable:true,configurable:true,value:function(over) {"use strict";
+	        var total = 0;
+	        over.forEach(function(ball)  {
+	            if (typeof ball === 'string') {
+	                var type = ball.substr(0,2);
+	                switch (type) {
+	                    case 'E:':
+	                        total += 1;
+	                        break;
+	                }
+	            }
+	        });
+	        return total;
 	    }});
 	
 	    Object.defineProperty(BowlingStore.prototype,"getCurrentOver",{writable:true,configurable:true,value:function() {"use strict";
@@ -17891,10 +17917,10 @@ webpackJsonp([0],[
 	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____ClassN=React.Component;for(var ____ClassN____Key in ____ClassN){if(____ClassN.hasOwnProperty(____ClassN____Key)){Controls[____ClassN____Key]=____ClassN[____ClassN____Key];}}var ____SuperProtoOf____ClassN=____ClassN===null?null:____ClassN.prototype;Controls.prototype=Object.create(____SuperProtoOf____ClassN);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____ClassN;
+	var ____Classk=React.Component;for(var ____Classk____Key in ____Classk){if(____Classk.hasOwnProperty(____Classk____Key)){Controls[____Classk____Key]=____Classk[____Classk____Key];}}var ____SuperProtoOf____Classk=____Classk===null?null:____Classk.prototype;Controls.prototype=Object.create(____SuperProtoOf____Classk);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Classk;
 	
 	    function Controls(props) {"use strict";
-	        ____ClassN.call(this,props);
+	        ____Classk.call(this,props);
 	        this.props = props;
 	    }
 	
@@ -18103,6 +18129,7 @@ webpackJsonp([0],[
 	            { title: 'Runs This Over', value: this.calcRuns(data.currentOver) || 0 },
 	            { title: 'Current Over', value: this.printOver(data.currentOver) || '-' },
 	            { title: 'Bowler', value: bowler ? ("" + bowler.first + " " + bowler.last) : 'None' },
+	            { title: 'Total Extras', value: this.props.bowlingData.extras || 0 },
 	            { title: ("B1 " + (b1.first || '') + " " + (b1.last || '')), value: b1.runs || 0, middot: true },
 	            { title: ("B2 " + (b2.first || '') + " " + (b2.last || '')), value: b2.runs || 0 },
 	        ];
@@ -18120,17 +18147,28 @@ webpackJsonp([0],[
 	        );
 	    }});
 	
+	    Object.defineProperty(Controls.prototype,"printOver",{writable:true,configurable:true,value:function(over) {"use strict";
+	        var text = '';
+	        over.forEach(function(ball)  {
+	            text += ball + '-';
+	        });
+	        return text.substr(0, text.length-1);
+	    }});
+	
 	    Object.defineProperty(Controls.prototype,"calcRuns",{writable:true,configurable:true,value:function(over) {"use strict";
 	        var total = 0;
 	        var settings = SettingsStore.getData();
+	        var deduction = settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
 	        over.forEach(function(ball)  {
 	            if (typeof ball === 'string') {
 	                var type = ball.substr(0,2);
 	                switch (type) {
 	                    case 'W:':
-	                        total -= settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
-	                    case 'E:':
+	                        total -= deduction;
 	                        total += parseInt(ball.substr(2));
+	                        break;
+	                    case 'E:':
+	                        total += parseInt(ball.substr(2)) + 1;
 	                        break;
 	                }
 	            } else {
@@ -18138,14 +18176,6 @@ webpackJsonp([0],[
 	            }
 	        });
 	        return total;
-	    }});
-	
-	    Object.defineProperty(Controls.prototype,"printOver",{writable:true,configurable:true,value:function(over) {"use strict";
-	        var text = '';
-	        over.forEach(function(ball)  {
-	            text += ball + '-';
-	        });
-	        return text.substr(0, text.length-1);
 	    }});
 	
 	
@@ -18172,10 +18202,10 @@ webpackJsonp([0],[
 	var $__0=  AppConstants,TeamTypes=$__0.TeamTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class7=React.Component;for(var ____Class7____Key in ____Class7){if(____Class7.hasOwnProperty(____Class7____Key)){GameOver[____Class7____Key]=____Class7[____Class7____Key];}}var ____SuperProtoOf____Class7=____Class7===null?null:____Class7.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Class7);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Class7;
+	var ____Classo=React.Component;for(var ____Classo____Key in ____Classo){if(____Classo.hasOwnProperty(____Classo____Key)){GameOver[____Classo____Key]=____Classo[____Classo____Key];}}var ____SuperProtoOf____Classo=____Classo===null?null:____Classo.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Classo);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Classo;
 	
 	    function GameOver(props) {"use strict";
-	        ____Class7.call(this,props);
+	        ____Classo.call(this,props);
 	        this.props = props;
 	        this.playerData = [];
 	        this.matchData = [];
@@ -18348,14 +18378,14 @@ webpackJsonp([0],[
 	
 	    Object.defineProperty(GameOver.prototype,"exportMatchCSV",{writable:true,configurable:true,value:function() {"use strict";
 	        var csvContent = "data:text/csv;charset=utf-8,\n";
-	        csvContent += "id,name,runs,wickets,tossWon,choseTo\n";
+	        csvContent += "id,name,runs,wickets,overs,tossWon,choseTo\n";
 	        this.matchData.forEach(function(team, index)  {
 	            var infoArray = [
 	                team.teamId,
 	                team.teamName,
 	                team.runs || 0,
 	                team.wickets || 0,
-	                team.balls || 0,
+	                this.getOvers(team.balls) || 0,
 	                team.tossWon || 'No',
 	                team.choseTo || '',
 	            ];
