@@ -198,6 +198,12 @@ class BowlingStore extends BaseStore {
             return;
         }
 
+        if (action.runs === 6) {
+            this.currentBowler.sixesAllowed += 1;
+        } else if (action.runs === 4) {
+            this.currentBowler.foursAllowed += 1;
+        }
+
         if (this.isExtra) {
             this.currentOver.push('E:' + action.runs);
             this.incrementCurrentBowlerRuns(action.runs + 1);
@@ -221,12 +227,6 @@ class BowlingStore extends BaseStore {
             if (action.ballIncre) {
                 this.incrementBalls();
             }
-        }
-
-        if (action.runs === 6) {
-            this.currentBowler.sixesAllowed += 1;
-        } else {
-            this.currentBowler.foursAllowed += 1;
         }
         this.emitChange();
     }

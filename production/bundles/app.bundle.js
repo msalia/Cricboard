@@ -5175,7 +5175,7 @@ webpackJsonp([0],[
 	
 	var AppConstants = {
 	
-	    API_ENDPOINT: 'http://api.pramukhcup.ca',
+	    API_ENDPOINT: 'http://localhost/Chitragupta',
 	    SCORE_BOARDS_DOMAIN: 'http://localhost',
 	
 	    ActionTypes: keyMirror({
@@ -5449,6 +5449,12 @@ webpackJsonp([0],[
 	                if (this.strikeBatsman.fours == null) {
 	                    this.strikeBatsman.fours = 0;
 	                }
+	                if (this.strikeBatsman.foursAllowed == null) {
+	                    this.strikeBatsman.foursAllowed = 0;
+	                }
+	                if (this.strikeBatsman.sixesAllowed == null) {
+	                    this.strikeBatsman.sixesAllowed = 0;
+	                }
 	                (alreadyBatted < 0) && this.batsman.push(this.strikeBatsman);
 	            } else {
 	                this.runningBatsman = batter;
@@ -5463,6 +5469,12 @@ webpackJsonp([0],[
 	                }
 	                if (this.runningBatsman.fours == null) {
 	                    this.runningBatsman.fours = 0;
+	                }
+	                if (this.runningBatsman.foursAllowed == null) {
+	                    this.runningBatsman.foursAllowed = 0;
+	                }
+	                if (this.runningBatsman.sixesAllowed == null) {
+	                    this.runningBatsman.sixesAllowed = 0;
 	                }
 	                (alreadyBatted < 0) && this.batsman.push(this.runningBatsman);
 	            }
@@ -5499,6 +5511,12 @@ webpackJsonp([0],[
 	            return;
 	        }
 	
+	        if (action.runs === 4) {
+	            this.strikeBatsman.fours += 1;
+	        } else if (action.runs === 6) {
+	            this.strikeBatsman.sixes += 1;
+	        }
+	
 	        this.runs += action.runs;
 	        if (this.isExtra) {
 	            this.runs += 1;
@@ -5522,12 +5540,6 @@ webpackJsonp([0],[
 	            if (action.ballIncre) {
 	                this.strikeBatsman.balls += 1;
 	            }
-	        }
-	        
-	        if (action.runs === 4) {
-	            this.strikeBatsman.fours += 1;
-	        } else if (action.runs === 6) {
-	            this.strikeBatsman.sixes += 1;
 	        }
 	        this.emitChange();
 	    }});
@@ -15883,7 +15895,9 @@ webpackJsonp([0],[
 	    }});
 	
 	    Object.defineProperty(BowlingStore.prototype,"gameDone",{writable:true,configurable:true,value:function(action) {"use strict";
-	        this.overs.push({ bowlerId: this.currentBowler.id, over: [].concat(this.currentOver) });
+	        if (this.currentBowler && this.currentBowler.id != null) {
+	            this.overs.push({ bowlerId: this.currentBowler.id, over: [].concat(this.currentOver) });
+	        }
 	        this.emitChange();
 	    }});
 	
@@ -15920,6 +15934,12 @@ webpackJsonp([0],[
 	            }
 	            if (!this.currentBowler.wickets) {
 	                this.currentBowler.wickets = 0;
+	            }
+	            if (!this.currentBowler.foursAllowed) {
+	                this.currentBowler.foursAllowed = 0;
+	            }
+	            if (!this.currentBowler.sixesAllowed) {
+	                this.currentBowler.sixesAllowed = 0;
 	            }
 	
 	            this.currentOver = [];
@@ -15966,6 +15986,12 @@ webpackJsonp([0],[
 	    Object.defineProperty(BowlingStore.prototype,"scoreRuns",{writable:true,configurable:true,value:function(action) {"use strict";
 	        if (!this.initialized || !this.currentBowler) {
 	            return;
+	        }
+	
+	        if (action.runs === 6) {
+	            this.currentBowler.sixesAllowed += 1;
+	        } else if (action.runs === 4) {
+	            this.currentBowler.foursAllowed += 1;
 	        }
 	
 	        if (this.isExtra) {
@@ -17779,7 +17805,7 @@ webpackJsonp([0],[
 	        }
 	    }});
 	
-	    Object.defineProperty(PlayersList.prototype,"renderDataTable",{writable:true,configurable:true,value:function(playerLabel, data, statsCallback) {"use strict";
+	    Object.defineProperty(PlayersList.prototype,"renderDataTable",{writable:true,configurable:true,value:function(playerLabel, data, statsCallback, batting) {"use strict";
 	        var rows = [];
 	        data.forEach(function(player, index)  {
 	            rows.push(
@@ -17788,8 +17814,8 @@ webpackJsonp([0],[
 	                    React.createElement("td", null, player.first), 
 	                    React.createElement("td", null, player.last), 
 	                    React.createElement("td", null, statsCallback(player)), 
-	                    React.createElement("td", null, player.fours || 0), 
-	                    React.createElement("td", null, player.sixes || 0)
+	                    React.createElement("td", null, (batting ? player.fours : player.foursAllowed) || 0), 
+	                    React.createElement("td", null, (batting ? player.sixes : player.sixesAllowed) || 0)
 	                )
 	            );
 	        })
@@ -17825,12 +17851,12 @@ webpackJsonp([0],[
 	                React.createElement("div", {className: cn('col-sm-6', 'bowlingList'), style: { borderRight: "1px solid #DDDDDD"}}, 
 	                    this.renderDataTable('Batsman', this.props.battingData.batsman, function(batsman)  {
 	                        return ("" + (batsman.runs || 0) + " (" + (batsman.balls || 0) + ")");
-	                    })
+	                    }, true)
 	                ), 
 	                React.createElement("div", {className: cn('col-sm-6', 'bowlingList')}, 
 	                    this.renderDataTable('Bowler', this.props.bowlingData.bowlers, function(bowler)  {
 	                        return ("" + (bowler.runsAllowed || 0) + "-" + (this.getOvers(bowler.ballsBowled) || '0.0') + "-" + (bowler.wickets || 0) + " (E: " + (bowler.extrasGiven || 0) + ")");
-	                    }.bind(this))
+	                    }.bind(this), false)
 	                )
 	            )
 	        );
@@ -18275,6 +18301,8 @@ webpackJsonp([0],[
 	                    React.createElement("td", null, player.sixes || 0), 
 	                    React.createElement("td", null, player.runsAllowed || 0), 
 	                    React.createElement("td", null, player.ballsBowled || 0), 
+	                    React.createElement("td", null, player.foursAllowed || 0), 
+	                    React.createElement("td", null, player.sixesAllowed || 0), 
 	                    React.createElement("td", null, player.extrasGiven || 0), 
 	                    React.createElement("td", null, player.wickets || 0)
 	                )
@@ -18406,6 +18434,8 @@ webpackJsonp([0],[
 	                        React.createElement("th", null, "Sixes"), 
 	                        React.createElement("th", null, "Runs Allowed"), 
 	                        React.createElement("th", null, "Balls Bowled"), 
+	                        React.createElement("th", null, "Fours Allowed"), 
+	                        React.createElement("th", null, "Sixes Allowed"), 
 	                        React.createElement("th", null, "Extras Given"), 
 	                        React.createElement("th", null, "Wickets")
 	                    )
@@ -18561,7 +18591,7 @@ webpackJsonp([0],[
 	        }
 	
 	        var csvContent = "data:text/csv;charset=utf-8,\n";
-	        csvContent += "id,runs,balls,fours,sixes,runs_allowed,balls_bowled,extras_given,wickets\n";
+	        csvContent += "id,runs,balls,fours,sixes,runs_allowed,balls_bowled,fours_allowed,sixes_allowed,extras_given,wickets\n";
 	        this.playerData.forEach(function(player, index)  {
 	            var infoArray = [
 	                player.id,
@@ -18571,6 +18601,8 @@ webpackJsonp([0],[
 	                player.sixes || 0,
 	                player.runsAllowed || 0,
 	                player.ballsBowled || 0,
+	                player.foursAllowed || 0,
+	                player.sixesAllowed || 0,
 	                player.extrasGiven || 0,
 	                player.wickets || 0,
 	            ];

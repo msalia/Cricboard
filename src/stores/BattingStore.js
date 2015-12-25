@@ -145,6 +145,12 @@ class BattingStore extends BaseStore {
                 if (this.strikeBatsman.fours == null) {
                     this.strikeBatsman.fours = 0;
                 }
+                if (this.strikeBatsman.foursAllowed == null) {
+                    this.strikeBatsman.foursAllowed = 0;
+                }
+                if (this.strikeBatsman.sixesAllowed == null) {
+                    this.strikeBatsman.sixesAllowed = 0;
+                }
                 (alreadyBatted < 0) && this.batsman.push(this.strikeBatsman);
             } else {
                 this.runningBatsman = batter;
@@ -159,6 +165,12 @@ class BattingStore extends BaseStore {
                 }
                 if (this.runningBatsman.fours == null) {
                     this.runningBatsman.fours = 0;
+                }
+                if (this.runningBatsman.foursAllowed == null) {
+                    this.runningBatsman.foursAllowed = 0;
+                }
+                if (this.runningBatsman.sixesAllowed == null) {
+                    this.runningBatsman.sixesAllowed = 0;
                 }
                 (alreadyBatted < 0) && this.batsman.push(this.runningBatsman);
             }
@@ -195,6 +207,12 @@ class BattingStore extends BaseStore {
             return;
         }
 
+        if (action.runs === 4) {
+            this.strikeBatsman.fours += 1;
+        } else if (action.runs === 6) {
+            this.strikeBatsman.sixes += 1;
+        }
+
         this.runs += action.runs;
         if (this.isExtra) {
             this.runs += 1;
@@ -218,12 +236,6 @@ class BattingStore extends BaseStore {
             if (action.ballIncre) {
                 this.strikeBatsman.balls += 1;
             }
-        }
-        
-        if (action.runs === 4) {
-            this.strikeBatsman.fours += 1;
-        } else if (action.runs === 6) {
-            this.strikeBatsman.sixes += 1;
         }
         this.emitChange();
     }
