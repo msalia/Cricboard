@@ -5203,13 +5203,12 @@ webpackJsonp([0],[
 	    }),
 	
 	    TeamTypes: keyMirror({
-	    		HOME: null,
-	    		AWAY: null,
+			HOME: null,
+			AWAY: null,
 	    }),
 	
 	    ScoreTypes: keyMirror({
-	        WIDE: null,
-	        NO_BALL: null,
+	        EXTRA: null,
 	        WICKET: null,
 	        RUNS: null
 	    }),
@@ -5337,6 +5336,9 @@ webpackJsonp([0],[
 	        this.battingTeamRoster = [];
 	        this.fullTeam = [];
 	
+	        this.isExtra = false;
+	        this.isWicket = false;
+	
 	        this.loadPlayers();
 	        this.resetScore();
 	        this.emitChange();
@@ -5425,25 +5427,32 @@ webpackJsonp([0],[
 	            var batter = batsman[found];
 	            if (alreadyBatted >= 0) {
 	                SweetAlert({   
-	                    title: "Cannot choose batsman!",  
+	                    title: "Are you sure?",  
 	                    text: ("" + batter.first + " " + batter.last + " has already batted."),   
 	                    type: "error",
-	                    confirmButtonText: "OK",   
+	                    confirmButtonText: "I know what I'm doing!",   
 	                    closeOnConfirm: true, 
 	                });
-	                return;
 	            }
 	
 	            if (position === 1) {
 	                this.strikeBatsman = batter;
-	                this.strikeBatsman.runs = 0;
-	                this.strikeBatsman.balls = 0;
-	                this.batsman.push(this.strikeBatsman);
+	                if (this.strikeBatsman.runs == null) {
+	                    this.strikeBatsman.runs = 0;
+	                }
+	                if (this.strikeBatsman.balls == null) {
+	                    this.strikeBatsman.balls = 0;
+	                }
+	                (alreadyBatted < 0) && this.batsman.push(this.strikeBatsman);
 	            } else {
 	                this.runningBatsman = batter;
-	                this.runningBatsman.runs = 0;
-	                this.runningBatsman.balls = 0;
-	                this.batsman.push(this.runningBatsman);
+	                if (this.runningBatsman.runs == null) {
+	                    this.runningBatsman.runs = 0;
+	                }
+	                if (this.runningBatsman.balls == null) {
+	                    this.runningBatsman.balls = 0;
+	                }
+	                (alreadyBatted < 0) && this.batsman.push(this.runningBatsman);
 	            }
 	            this.shouldProceed = this.strikeBatsman != null && this.runningBatsman != null;
 	        }
@@ -5455,22 +5464,18 @@ webpackJsonp([0],[
 	            return;
 	        }
 	
-	        this.getDispatcher().waitFor([ 
-	            SettingsStore.getDispatchToken(),
-	        ]);
-	
-	        var settings = SettingsStore.getData();
 	        switch(action.scoreType) {
-	            case ScoreTypes.WIDE:
-	            case ScoreTypes.NO_BALL:
-	                this.runs++;
+	            case ScoreTypes.EXTRA:
+	                this.isExtra = true;
+	                if (this.isWicket) {
+	                    this.isWicket = false;
+	                }
 	                break;
 	            case ScoreTypes.WICKET:
-	                this.runs -= settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
-	                this.wickets++;
-	                this.strikeBatsman.balls += 1;
-	                this.strikeBatsman = null;
-	                this.shouldProceed = false;
+	                this.isWicket = true;
+	                if (this.isExtra) {
+	                    this.isExtra = false;
+	                }
 	                break;
 	        }
 	
@@ -5483,7 +5488,22 @@ webpackJsonp([0],[
 	        }
 	
 	        this.runs += action.runs;
-	        if (action.ballIncre) {
+	        if (this.isExtra) {
+	            this.isExtra = false;
+	        } else if (this.isWicket) {
+	            this.getDispatcher().waitFor([ 
+	                SettingsStore.getDispatchToken(),
+	            ]);
+	
+	            var settings = SettingsStore.getData();
+	            this.runs -= settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
+	            this.wickets++;
+	            this.strikeBatsman.balls += 1;
+	            this.strikeBatsman.runs += action.runs;
+	            this.strikeBatsman = null;
+	            this.shouldProceed = false;
+	            this.isWicket = false;
+	        } else if (action.ballIncre) {
 	            this.strikeBatsman.runs += action.runs;
 	            this.strikeBatsman.balls += 1;
 	        }
@@ -15767,6 +15787,9 @@ webpackJsonp([0],[
 	        this.bowlingTeamRoster = [];
 	        this.fullTeam = [];
 	
+	        this.isExtra = false;
+	        this.isWicket = false;
+	
 	        this.loadPlayers();
 	        this.resetBalls();
 	        this.emitChange();
@@ -15885,18 +15908,17 @@ webpackJsonp([0],[
 	        }
 	
 	        switch(action.scoreType) {
-	            case ScoreTypes.WIDE:
-	                this.currentOver.push('Wd');
-	                this.incrementCurrentBowlerRuns(1);
-	                break;
-	            case ScoreTypes.NO_BALL:
-	                this.currentOver.push('Nb');
-	                this.incrementCurrentBowlerRuns(1);
+	            case ScoreTypes.EXTRA:
+	                this.isExtra = true;
+	                if (this.isWicket) {
+	                    this.isWicket = false;
+	                }
 	                break;
 	            case ScoreTypes.WICKET:
-	                this.currentOver.push('W');
-	                this.currentBowler.wickets += 1;
-	                this.incrementBalls();
+	                this.isWicket = true;
+	                if (this.isExtra) {
+	                    this.isExtra = false;
+	                }
 	                break;
 	        }
 	        this.emitChange();
@@ -15915,9 +15937,24 @@ webpackJsonp([0],[
 	            return;
 	        }
 	
-	        this.incrementCurrentBowlerRuns(action.runs);
+	        if (this.isExtra) {
+	            this.currentOver.push('E:' + action.runs);
+	            this.incrementCurrentBowlerRuns(action.runs);
+	            this.isExtra = false;
+	        } else if (this.isWicket) {
+	            this.getDispatcher().waitFor([ 
+	                SettingsStore.getDispatchToken(),
+	            ]);
 	
-	        if (action.ballIncre) {
+	            var settings = SettingsStore.getData();
+	            var deduction = settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
+	            this.incrementCurrentBowlerRuns(action.runs - deduction);
+	            this.currentOver.push('W:' + action.runs);
+	            this.currentBowler.wickets++;
+	            this.incrementBalls();
+	            this.isWicket = false;
+	        } else if (action.ballIncre) {
+	            this.incrementCurrentBowlerRuns(action.runs);
 	            this.currentOver.push(action.runs);
 	            this.incrementBalls();
 	        }
@@ -15989,6 +16026,8 @@ webpackJsonp([0],[
 	            currentOver: this.currentOver,
 	            currentBowler: this.currentBowler,
 	            changeBowler: this.changeBowler,
+	            isExtra: this.isExtra,
+	            isWicket: this.isWicket,
 	        };
 	    }});
 	
@@ -17843,6 +17882,7 @@ webpackJsonp([0],[
 	var RosterStore = __webpack_require__(217);
 	var Subnav = __webpack_require__(239);
 	var StatBox = __webpack_require__(240);
+	var SettingsStore = __webpack_require__(236);
 	var SweetAlert = __webpack_require__(227);
 	
 	var $__0=
@@ -17851,10 +17891,10 @@ webpackJsonp([0],[
 	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class6=React.Component;for(var ____Class6____Key in ____Class6){if(____Class6.hasOwnProperty(____Class6____Key)){Controls[____Class6____Key]=____Class6[____Class6____Key];}}var ____SuperProtoOf____Class6=____Class6===null?null:____Class6.prototype;Controls.prototype=Object.create(____SuperProtoOf____Class6);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Class6;
+	var ____ClassN=React.Component;for(var ____ClassN____Key in ____ClassN){if(____ClassN.hasOwnProperty(____ClassN____Key)){Controls[____ClassN____Key]=____ClassN[____ClassN____Key];}}var ____SuperProtoOf____ClassN=____ClassN===null?null:____ClassN.prototype;Controls.prototype=Object.create(____SuperProtoOf____ClassN);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____ClassN;
 	
 	    function Controls(props) {"use strict";
-	        ____Class6.call(this,props);
+	        ____ClassN.call(this,props);
 	        this.props = props;
 	    }
 	
@@ -17914,11 +17954,18 @@ webpackJsonp([0],[
 	        return (
 	            React.createElement("div", null, 
 	                React.createElement("div", {className: cn('col-sm-12')}, 
-	                    "Extra:  ", 
+	                    "Auxillary:  ", 
 	                    React.createElement("div", {className: cn('btn-group'), role: "group"}, 
-	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreExtra(ScoreTypes.WIDE);}.bind(this)}, "Wide"), 
-	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreExtra(ScoreTypes.NO_BALL);}.bind(this)}, "No Ball"), 
-	                        React.createElement("button", {type: "button", className: buttonClasses, onClick: function()  {return this.props.goGreen && AppActions.scoreExtra(ScoreTypes.WICKET);}.bind(this)}, "Wicket")
+	                        React.createElement("button", {type: "button", 
+	                            className: cn({ 'btn': true, 'btn-default': true, 'btn-primary': this.props.bowlingData.isExtra }), 
+	                            onClick: function()  {return this.props.goGreen && AppActions.scoreExtra(ScoreTypes.EXTRA);}.bind(this)}, 
+	                            "Extra"
+	                        ), 
+	                        React.createElement("button", {type: "button", 
+	                            className: cn({ 'btn': true, 'btn-default': true, 'btn-primary': this.props.bowlingData.isWicket }), 
+	                            onClick: function()  {return this.props.goGreen && AppActions.scoreExtra(ScoreTypes.WICKET);}.bind(this)}, 
+	                            "Wicket"
+	                        )
 	                    )
 	                ), 
 	                React.createElement("div", {className: cn('col-sm-12'), style: { margin: "15px 0"}}, 
@@ -18075,17 +18122,19 @@ webpackJsonp([0],[
 	
 	    Object.defineProperty(Controls.prototype,"calcRuns",{writable:true,configurable:true,value:function(over) {"use strict";
 	        var total = 0;
+	        var settings = SettingsStore.getData();
 	        over.forEach(function(ball)  {
-	            switch(ball) {
-	                case 'W':
-	                    total -= 3;
-	                    break;
-	                case 'Wd':
-	                case 'Nb':
-	                    total += 1;
-	                    break;
-	                default:
-	                    total += ball;
+	            if (typeof ball === 'string') {
+	                var type = ball.substr(0,2);
+	                switch (type) {
+	                    case 'W:':
+	                        total -= settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
+	                    case 'E:':
+	                        total += parseInt(ball.substr(2));
+	                        break;
+	                }
+	            } else {
+	                total += ball;
 	            }
 	        });
 	        return total;
@@ -18123,10 +18172,10 @@ webpackJsonp([0],[
 	var $__0=  AppConstants,TeamTypes=$__0.TeamTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Classh=React.Component;for(var ____Classh____Key in ____Classh){if(____Classh.hasOwnProperty(____Classh____Key)){GameOver[____Classh____Key]=____Classh[____Classh____Key];}}var ____SuperProtoOf____Classh=____Classh===null?null:____Classh.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Classh);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Classh;
+	var ____Class7=React.Component;for(var ____Class7____Key in ____Class7){if(____Class7.hasOwnProperty(____Class7____Key)){GameOver[____Class7____Key]=____Class7[____Class7____Key];}}var ____SuperProtoOf____Class7=____Class7===null?null:____Class7.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Class7);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Class7;
 	
 	    function GameOver(props) {"use strict";
-	        ____Classh.call(this,props);
+	        ____Class7.call(this,props);
 	        this.props = props;
 	        this.playerData = [];
 	        this.matchData = [];

@@ -24,7 +24,7 @@
             </div>
             <div class="battingTeamScore">
                 <div id="battingScore" style="float:left;"></div>
-                <div id="overs" style="float:left;padding-top:80px;margin-left:20px;font-size: 100px;"></div>
+                <div id="overs" style="float:left;padding-top:80px;margin-left:20px;font-size: 150px;"></div>
                 <div style="clear: both;"></div>
             </div>
             <div class="stats">
@@ -97,7 +97,7 @@
 
                 document.getElementById('strikeBatsmanScore').innerHTML = (batsman1.runs || 0) + ' (' + (batsman1.balls || 0) + ')';
                 document.getElementById('runningBatsmanScore').innerHTML = (batsman2.runs || 0) + ' (' + (batsman2.balls || 0) + ')';
-                document.getElementById('bowlerScore').innerHTML = (bowler.runsAllowed || 0) + '-' + (bowler.wickets || 0);
+                document.getElementById('bowlerScore').innerHTML = (bowler.runsAllowed || 0) + '-' + (bowler.wickets || 0) + ' (' + getOvers(bowler.ballsBowled || 0) + ')';
 
                 var gameOver = "";
                 if (!!score.gameOver) {
