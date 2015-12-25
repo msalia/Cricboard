@@ -189,14 +189,14 @@ class GameOver extends React.Component {
 
     exportMatchCSV() {
         var csvContent = "data:text/csv;charset=utf-8,\n";
-        csvContent += "id,name,runs,wickets,tossWon,choseTo\n";
+        csvContent += "id,name,runs,wickets,overs,tossWon,choseTo\n";
         this.matchData.forEach((team, index) => {
             var infoArray = [
                 team.teamId,
                 team.teamName,
                 team.runs || 0,
                 team.wickets || 0,
-                team.balls || 0,
+                this.getOvers(team.balls) || 0,
                 team.tossWon || 'No',
                 team.choseTo || '',
             ];

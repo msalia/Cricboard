@@ -185,6 +185,8 @@ class BattingStore extends BaseStore {
 
         this.runs += action.runs;
         if (this.isExtra) {
+            this.runs += 1;
+            this.strikeBatsman.runs += action.runs;
             this.isExtra = false;
         } else if (this.isWicket) {
             this.getDispatcher().waitFor([ 

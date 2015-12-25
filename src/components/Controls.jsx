@@ -230,6 +230,7 @@ class Controls extends React.Component {
             { title: 'Runs This Over', value: this.calcRuns(data.currentOver) || 0 },
             { title: 'Current Over', value: this.printOver(data.currentOver) || '-' },
             { title: 'Bowler', value: bowler ? `${bowler.first} ${bowler.last}` : 'None' },
+            { title: 'Total Extras', value: this.props.bowlingData.extras || 0 },
             { title: `B1 ${b1.first || ''} ${b1.last || ''}`, value: b1.runs || 0, middot: true },
             { title: `B2 ${b2.first || ''} ${b2.last || ''}`, value: b2.runs || 0 },
         ];
@@ -247,17 +248,28 @@ class Controls extends React.Component {
         );
     }
 
+    printOver(over) {
+        var text = '';
+        over.forEach(ball => {
+            text += ball + '-';
+        });
+        return text.substr(0, text.length-1);
+    }
+
     calcRuns(over) {
         var total = 0;
         var settings = SettingsStore.getData();
+        var deduction = settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
         over.forEach(ball => {
             if (typeof ball === 'string') {
                 var type = ball.substr(0,2);
                 switch (type) {
                     case 'W:':
-                        total -= settings.isPlayoffs ? settings.playoffWicketRuns : settings.seasonWicketRuns;
-                    case 'E:':
+                        total -= deduction;
                         total += parseInt(ball.substr(2));
+                        break;
+                    case 'E:':
+                        total += parseInt(ball.substr(2)) + 1;
                         break;
                 }
             } else {
@@ -265,14 +277,6 @@ class Controls extends React.Component {
             }
         });
         return total;
-    }
-
-    printOver(over) {
-        var text = '';
-        over.forEach(ball => {
-            text += ball + '-';
-        });
-        return text.substr(0, text.length-1);
     }
 
 }

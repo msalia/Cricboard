@@ -183,7 +183,7 @@ class BowlingStore extends BaseStore {
 
         if (this.isExtra) {
             this.currentOver.push('E:' + action.runs);
-            this.incrementCurrentBowlerRuns(action.runs);
+            this.incrementCurrentBowlerRuns(action.runs + 1);
             this.isExtra = false;
         } else if (this.isWicket) {
             this.getDispatcher().waitFor([ 
@@ -272,11 +272,35 @@ class BowlingStore extends BaseStore {
             changeBowler: this.changeBowler,
             isExtra: this.isExtra,
             isWicket: this.isWicket,
+            extras: this.getExtras(),
         };
     }
 
     getOvers() {
         return this.overs;
+    }
+
+    getExtras() {
+        var extras = this.calcExtras(this.currentOver || []);
+        this.overs.forEach(over => {
+            extras += this.calcExtras(over);
+        });
+        return extras;
+    }
+
+    calcExtras(over) {
+        var total = 0;
+        over.forEach(ball => {
+            if (typeof ball === 'string') {
+                var type = ball.substr(0,2);
+                switch (type) {
+                    case 'E:':
+                        total += 1;
+                        break;
+                }
+            }
+        });
+        return total;
     }
 
     getCurrentOver() {
