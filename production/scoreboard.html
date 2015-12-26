@@ -38,15 +38,29 @@
                         <div id="runningBatsman"></div>
                         <div id="runningBatsmanScore"></div>
                     </div>
-                    <div class="playerName" style="border-right: none; background-color: red;">
+                    <div class="playerName" style="border-right: none;">
                         <div id="bowler"></div>
                         <div id="bowlerScore"></div>
                     </div>
                     <div style="clear: both;"></div>
                 </div>
                 <div class="divider"></div>
-                <div id="gameOverHolder">
+                <div class="playerInfo gameStatHolder">
+                    <div class="playerName" style="width: 40%">
+                        <div id="rr_rrr"></div>
+                        <div id="rrr"></div>
+                    </div>
+                    <div class="playerName" style="width: 40%">
+                        <div id="projected"></div>
+                        <div id="runs-balls"></div>
+                    </div>
+                    <div class="playerName" style="border-right: none; width: 10%">
+                        <div>Extras</div>
+                        <div id="extraRuns"></div>
+                    </div>
+                    <div style="clear: both;"></div>
                 </div>
+                <div class="divider"></div>
                 <div style="clear: both;"></div>
             </div>
         </div>
@@ -99,13 +113,18 @@
                 document.getElementById('runningBatsmanScore').innerHTML = (batsman2.runs || 0) + ' (' + (batsman2.balls || 0) + ')';
                 document.getElementById('bowlerScore').innerHTML = (bowler.runsAllowed || 0) + '-' + (bowler.wickets || 0) + ' (O: ' + getOvers(bowler.ballsBowled || 0) + ', E: ' + (bowler.extrasGiven || 0) + ')';
 
-                var gameOver = "";
-                if (!!score.gameOver) {
-                    gameOver = "<div id='gameOver'>GAME OVER</div>";
-                } else if (score.message) {
-                    gameOver = "<div id='gameOver'>" + score.message + "</div>";
+                if (score.isPlayChanged) {
+                    document.getElementById('rr_rrr').innerHTML = 'RRR';
+                    document.getElementById('projected').innerHTML = 'Runs From Balls';
+                    document.getElementById('rrr').innerHTML = score.rrr;
+                    document.getElementById('runs-balls').innerHTML = score.runsRemaining + ' from ' + score.ballsRemaining + ' balls';
+                } else {
+                    document.getElementById('rr_rrr').innerHTML = 'RR';
+                    document.getElementById('projected').innerHTML = 'Projected Total';
+                    document.getElementById('rrr').innerHTML = score.rr;
+                    document.getElementById('runs-balls').innerHTML = score.projectedTotal;
                 }
-                document.getElementById('gameOverHolder').innerHTML = gameOver;
+                document.getElementById('extraRuns').innerHTML = score.extras || 0;
             }
         </script>
     </body>

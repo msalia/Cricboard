@@ -59,6 +59,7 @@ textarea {
 html,
 body,
 #app-root {
+    background-color: black;
     position: absolute;
     box-sizing: border-box;
     height: 100%;
@@ -116,7 +117,7 @@ body,
     font-size: 40vh;
     font-weight: bold;
     text-align: left;
-    height: 300px;
+    height: 450px;
     padding-top: 60px;
 }
 
@@ -146,14 +147,22 @@ body,
     border: none;
 }
 
+.gameStatHolder {
+    font-size: 30px;
+}
+
 #gameOver {
-    background-color: green;
     font-size: 40px;
     line-height: 100px;
     width: 100%;
     text-align: center;
 }
 
+#rr,
+#rrr,
+#runs-balls,
+#projectedTotal,
+#extraRuns,
 #strikeBatsmanScore,
 #runningBatsmanScore,
 #bowlerScore {

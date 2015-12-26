@@ -141,35 +141,53 @@ class ScoreStore extends BaseStore {
     }
 
     getData() {
+        var bowlingData = this.getBowlingData() || {};
+        var battingData = this.getBattingData() || {};
         return {
+            isPlayChanged: this.playChanged,
             teams: this.teams,
             gameOver: this.gameOver,
-            message: this.getMessage(),
+            rrr: bowlingData.rrr || 0,
+            runsRemaining: bowlingData.runsRemaining,
+            ballsRemaining: bowlingData.ballsRemaining,
+            extras: BowlingStore.getExtras() || 0,
+            rr: battingData.rr || 0,
+            projectedTotal: battingData.projectedTotal || 0,
         };
     }
 
-    getMessage() {
+    getBowlingData() {
         if (!this.battingTeam) {
             return null;
         }
 
-        if (this.playChanged) {
-            var bowlingTeam = this.battingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
-            var batting = this.teams[this.battingTeam];
-            var bowling = this.teams[bowlingTeam];
-            var runsRemaining = (bowling.runs + 1) - batting.runs;
-            var ballsRemaining = (SettingsStore.getData().overs * 6) - batting.balls;
-            var rr = parseInt(((runsRemaining / ballsRemaining) * 6) * 100) / 100;
-            return `${runsRemaining} runs needed from ${ballsRemaining} balls to win. RRR: ${rr}`;
-        } else {
-            var runs = this.teams[this.battingTeam].runs;
-            var balls = this.teams[this.battingTeam].balls;
-            var rr = parseInt(((runs / balls) * 6) * 100) / 100;
-            var ballsRemaining = (SettingsStore.getData().overs * 6) - balls;
-            var projectedTotal = runs + (rr * (ballsRemaining / 6));
-            return `RR: ${rr || 0} ---|--- Projected Total: ${parseInt(projectedTotal || 0)}`;
+        var bowlingTeam = this.battingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
+        var batting = this.teams[this.battingTeam];
+        var bowling = this.teams[bowlingTeam];
+        var runsRemaining = (bowling.runs + 1) - batting.runs;
+        var ballsRemaining = (SettingsStore.getData().overs * 6) - batting.balls;
+        var rrr = parseInt(((runsRemaining / ballsRemaining) * 6) * 100) / 100;
+        return {
+            rrr,
+            runsRemaining,
+            ballsRemaining,
+        };
+    }
+
+    getBattingData() {
+        if (!this.battingTeam) {
+            return null;
         }
-        return null;
+
+        var runs = this.teams[this.battingTeam].runs;
+        var balls = this.teams[this.battingTeam].balls;
+        var rr = parseInt(((runs / balls) * 6) * 100) / 100;
+        var ballsRemaining = (SettingsStore.getData().overs * 6) - balls;
+        var projectedTotal = parseInt(runs + (rr * (ballsRemaining / 6)));
+        return {
+            rr,
+            projectedTotal,
+        };
     }
 
     getRuns() {

@@ -301,10 +301,10 @@ webpackJsonp([0],[
 	
 	var cn = __webpack_require__(209);
 	
-	var ____Class5=React.Component;for(var ____Class5____Key in ____Class5){if(____Class5.hasOwnProperty(____Class5____Key)){Navbar[____Class5____Key]=____Class5[____Class5____Key];}}var ____SuperProtoOf____Class5=____Class5===null?null:____Class5.prototype;Navbar.prototype=Object.create(____SuperProtoOf____Class5);Navbar.prototype.constructor=Navbar;Navbar.__superConstructor__=____Class5;
+	var ____Class4=React.Component;for(var ____Class4____Key in ____Class4){if(____Class4.hasOwnProperty(____Class4____Key)){Navbar[____Class4____Key]=____Class4[____Class4____Key];}}var ____SuperProtoOf____Class4=____Class4===null?null:____Class4.prototype;Navbar.prototype=Object.create(____SuperProtoOf____Class4);Navbar.prototype.constructor=Navbar;Navbar.__superConstructor__=____Class4;
 	
 	    function Navbar(props) {"use strict";
-	        ____Class5.call(this,props);
+	        ____Class4.call(this,props);
 	        this.props = props;
 	    }
 	
@@ -17760,10 +17760,10 @@ webpackJsonp([0],[
 	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class4=React.Component;for(var ____Class4____Key in ____Class4){if(____Class4.hasOwnProperty(____Class4____Key)){PlayersList[____Class4____Key]=____Class4[____Class4____Key];}}var ____SuperProtoOf____Class4=____Class4===null?null:____Class4.prototype;PlayersList.prototype=Object.create(____SuperProtoOf____Class4);PlayersList.prototype.constructor=PlayersList;PlayersList.__superConstructor__=____Class4;
+	var ____Class5=React.Component;for(var ____Class5____Key in ____Class5){if(____Class5.hasOwnProperty(____Class5____Key)){PlayersList[____Class5____Key]=____Class5[____Class5____Key];}}var ____SuperProtoOf____Class5=____Class5===null?null:____Class5.prototype;PlayersList.prototype=Object.create(____SuperProtoOf____Class5);PlayersList.prototype.constructor=PlayersList;PlayersList.__superConstructor__=____Class5;
 	
 	    function PlayersList(props) {"use strict";
-	        ____Class4.call(this,props);
+	        ____Class5.call(this,props);
 	        this.props = props;
 	    }
 	
@@ -17991,10 +17991,10 @@ webpackJsonp([0],[
 	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class7=React.Component;for(var ____Class7____Key in ____Class7){if(____Class7.hasOwnProperty(____Class7____Key)){Controls[____Class7____Key]=____Class7[____Class7____Key];}}var ____SuperProtoOf____Class7=____Class7===null?null:____Class7.prototype;Controls.prototype=Object.create(____SuperProtoOf____Class7);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Class7;
+	var ____Class6=React.Component;for(var ____Class6____Key in ____Class6){if(____Class6.hasOwnProperty(____Class6____Key)){Controls[____Class6____Key]=____Class6[____Class6____Key];}}var ____SuperProtoOf____Class6=____Class6===null?null:____Class6.prototype;Controls.prototype=Object.create(____SuperProtoOf____Class6);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Class6;
 	
 	    function Controls(props) {"use strict";
-	        ____Class7.call(this,props);
+	        ____Class6.call(this,props);
 	        this.props = props;
 	    }
 	
@@ -18278,10 +18278,10 @@ webpackJsonp([0],[
 	var $__0=  AppConstants,TeamTypes=$__0.TeamTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class6=React.Component;for(var ____Class6____Key in ____Class6){if(____Class6.hasOwnProperty(____Class6____Key)){GameOver[____Class6____Key]=____Class6[____Class6____Key];}}var ____SuperProtoOf____Class6=____Class6===null?null:____Class6.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Class6);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Class6;
+	var ____Class7=React.Component;for(var ____Class7____Key in ____Class7){if(____Class7.hasOwnProperty(____Class7____Key)){GameOver[____Class7____Key]=____Class7[____Class7____Key];}}var ____SuperProtoOf____Class7=____Class7===null?null:____Class7.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Class7);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Class7;
 	
 	    function GameOver(props) {"use strict";
-	        ____Class6.call(this,props);
+	        ____Class7.call(this,props);
 	        this.props = props;
 	        this.playerData = [];
 	        this.matchData = [];
@@ -18838,35 +18838,53 @@ webpackJsonp([0],[
 	    }});
 	
 	    Object.defineProperty(ScoreStore.prototype,"getData",{writable:true,configurable:true,value:function() {"use strict";
+	        var bowlingData = this.getBowlingData() || {};
+	        var battingData = this.getBattingData() || {};
 	        return {
+	            isPlayChanged: this.playChanged,
 	            teams: this.teams,
 	            gameOver: this.gameOver,
-	            message: this.getMessage(),
+	            rrr: bowlingData.rrr || 0,
+	            runsRemaining: bowlingData.runsRemaining,
+	            ballsRemaining: bowlingData.ballsRemaining,
+	            extras: BowlingStore.getExtras() || 0,
+	            rr: battingData.rr || 0,
+	            projectedTotal: battingData.projectedTotal || 0,
 	        };
 	    }});
 	
-	    Object.defineProperty(ScoreStore.prototype,"getMessage",{writable:true,configurable:true,value:function() {"use strict";
+	    Object.defineProperty(ScoreStore.prototype,"getBowlingData",{writable:true,configurable:true,value:function() {"use strict";
 	        if (!this.battingTeam) {
 	            return null;
 	        }
 	
-	        if (this.playChanged) {
-	            var bowlingTeam = this.battingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
-	            var batting = this.teams[this.battingTeam];
-	            var bowling = this.teams[bowlingTeam];
-	            var runsRemaining = (bowling.runs + 1) - batting.runs;
-	            var ballsRemaining = (SettingsStore.getData().overs * 6) - batting.balls;
-	            var rr = parseInt(((runsRemaining / ballsRemaining) * 6) * 100) / 100;
-	            return ("" + runsRemaining + " runs needed from " + ballsRemaining + " balls to win. RRR: " + rr);
-	        } else {
-	            var runs = this.teams[this.battingTeam].runs;
-	            var balls = this.teams[this.battingTeam].balls;
-	            var rr = parseInt(((runs / balls) * 6) * 100) / 100;
-	            var ballsRemaining = (SettingsStore.getData().overs * 6) - balls;
-	            var projectedTotal = runs + (rr * (ballsRemaining / 6));
-	            return ("RR: " + (rr || 0) + " ---|--- Projected Total: " + parseInt(projectedTotal || 0));
+	        var bowlingTeam = this.battingTeam === TeamTypes.HOME ? TeamTypes.AWAY : TeamTypes.HOME;
+	        var batting = this.teams[this.battingTeam];
+	        var bowling = this.teams[bowlingTeam];
+	        var runsRemaining = (bowling.runs + 1) - batting.runs;
+	        var ballsRemaining = (SettingsStore.getData().overs * 6) - batting.balls;
+	        var rrr = parseInt(((runsRemaining / ballsRemaining) * 6) * 100) / 100;
+	        return {
+	            rrr:rrr,
+	            runsRemaining:runsRemaining,
+	            ballsRemaining:ballsRemaining,
+	        };
+	    }});
+	
+	    Object.defineProperty(ScoreStore.prototype,"getBattingData",{writable:true,configurable:true,value:function() {"use strict";
+	        if (!this.battingTeam) {
+	            return null;
 	        }
-	        return null;
+	
+	        var runs = this.teams[this.battingTeam].runs;
+	        var balls = this.teams[this.battingTeam].balls;
+	        var rr = parseInt(((runs / balls) * 6) * 100) / 100;
+	        var ballsRemaining = (SettingsStore.getData().overs * 6) - balls;
+	        var projectedTotal = parseInt(runs + (rr * (ballsRemaining / 6)));
+	        return {
+	            rr:rr,
+	            projectedTotal:projectedTotal,
+	        };
 	    }});
 	
 	    Object.defineProperty(ScoreStore.prototype,"getRuns",{writable:true,configurable:true,value:function() {"use strict";
