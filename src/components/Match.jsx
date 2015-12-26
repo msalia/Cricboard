@@ -98,7 +98,12 @@ class Match extends React.Component {
                 className={cn('btn', 'btn-primary')}
                 onClick={this.nextInning.bind(this)}>
                 Next Inning
-            </button> : null;
+            </button> : 
+            <button type="button" 
+                className={cn('btn', 'btn-primary')}
+                onClick={this.gameOver.bind(this)}>
+                Game Over
+            </button>;
         return (
             <div className={cn('boardStatistics')}>
                 <div className={cn('col-sm-8', 'boardScoreDisplay')}>
@@ -169,6 +174,13 @@ class Match extends React.Component {
 
     nextInning() {
         AppActions.playChange();
+        if (this.scoreBoard) {
+            this.scoreBoard.postMessage(this.state, AppConstants.SCORE_BOARDS_DOMAIN);
+        }
+    }
+
+    gameOver() {
+        AppActions.gameOver();
         if (this.scoreBoard) {
             this.scoreBoard.postMessage(this.state, AppConstants.SCORE_BOARDS_DOMAIN);
         }
