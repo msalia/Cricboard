@@ -301,10 +301,10 @@ webpackJsonp([0],[
 	
 	var cn = __webpack_require__(209);
 	
-	var ____Class4=React.Component;for(var ____Class4____Key in ____Class4){if(____Class4.hasOwnProperty(____Class4____Key)){Navbar[____Class4____Key]=____Class4[____Class4____Key];}}var ____SuperProtoOf____Class4=____Class4===null?null:____Class4.prototype;Navbar.prototype=Object.create(____SuperProtoOf____Class4);Navbar.prototype.constructor=Navbar;Navbar.__superConstructor__=____Class4;
+	var ____Class5=React.Component;for(var ____Class5____Key in ____Class5){if(____Class5.hasOwnProperty(____Class5____Key)){Navbar[____Class5____Key]=____Class5[____Class5____Key];}}var ____SuperProtoOf____Class5=____Class5===null?null:____Class5.prototype;Navbar.prototype=Object.create(____SuperProtoOf____Class5);Navbar.prototype.constructor=Navbar;Navbar.__superConstructor__=____Class5;
 	
 	    function Navbar(props) {"use strict";
-	        ____Class4.call(this,props);
+	        ____Class5.call(this,props);
 	        this.props = props;
 	    }
 	
@@ -5490,14 +5490,14 @@ webpackJsonp([0],[
 	
 	        switch(action.scoreType) {
 	            case ScoreTypes.EXTRA:
-	                this.isExtra = true;
-	                if (this.isWicket) {
+	                this.isExtra = !this.isExtra;
+	                if (this.isWicket && this.isExtras) {
 	                    this.isWicket = false;
 	                }
 	                break;
 	            case ScoreTypes.WICKET:
-	                this.isWicket = true;
-	                if (this.isExtra) {
+	                this.isWicket = !this.isWicket;
+	                if (this.isExtra && this.isWicket) {
 	                    this.isExtra = false;
 	                }
 	                break;
@@ -17630,7 +17630,12 @@ webpackJsonp([0],[
 	                className: cn('btn', 'btn-primary'), 
 	                onClick: this.nextInning.bind(this)}, 
 	                "Next Inning"
-	            ) : null;
+	            ) : 
+	            React.createElement("button", {type: "button", 
+	                className: cn('btn', 'btn-primary'), 
+	                onClick: this.gameOver.bind(this)}, 
+	                "Game Over"
+	            );
 	        return (
 	            React.createElement("div", {className: cn('boardStatistics')}, 
 	                React.createElement("div", {className: cn('col-sm-8', 'boardScoreDisplay')}, 
@@ -17706,6 +17711,13 @@ webpackJsonp([0],[
 	        }
 	    }});
 	
+	    Object.defineProperty(Match.prototype,"gameOver",{writable:true,configurable:true,value:function() {"use strict";
+	        AppActions.gameOver();
+	        if (this.scoreBoard) {
+	            this.scoreBoard.postMessage(this.state, AppConstants.SCORE_BOARDS_DOMAIN);
+	        }
+	    }});
+	
 	    Object.defineProperty(Match.prototype,"openScoreBoard",{writable:true,configurable:true,value:function() {"use strict";
 	        if (this.scoreBoard) { 
 	            this.scoreBoard.close();
@@ -17748,10 +17760,10 @@ webpackJsonp([0],[
 	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class5=React.Component;for(var ____Class5____Key in ____Class5){if(____Class5.hasOwnProperty(____Class5____Key)){PlayersList[____Class5____Key]=____Class5[____Class5____Key];}}var ____SuperProtoOf____Class5=____Class5===null?null:____Class5.prototype;PlayersList.prototype=Object.create(____SuperProtoOf____Class5);PlayersList.prototype.constructor=PlayersList;PlayersList.__superConstructor__=____Class5;
+	var ____Class4=React.Component;for(var ____Class4____Key in ____Class4){if(____Class4.hasOwnProperty(____Class4____Key)){PlayersList[____Class4____Key]=____Class4[____Class4____Key];}}var ____SuperProtoOf____Class4=____Class4===null?null:____Class4.prototype;PlayersList.prototype=Object.create(____SuperProtoOf____Class4);PlayersList.prototype.constructor=PlayersList;PlayersList.__superConstructor__=____Class4;
 	
 	    function PlayersList(props) {"use strict";
-	        ____Class5.call(this,props);
+	        ____Class4.call(this,props);
 	        this.props = props;
 	    }
 	
@@ -17855,7 +17867,7 @@ webpackJsonp([0],[
 	                ), 
 	                React.createElement("div", {className: cn('col-sm-6', 'bowlingList')}, 
 	                    this.renderDataTable('Bowler', this.props.bowlingData.bowlers, function(bowler)  {
-	                        return ("" + (bowler.runsAllowed || 0) + "-" + (this.getOvers(bowler.ballsBowled) || '0.0') + "-" + (bowler.wickets || 0) + " (E: " + (bowler.extrasGiven || 0) + ")");
+	                        return ("" + (bowler.runsAllowed || 0) + "-(" + (this.getOvers(bowler.ballsBowled) || '0.0') + ")-" + (bowler.wickets || 0) + " (E: " + (bowler.extrasGiven || 0) + ")");
 	                    }.bind(this), false)
 	                )
 	            )
@@ -17979,10 +17991,10 @@ webpackJsonp([0],[
 	  AppConstants,TeamTypes=$__0.TeamTypes,ScoreTypes=$__0.ScoreTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class6=React.Component;for(var ____Class6____Key in ____Class6){if(____Class6.hasOwnProperty(____Class6____Key)){Controls[____Class6____Key]=____Class6[____Class6____Key];}}var ____SuperProtoOf____Class6=____Class6===null?null:____Class6.prototype;Controls.prototype=Object.create(____SuperProtoOf____Class6);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Class6;
+	var ____Class7=React.Component;for(var ____Class7____Key in ____Class7){if(____Class7.hasOwnProperty(____Class7____Key)){Controls[____Class7____Key]=____Class7[____Class7____Key];}}var ____SuperProtoOf____Class7=____Class7===null?null:____Class7.prototype;Controls.prototype=Object.create(____SuperProtoOf____Class7);Controls.prototype.constructor=Controls;Controls.__superConstructor__=____Class7;
 	
 	    function Controls(props) {"use strict";
-	        ____Class6.call(this,props);
+	        ____Class7.call(this,props);
 	        this.props = props;
 	    }
 	
@@ -18266,10 +18278,10 @@ webpackJsonp([0],[
 	var $__0=  AppConstants,TeamTypes=$__0.TeamTypes;
 	var cn = __webpack_require__(209);
 	
-	var ____Class7=React.Component;for(var ____Class7____Key in ____Class7){if(____Class7.hasOwnProperty(____Class7____Key)){GameOver[____Class7____Key]=____Class7[____Class7____Key];}}var ____SuperProtoOf____Class7=____Class7===null?null:____Class7.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Class7);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Class7;
+	var ____Class6=React.Component;for(var ____Class6____Key in ____Class6){if(____Class6.hasOwnProperty(____Class6____Key)){GameOver[____Class6____Key]=____Class6[____Class6____Key];}}var ____SuperProtoOf____Class6=____Class6===null?null:____Class6.prototype;GameOver.prototype=Object.create(____SuperProtoOf____Class6);GameOver.prototype.constructor=GameOver;GameOver.__superConstructor__=____Class6;
 	
 	    function GameOver(props) {"use strict";
-	        ____Class7.call(this,props);
+	        ____Class6.call(this,props);
 	        this.props = props;
 	        this.playerData = [];
 	        this.matchData = [];
